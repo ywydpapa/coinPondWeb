@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include '/comm/header.html' %}
+<style>
+    .container{
+        padding-right: 0;
+        overflow: auto;
+    }
+
+    .chartContents{
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        padding-bottom: 20px;
+    }
+
+    .chartContents > div{
+        border: 1px solid #BDBDBD;
+        padding: 10px;
+        box-shadow: 1px solid #BDBDBD;
+        box-shadow: 3px 3px 3px 3px #BDBDBD;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+</style>
+</head>
+<body>
+    <div id="commonTopHeader">
+{% include '/comm/commTopHeader.html' %}
+    </div>
+
+    <div id="commonBodyContents">
+{% include '/comm/sidemenu.html' %}
+        <!-- commonSideMenu end-->
+
+        <div id="commonContent">
+            <div class="container">
+            <hr>
+             <div>
+                 TRADE SETUP
+             </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+    });
+
+
+</script>
+</html>
