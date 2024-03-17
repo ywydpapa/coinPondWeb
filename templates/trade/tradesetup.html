@@ -43,16 +43,19 @@
                     <thead>
                     <tr>
                         <td>
-                            선택 코인
+                            <h2>선택 코인</h2>
                         </td>
                         <td>
-                            <select>
-                                <option value="1">TEST</option>
+                            <select class="custom-select">
+                                {% for coin in coinlist %}
+                                <option value="{{ coin }}">{{ coin }}</option>
+                                {% endfor %}
                             </select>
                         </td>
                     </tr>
                     </thead>
                 </table>
+             <button type="button" class="btn btn-primary">저장</button>
              </div>
             </div>
         </div>
