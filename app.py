@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv
+from comm.dbconn import selectUsers, check_srv, setKeys
 import pyupbit
 import os
 import time
@@ -55,7 +55,11 @@ def login():
         upw = request.form.get('upw')
         row = selectUsers(uid, upw)
         if row:
-            session['userName'] = row[1]
+            session['userName'] = row[0][1]
+            session['setkey'] = str(row[1])
+            uno = row[0][0]
+            ukey = str(row[1])
+            setKeys(uno, ukey)
             return redirect('/trade')
         else:
             return '''
