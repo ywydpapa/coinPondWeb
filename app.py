@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet
+from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory
 import pyupbit
 import os
 import time
@@ -38,19 +38,20 @@ def peakcoin():
 
 @app.route('/coindetail', methods=['GET', 'POST'])
 def coindetail():
-    coinlist = pyupbit.get_tickers(fiat="KRW")
-    return render_template('/trade/coindetail.html', coinlist= coinlist)
+    uno = request.args.get('uno')
+    skey = request.args.get('skey')
+    orderlist = tradehistory(uno,skey)
+    return render_template('/trade/coindetail.html', orderlist= orderlist)
 
 @app.route('/tradestat', methods=['GET', 'POST'])
 def tradestat():
-    coinlist = pyupbit.get_tickers(fiat="KRW")
     if request.method == "POST":
-        return render_template('trade/tradestat.html', coinlist= coinlist)
+        return render_template('trade/tradestat.html')
     else:
         uno = request.args.get('uno')
         skey = request.args.get('skey')
         walletitems = checkwallet(uno, skey)
-        return render_template('/trade/tradestat.html', coinlist= coinlist, witems = walletitems)
+        return render_template('/trade/tradestat.html', witems = walletitems)
 
 
 @app.route('/login', methods=['GET', 'POST'])

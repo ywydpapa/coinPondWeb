@@ -85,3 +85,18 @@ def checkwallet(uno, setkey):
         walletitems = upbit.get_balances()
     return walletitems
 
+def tradehistory(uno, setkey):
+    tradelist = []
+    cur = db.cursor()
+    sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
+    cur.execute(sql,(setkey, uno, '%XXX'))
+    keys = cur.fetchall()
+    if len(keys) == 0:
+        print("No available Keys !!")
+    else:
+        key1 = keys[0][0]
+        key2 = keys[0][1]
+        upbit = pyupbit.Upbit(key1,key2)
+        tradelist = upbit.get_order("KRW-ETH",state='done')
+        print(tradelist)
+    return tradelist

@@ -37,10 +37,9 @@
 
         <div id="commonContent">
             <div class="container">
-            <hr>
-             <div>
-                 COIN DETAIL
-             </div>
+                {% for item in orderlist %}
+                {{ item }}<br>
+                {%  endfor %}
             </div>
         </div>
     </div>
