@@ -5,12 +5,12 @@
 </div>
 <div class="mainTopMenu" id="mainTopMenu">
     <ul>
-        <li><button type="button" data-keyword="dashboard" onClick="location.href='/tradestat'">거래상황</button></li>
+        <li><button type="button" data-keyword="dashboard" onClick="location.href='/tradestat?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}'">지갑내용 확인</button></li>
         <li><button type="button" data-keyword="monitoring" onClick="location.href='/coindetail'">상세 추세</button></li>
         <li><button type="button" data-keyword="monitoring" onClick="location.href='/peakcoin'">급등코인 목록</button></li>
         <li><button type="button" data-keyword="adminsetup" onClick="location.href='/tradeSet'">설정</button></li>
     </ul>
 </div>
 <div id="mainInfo">
-        <span>{{ session["userName"]}}</span>
+        <span>{{ session["userName"]}}</span> <a href="/logout">X</a>
 </div>

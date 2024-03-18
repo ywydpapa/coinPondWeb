@@ -4,7 +4,6 @@ from datetime import datetime
 import pymysql
 import random
 
-
 db = pymysql.connect(host='swc9004.iptime.org', user='swc', password='core2020', db='anteUpbit', charset='utf8')
 cur = db.cursor()
 
@@ -70,3 +69,19 @@ def check_srv(coinn,perc):
     avg_vol20 = sum_vol20 / 20
     if today_vol > avg_vol20 * perc:
         return True
+
+def checkwallet(uno, setkey):
+    walletitems = []
+    cur = db.cursor()
+    sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
+    cur.execute(sql,(setkey, uno, '%XXX'))
+    keys = cur.fetchall()
+    if len(keys) == 0:
+        print("No available Keys !!")
+    else:
+        key1 = keys[0][0]
+        key2 = keys[0][1]
+        upbit = pyupbit.Upbit(key1,key2)
+        walletitems = upbit.get_balances()
+    return walletitems
+

@@ -37,10 +37,24 @@
 
         <div id="commonContent">
             <div class="container">
-            <hr>
-             <div>
-                 TRADE STAT
-             </div>
+            <table class="table table-bordered">
+            <thead>
+            <tr style="text-align: center">
+                <td>자산명</td>
+                <td>잔고</td>
+                <td>거래중</td>
+                <td>평균매입가</td>
+            </tr>
+            </thead>
+                {% for item in witems %}
+                    <tr style="text-align: right">
+                    <td style="text-align: center" >{{ item["currency"] }}</td>
+                    <td>{{ item["balance"] }}</td>
+                    <td>{{ item["locked"] }}</td>
+                    <td>{{ item["avg_buy_price"] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
             </div>
         </div>
     </div>
@@ -48,7 +62,5 @@
 <script>
     $(document).ready(function () {
     });
-
-
 </script>
 </html>
