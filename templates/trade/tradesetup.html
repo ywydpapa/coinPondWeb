@@ -39,23 +39,133 @@
             <div class="container">
             <hr>
              <div>
-                <table>
+                <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <td>
-                            <h2>선택 코인</h2>
+                        <td style="text-align: center">
+                            <h5>선택 코인</h5>
                         </td>
                         <td>
-                            <select class="custom-select">
-                                {% for coin in coinlist %}
-                                <option value="{{ coin }}">{{ coin }}</option>
-                                {% endfor %}
+                            <select id="coinn" class="form-control form-controm-sm">
+                                    {% for coin in coinlist %}
+                                       <option value="{{ coin }}">{{ coin }}</option>
+                                    {% endfor %}
                             </select>
+                        </td>
+                        <td>
+                            <button type="button" class="form-control btn btn-primary">저장</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center"> <h5>시작 금액</h5></td>
+                        <td>
+                            <input id="initprice" class="form-control" type="number" placeholder="5000" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center"> <h5>구간 설정</h5></td>
+                        <td>
+                            <select id="bidsteps" class="form-control" style="text-align: right">
+                                <option value="1">01</option>
+                                <option value="2">02</option>
+                                <option value="3">03</option>
+                                <option value="4">04</option>
+                                <option value="5">05</option>
+                                <option value="6">06</option>
+                                <option value="7">07</option>
+                                <option value="8">08</option>
+                                <option value="9">09</option>
+                                <option value="10" selected >10</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="form-control btn btn-primary">적용</button>
                         </td>
                     </tr>
                     </thead>
+                    <tr>
+                        <td style="text-align: center"> <h5>1 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>2 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>3 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>4 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>5 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>6 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>7 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>8 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>9 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                <tr>
+                        <td style="text-align: center"> <h5>10 구간 </h5></td>
+                        <td>
+                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
                 </table>
-             <button type="button" class="btn btn-primary">저장</button>
              </div>
             </div>
         </div>
@@ -65,6 +175,12 @@
     $(document).ready(function () {
     });
 
+    function setsteps(){
 
+    }
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 </script>
 </html>
