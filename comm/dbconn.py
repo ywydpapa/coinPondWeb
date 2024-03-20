@@ -142,3 +142,26 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn):
             return True
     else:
         return False
+
+def getsetup(uno):
+    try:
+        cur = db.cursor()
+        sql = "select bidCoin,initAsset,bidInterval,bidRate,askRate,activeYN from tradingSetup where userNo=%s and attrib not like %s"
+        cur.execute(sql, (uno, '%XXXUP'))
+        data = list(cur.fetchone())
+        return data
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()
+
+def setonoff(uno,yesno):
+    cur = db.cursor()
+    try:
+        sql = "UPDATE tradingSetup SET activeYN = %s where userNo=%s AND attrib not like %s"
+        cur.execute(sql, (yesno, uno,'%XXXUP'))
+        db.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()

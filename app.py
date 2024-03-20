@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid
+from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff
 import pyupbit
 import os
 import time
@@ -15,8 +15,13 @@ def home():  # put application's code here
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
-
-    return render_template('/trade/trademain.html')
+    if request.method == 'GET':
+        uno = request.args.get('uno')
+        data = getsetup(uno)
+        print(data)
+        return render_template('/trade/trademain.html', result=data)
+    else:
+        return render_template('/trade/trademain.html')
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
 def tradeSet():
@@ -69,7 +74,8 @@ def login():
             uno = row[0][0]
             ukey = str(row[1])
             setKeys(uno, ukey)
-            return redirect('/trade')
+            path = '/trade?uno=' + str(uno)
+            return redirect(path)
         else:
             return '''
                 <script>
@@ -94,12 +100,22 @@ def setupmybid():
         coinn = request.form.get('coinn')
         skey = request.form.get('skey')
         setupbid(uno,skey,initprice,bidsetps,bidrate,askrate,coinn)
-    return render_template('/trade/trademain.html')
+        data = getsetup(uno)
+    return render_template('/trade/trademain.html', result=data)
 
 @app.route('/logout')
 def logout():
     session.clear()
     return render_template('./login/login.html')
+
+@app.route('/setyn', methods=['POST'])
+def setyn():
+    pla = list(request.get_data().decode('utf-8'))
+    uno = pla[0]
+    yesno = pla[2]
+    setonoff(uno, yesno)
+    return "YES"
+
 
 if __name__ == '__main__':
     app.run( debug=True, host='0.0.0.0', port=5000)
