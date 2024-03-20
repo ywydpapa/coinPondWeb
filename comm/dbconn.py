@@ -100,3 +100,45 @@ def tradehistory(uno, setkey):
         tradelist = upbit.get_order("KRW-ETH",state='done')
         print(tradelist)
     return tradelist
+
+def checkkey(uno, setkey):
+    cur = db.cursor()
+    sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
+    cur.execute(sql,(setkey, uno, '%XXX'))
+    result = cur.fetchall()
+    if len(result) == 0:
+        print("No match Keys !!")
+        return False
+    else:
+        return True
+
+def erasebid(uno, setkey):
+    cur = db.cursor()
+    sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
+    cur.execute(sql,(setkey, uno, '%XXX'))
+    result = cur.fetchall()
+    if len(result) == 0:
+        print("No match Keys !!")
+        return False
+    else:
+        sql2 = "update tradingSetup set attrib=%s where userNo=%s"
+        cur.execute(sql2,("XXXUPXXXUPXXXUP", uno))
+        db.commit()
+        return True
+
+def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn):
+    chkkey = checkkey(uno, setkey)
+    if chkkey == True:
+        try:
+            erasebid(uno, setkey)
+            cur = db.cursor()
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin) VALUES (%s, %s, %s, %s, %s, %s)"
+            cur.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn))
+            db.commit()
+        except Exception as e:
+            print('접속오류', e)
+        finally:
+            cur.close()
+            return True
+    else:
+        return False

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory
+from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid
 import pyupbit
 import os
 import time
@@ -15,8 +15,8 @@ def home():  # put application's code here
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
-    coinlist = pyupbit.get_tickers(fiat="KRW")
-    return render_template('/trade/trademain.html', coinlist= coinlist)
+
+    return render_template('/trade/trademain.html')
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
 def tradeSet():
@@ -79,6 +79,22 @@ def login():
                     history.back()
                 </script>
             '''
+
+@app.route('/setupbid', methods=['GET', 'POST'])
+def setupmybid():
+    if request.method == 'GET':
+        pass
+    else:
+        uno = request.form.get('userno')
+        bidsetps = request.form.get('bidsteps')
+        initprice = request.form.get('initprice')
+        bidrate = request.form.get('steprate')
+        initprice = initprice.replace(',', '')
+        askrate = request.form.get('profitrate')
+        coinn = request.form.get('coinn')
+        skey = request.form.get('skey')
+        setupbid(uno,skey,initprice,bidsetps,bidrate,askrate,coinn)
+    return render_template('/trade/trademain.html')
 
 @app.route('/logout')
 def logout():

@@ -39,6 +39,7 @@
             <div class="container">
             <hr>
              <div>
+             <form action="/setupbid" method="post">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -46,28 +47,30 @@
                             <h5>선택 코인</h5>
                         </td>
                         <td>
-                            <select id="coinn" class="form-control form-controm-sm">
+                            <select id="coinn" name="coinn" class="form-control form-controm-sm">
                                     {% for coin in coinlist %}
                                        <option value="{{ coin }}">{{ coin }}</option>
                                     {% endfor %}
                             </select>
                         </td>
                         <td>
-                            <button type="button" class="form-control btn btn-primary">저장</button>
+                            <button type="submit" value="submit" class="form-control btn btn-primary">저장</button>
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: center"> <h5>시작 금액</h5></td>
                         <td>
-                            <input id="initprice" class="form-control" type="number" placeholder="5000" style = "text-align: right">
+                            <input id="initprice" name="initprice" class="form-control" type="text" value="5000" placeholder="5,000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
                         </td>
                         <td>
+                            <input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
+                            <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: center"> <h5>구간 설정</h5></td>
                         <td>
-                            <select id="bidsteps" class="form-control" style="text-align: right">
+                            <select id="bidsteps" name="bidsteps" class="form-control" style="text-align: right">
                                 <option value="1">01</option>
                                 <option value="2">02</option>
                                 <option value="3">03</option>
@@ -77,95 +80,121 @@
                                 <option value="7">07</option>
                                 <option value="8">08</option>
                                 <option value="9">09</option>
-                                <option value="10" selected >10</option>
+                                <option value="10" selected>10</option>
                             </select>
                         </td>
                         <td>
-                            <button type="button" class="form-control btn btn-primary">적용</button>
+                            <button type="button" class="form-control btn btn-primary" onclick="setbid()">적용</button>
                         </td>
                     </tr>
                     </thead>
                     <tr>
-                        <td style="text-align: center"> <h5>1 구간 </h5></td>
+                        <td style="text-align: center"> <h5>구간 간격 (%) </h5></td>
                         <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                            <div style="text-align: right">
+                            <div>
+                            <input id="steprate" name="steprate" style="text-align: right" class="form-control" type="number" min="0" max="10" step="0.01" value="0.5">
+                            </div>
+                            </div>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center"> <h5>설정 이율 (%) </h5></td>
+                        <td>
+                            <div>
+                            <div>
+                            <input id="profitrate" name="profitrate" style="text-align: right" class="form-control" type="number" min="0" max="10" step="0.01" value="0.45">
+                            </div>
+                            </div>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: center"> <h5>1 구간 </h5></td>
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>2 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>3 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>4 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>5 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>6 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>7 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>8 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>9 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>10 구간 </h5></td>
-                        <td>
-                            <input class="form-control" type="number" min="0" placeholder="0" style = "text-align: right">
+                        <td class="trval" style="text-align: right">
+
                         </td>
                         <td>
                         </td>
                     </tr>
                 </table>
+             </form>
              </div>
             </div>
         </div>
@@ -175,12 +204,34 @@
     $(document).ready(function () {
     });
 
-    function setsteps(){
-
-    }
-
+    $('#initprice').change(function(){
+        var valu = $('#initprice').val();
+        if (valu < 5000){
+            valu = 5000
+        }
+        $('#initprice').val(numberWithCommas(valu));
+    });
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
+
+    function setbid(){
+        var intv = numberNoneCommas($('#initprice').val());
+        var $Aarr = $(".trval");
+        var setval = intv;
+        for (var i = 0; i < 10; i++) {
+            if (i < $("#bidsteps").val()){
+            setval = setval *2 ;
+            $Aarr[i].innerText = numberWithCommas(setval);
+            } else {
+                $Aarr[i].innerText = "0";
+            }
+
+        }
+    }
+
 </script>
 </html>
