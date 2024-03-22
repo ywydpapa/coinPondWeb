@@ -165,3 +165,29 @@ def setonoff(uno,yesno):
         print('접속오류', e)
     finally:
         cur.close()
+
+def getseton():
+    cur = db.cursor()
+    data = []
+    print("GetKey !!")
+    try:
+        sql = "SELECT userNo from tradingSetup where attrib not like %s"
+        cur.execute(sql,'%XXXUP')
+        data = cur.fetchall()
+        return data
+    except Exception as e:
+        print('접속오류',e)
+    finally:
+        cur.close()
+
+def getupbitkey(uno):
+    cur = db.cursor()
+    try:
+        sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE userNo=%s and attrib not like %s"
+        cur.execute(sql, (uno,'%XXXUP'))
+        data = cur.fetchone()
+        return data
+    except Exception as e:
+        print('접속오류',e)
+    finally:
+        cur.close()
