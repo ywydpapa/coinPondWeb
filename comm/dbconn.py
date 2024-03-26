@@ -91,15 +91,18 @@ def tradehistory(uno, setkey):
     cur = db.cursor()
     sql = "SELECT bidCoin from tradingSetup where userNo = %s and attrib not like %s "
     cur.execute(sql,(uno, '%XXXUP'))
-    coinn = cur.fetchone()
-    sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
-    cur.execute(sql,(setkey, uno, '%XXX'))
+    data = cur.fetchone()
+    coinn = data[0]
+    print(coinn)
+    sql2 = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
+    cur.execute(sql2,(setkey, uno, '%XXX'))
     keys = cur.fetchone()
     if len(keys) == 0:
         print("No available Keys !!")
     else:
-        key1 = keys[0][0]
-        key2 = keys[0][1]
+        key1 = keys[0]
+        key2 = keys[1]
+        print(key1)
         upbit = pyupbit.Upbit(key1,key2)
         tradelist = upbit.get_order(coinn,state='done')
         print(tradelist)
@@ -150,7 +153,7 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn):
 def getsetup(uno):
     try:
         cur = db.cursor()
-        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate from tradingSetup where userNo=%s and attrib not like %s"
+        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN from tradingSetup where userNo=%s and attrib not like %s"
         cur.execute(sql, (uno, '%XXXUP'))
         data = list(cur.fetchone())
         return data
