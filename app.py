@@ -17,9 +17,11 @@ def home():  # put application's code here
 def trade():
     if request.method == 'GET':
         uno = request.args.get('uno')
+        setkey = request.args.get('skey')
         data = getsetup(uno)
+        wallet = checkwallet(uno,setkey)
         print(data)
-        return render_template('/trade/trademain.html', result=data)
+        return render_template('/trade/trademain.html', result=data, wallet=wallet)
     else:
         return render_template('/trade/trademain.html')
 
@@ -83,7 +85,7 @@ def login():
             uno = row[0][0]
             ukey = str(row[1])
             setKeys(uno, ukey)
-            path = '/trade?uno=' + str(uno)
+            path = '/trade?uno=' + str(uno) + '&skey=' + str(ukey)
             return redirect(path)
         else:
             return '''

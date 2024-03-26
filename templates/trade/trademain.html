@@ -80,19 +80,9 @@
         <div id="commonContent">
             <div class="container">
             <hr>
-             <div>
-                 주문동작 설정 내용
-                 <table class="table form-control">
-                     <thead class="form-control">
-                     <tr>
-                         <td style="text-align: center">
-                             구분
-                         </td>
-                         <td style="text-align: center">
-                             설정값
-                         </td>
-                     </tr>
-                     </thead>
+            <div style="display: inline">
+             <div style="float: left">
+                 <table class="table form-control table-bordered">
                      <tbody class="form-control">
                      <tr>
                          <td style="text-align: center">
@@ -145,12 +135,36 @@
                      </tbody>
                  </table>
              </div>
+            <div style="float: left">
+                <table class="table form-control table-bordered">
+                    <tbody>
+                    <tr>
+                        <td>
+                            현재 잔고
+                        </td>
+                        <td style="text-align: right">
+                            {{ wallet }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            필요금액
+                        </td>
+                        <td id = "needmon" style="text-align: right">
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
             </div>
         </div>
     </div>
 </body>
 <script>
     $(document).ready(function () {
+        calneed();
     });
 
     $("#chk1").change(function(){
@@ -161,6 +175,18 @@
     setyn(uno,"N")
     }
     });
+
+    function calneed(){
+        var stm = {{ result[1] }};
+        var times = {{ result[2] }};
+        var summ = stm;
+        var vsum = stm;
+        for (i=1; i < times +1; i++) {
+            summ = summ + vsum*2**i;
+        }
+        console.log(summ);
+        $('#needmon').html(numberWithCommas(summ));
+    }
 
     function setyn(uno,yn){
         data = [uno,yn]
@@ -176,5 +202,12 @@
                 }
         });
     }
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
 </script>
 </html>
