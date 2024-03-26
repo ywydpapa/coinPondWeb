@@ -68,9 +68,18 @@ def login():
         upw = request.form.get('upw')
         row = selectUsers(uid, upw)
         if row:
-            session['userNo'] = row[0][0]
-            session['userName'] = row[0][1]
-            session['setkey'] = str(row[1])
+            if row[0][0] is not None:
+                session['userNo'] = row[0][0]
+            else:
+                pass
+            if row[0][1] is not None:
+                session['userName'] = row[0][1]
+            else:
+                pass
+            if row[1] is not None:
+                session['setkey'] = str(row[1])
+            else:
+                pass
             uno = row[0][0]
             ukey = str(row[1])
             setKeys(uno, ukey)

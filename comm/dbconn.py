@@ -30,9 +30,10 @@ def selectUsers(uid, upw):
     row = None
     setkey = None
     try:
-        sql = '''SELECT userNo, userName FROM pondUser WHERE userId=%s AND userPasswd=password(%s) AND attrib NOT LIKE %s'''
-        cur.execute(sql, (uid, upw, str("%XXX")))
+        sql = "SELECT userNo, userName FROM pondUser WHERE userPasswd=password(%s) AND userId=%s AND attrib NOT LIKE %s"
+        cur.execute(sql, (upw, uid, str("%XXX")))
         row = cur.fetchone()
+        print(row)
         if row is not None:
             setkey = random.randint(100000,999999)
     except Exception as e:
@@ -88,16 +89,19 @@ def checkwallet(uno, setkey):
 def tradehistory(uno, setkey):
     tradelist = []
     cur = db.cursor()
+    sql = "SELECT bidCoin from tradingSetup where userNo = %s and attrib not like %s "
+    cur.execute(sql,(uno, '%XXXUP'))
+    coinn = cur.fetchone()
     sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur.execute(sql,(setkey, uno, '%XXX'))
-    keys = cur.fetchall()
+    keys = cur.fetchone()
     if len(keys) == 0:
         print("No available Keys !!")
     else:
         key1 = keys[0][0]
         key2 = keys[0][1]
         upbit = pyupbit.Upbit(key1,key2)
-        tradelist = upbit.get_order("KRW-ETH",state='done')
+        tradelist = upbit.get_order(coinn,state='done')
         print(tradelist)
     return tradelist
 
@@ -146,7 +150,19 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn):
 def getsetup(uno):
     try:
         cur = db.cursor()
-        sql = "select bidCoin,initAsset,bidInterval,bidRate,askRate,activeYN from tradingSetup where userNo=%s and attrib not like %s"
+        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate from tradingSetup where userNo=%s and attrib not like %s"
+        cur.execute(sql, (uno, '%XXXUP'))
+        data = list(cur.fetchone())
+        return data
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()
+
+def getsetups(uno):
+    try:
+        cur = db.cursor()
+        sql = "select * from tradingSetup where userNo=%s and attrib not like %s"
         cur.execute(sql, (uno, '%XXXUP'))
         data = list(cur.fetchone())
         return data
@@ -191,3 +207,9 @@ def getupbitkey(uno):
         print('접속오류',e)
     finally:
         cur.close()
+
+def clearcache():
+    cur = db.cursor()
+    sql = "RESET QUERY CACHE"
+    cur.execute(sql)
+    cur.close()
