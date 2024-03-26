@@ -37,9 +37,55 @@
 
         <div id="commonContent">
             <div class="container">
+            <table class="table table-bordered">
+            <thead>
+
+            </thead>
+            <tbody>
                 {% for item in orderlist %}
-                {{ item }}<br>
+                    <tr>
+                    <td>
+                {{ item["uuid"] }}<br>
+                    </td>
+                    <td style = text-align:center>
+                {% if item["side"] == 'ask' %}
+                        매도
+                    {% else %}
+                        매수
+                {% endif %}
+                    </td>
+                    <td>
+                {{ item["ord_type"] }}<br>
+                    </td>
+                    <td>
+                {{ item["price"] }}<br>
+                    </td>
+                    <td>
+                {{ item["state"] }}<br>
+                    </td>
+                    <td>
+                {{ item["volume"] }}<br>
+                    </td>
+                    <td>
+                {{ item["remaining_volume"] }}<br>
+                    </td>
+                    <td>
+                {{ item["created_at"] }}<br>
+                    </td>
+                    <td>
+                {{ item["paid_fee"] }}<br>
+                    </td>
+                    <td>
+                {{ item["locked"] }}<br>
+                    </td>
+                    <td>
+                {{ item["executed_volume"] }}<br>
+                    </td>
+                    </tr>
+
                 {%  endfor %}
+            </tbody>
+            </table>
             </div>
         </div>
     </div>

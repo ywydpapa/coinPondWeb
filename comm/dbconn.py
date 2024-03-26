@@ -93,7 +93,6 @@ def tradehistory(uno, setkey):
     cur.execute(sql,(uno, '%XXXUP'))
     data = cur.fetchone()
     coinn = data[0]
-    print(coinn)
     sql2 = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur.execute(sql2,(setkey, uno, '%XXX'))
     keys = cur.fetchone()
@@ -102,10 +101,8 @@ def tradehistory(uno, setkey):
     else:
         key1 = keys[0]
         key2 = keys[1]
-        print(key1)
         upbit = pyupbit.Upbit(key1,key2)
         tradelist = upbit.get_order(coinn,state='done')
-        print(tradelist)
     return tradelist
 
 def checkkey(uno, setkey):
