@@ -99,7 +99,7 @@ def checkwalletwon(uno, setkey):
         key1 = keys[0][0]
         key2 = keys[0][1]
         upbit = pyupbit.Upbit(key1,key2)
-        walletwon = upbit.get_balance("KRW")
+        walletwon = round(upbit.get_balance("KRW"))
     return walletwon
 
 def tradehistory(uno, setkey):

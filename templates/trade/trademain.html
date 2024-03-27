@@ -88,7 +88,7 @@
                          <td style="text-align: center">
                           설정 코인
                          </td>
-                         <td>
+                         <td style="text-align: center">
                              {{ result[0] }}
                          </td>
                      </tr>
@@ -96,8 +96,8 @@
                          <td style="text-align: center">
                              시작금액
                          </td>
-                         <td style="text-align: right">
-                             {{ result[1] }}
+                         <td id = "initamount" style="text-align: right">
+
                          </td>
                      </tr>
                      <tr>
@@ -142,8 +142,8 @@
                         <td>
                             현재 잔고
                         </td>
-                        <td style="text-align: right">
-                            {{ wallet }}
+                        <td id="mywon" style="text-align: right">
+
                         </td>
                     </tr>
                     <tr>
@@ -223,8 +223,9 @@
         for (i=1; i < times +1; i++) {
             summ = summ + vsum*2**i;
         }
-        console.log(summ);
         $('#needmon').html(numberWithCommas(summ));
+        $('#mywon').html(numberWithCommas({{ wallet }}));
+        $('#initamount').html(numberWithCommas({{ result[1] }}));
     }
 
     function setyn(uno,yn){
