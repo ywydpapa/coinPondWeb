@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff
+from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff, checkwalletwon
 import pyupbit
 import os
 import time
@@ -19,7 +19,7 @@ def trade():
         uno = request.args.get('uno')
         setkey = request.args.get('skey')
         data = getsetup(uno)
-        wallet = checkwallet(uno,setkey)
+        wallet = checkwalletwon(uno,setkey)
         print(data)
         return render_template('/trade/trademain.html', result=data, wallet=wallet)
     else:
