@@ -185,14 +185,42 @@
                         <th>
                         미체결량
                         </th>
+                        <th>
+                        예상수수료
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
+                    {% for items in list %}
                     <tr>
                         <td>
-
+                            {{ items['created_at'][:10] }} {{ items['created_at'][11:19] }}
+                        </td>
+                        <td>
+                            {{ items['market'] }}
+                        </td>
+                        <td>
+                            {{ items['side'] }}
+                        </td>
+                        <td>
+                            {{ items['state'] }}
+                        </td>
+                        <td>
+                            {{ items['price'] }}
+                        </td>
+                        <td>
+                            {{ items['volume'] }}
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            {{ items['reserved_fee'] }}
+                        </td>
+                        <td>
+                            {{ items['remaining_volume'] }}
                         </td>
                     </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

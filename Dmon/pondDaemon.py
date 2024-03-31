@@ -3,7 +3,7 @@ import comm.dbconn
 import pyupbit
 import math
 
-
+bidcnt = 1
 def loadmyset(uno):
     mysett = comm.dbconn.getsetups(uno)
     return mysett
@@ -47,9 +47,23 @@ def sellmarketpr(key1, key2, coinn, setvol):
     orders = upbit.sell_market_order(coinn,setvol)
     return orders
 
-
+def checktraded(key1, key2, coinn):
+    upbit = pyupbit.Upbit(key1,key2)
+    checktrad = upbit.get_balances()
+    for wallet in checktrad:
+        if "KRW-" + wallet['currency'] == coinn:
+            if wallet['balance'] != wallet['locked']:
+                print("잔고 남아 재거래")
+            else:
+                print('매도 거래 대기중')
+            return wallet
+        else:
+            pass
+    if checktrad is None:
+        bidcnt = 1
 
 def runorders():
+    global bidcnt
     setons = comm.dbconn.getseton()
     if setons is not None:
         for seton in setons:
@@ -64,7 +78,13 @@ def runorders():
                 coinn = myset[6]
                 preprice = pyupbit.get_current_price(coinn)
                 print('현재가', preprice)
+                traded = checktraded(keys[0], keys[1], coinn)
+                print("지갑확인 :",traded)
                 bidasset = iniAsset
+                if bidcnt <=1 :
+                    buymarketpr(keys[0], keys[1], coinn, iniAsset) # 첫번째 설정 구매
+                else:
+                    pass
                 for i in range(1,interVal+1):
                     bidprice = ((preprice * 100) - (preprice * intergap*i)) / 100
                     if bidprice >= 2000000 :
@@ -93,7 +113,16 @@ def runorders():
                     print('매수가격',bidprice)
                     print('매수금액',bidasset)
                     print('매수수량',bidvol)
+                    if bidcnt <=1 :
+                        buylimitpr(keys[0],keys[1],coinn, bidprice,bidvol)
+                        print("매수 송신")
+                    else:
+                        print("매수 PASS")
+                        pass
+                    # 설정된 매수 진행
                 print('거래 개시')
+                bidcnt = bidcnt + 1
+                print("거래점검 횟수", bidcnt)
             else:#거래 대기 상태
                 print("거래 대기")
     else:
@@ -102,6 +131,7 @@ def runorders():
 
 
 cnt = 1
+
 
 while True:
     print("Count : ", cnt)

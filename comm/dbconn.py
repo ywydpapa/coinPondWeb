@@ -229,3 +229,11 @@ def clearcache():
     sql = "RESET QUERY CACHE"
     cur.execute(sql)
     cur.close()
+
+def getorderlist(uno):
+    keys = getupbitkey(uno)
+    setups = getsetup(uno)
+    coinn = setups[0]
+    upbit = pyupbit.Upbit(keys[0],keys[1])
+    orders = upbit.get_order(coinn)
+    return orders
