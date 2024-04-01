@@ -20,16 +20,6 @@ def getorders(key1, key2, coinn):
     return orders
 
 
-def liqcoin(key1, key2, coinn): #코인 청산
-    upbit = pyupbit.Upbit(key1,key2)
-    orders = upbit.get_order(coinn)
-    if len(orders)>0:
-        for order in orders:
-            upbit.cancel_order(order["uuid"])
-    else:
-        pass
-
-
 def buymarketpr(key1, key2, coinn, camount):
     upbit = pyupbit.Upbit(key1,key2)
     orders = upbit.buy_market_order(coinn, camount)
@@ -47,6 +37,11 @@ def sellmarketpr(key1, key2, coinn, setvol):
     orders = upbit.sell_market_order(coinn,setvol)
     return orders
 
+def selllimitpr(key1, key2, coinn, setpr, setvol):
+    upbit = pyupbit.Upbit(key1,key2)
+    orders = upbit.sell_limit_order(coinn,setpr,setvol)
+    return orders
+
 def checktraded(key1, key2, coinn):
     upbit = pyupbit.Upbit(key1,key2)
     checktrad = upbit.get_balances()
@@ -62,8 +57,50 @@ def checktraded(key1, key2, coinn):
     if checktrad is None:
         bidcnt = 1
 
+def calprice(bidprice):
+    if bidprice >= 2000000:
+        bidprice = round(bidprice, -3)
+    elif bidprice >= 1000000 and bidprice < 20000000:
+        bidprice = round(bidprice, -3) + 500
+    elif bidprice >= 500000 and bidprice < 1000000:
+        bidprice = round(bidprice, -2)
+    elif bidprice >= 100000 and bidprice < 500000:
+        bidprice = round(bidprice, -2) + 50
+    elif bidprice >= 10000 and bidprice < 100000:
+        bidprice = round(bidprice, -1)
+    elif bidprice >= 1000 and bidprice < 10000:
+        bidprice = round(bidprice)
+    elif bidprice >= 100 and bidprice < 1000:
+        bidprice = round(bidprice, 1)
+    elif bidprice >= 10 and bidprice < 100:
+        bidprice = round(bidprice, 2)
+    elif bidprice >= 1 and bidprice < 10:
+        bidprice = round(bidprice, 3)
+    else:
+        bidprice = round(bidprice, 4)
+    return bidprice
+
+
+def cancelaskorder(key1,key2,coinn):
+    upbit = pyupbit.Upbit(key1, key2)
+    orders = upbit.get_order(coinn)
+    for order in orders:
+        print(order)
+        if order['side'] == 'ask':
+            upbit.cancel_order(order['uuid'])
+            print("Canceled")
+
+def canclebidorder(key1, key2, coinn): #코인 청산
+    upbit = pyupbit.Upbit(key1,key2)
+    orders = upbit.get_order(coinn)
+    if len(orders)>0:
+        for order in orders:
+            upbit.cancel_order(order["uuid"])
+    else:
+        pass
+
+
 def runorders():
-    global bidcnt
     setons = comm.dbconn.getseton()
     if setons is not None:
         for seton in setons:
@@ -74,46 +111,44 @@ def runorders():
                 iniAsset = myset[2]
                 interVal = myset[3]
                 intergap = myset[4]
-                interestRate = myset[5]
+                intRate = myset[5]
                 coinn = myset[6]
                 preprice = pyupbit.get_current_price(coinn)
                 print('현재가', preprice)
                 traded = checktraded(keys[0], keys[1], coinn)
                 print("지갑확인 :",traded)
+                if traded is not None:
+                    if float(traded['balance']) != 0.0:
+                        print('보유수량 변화')
+                        if float(traded['locked']) == 0.0:
+                            print('최초 매도 수행')
+                            setprice = preprice * (1+(intRate / 100.0))
+                            setprice = calprice(setprice)
+                            setvolume = traded['balance']
+                            selllimitpr(keys[0], keys[1], coinn, setprice, setvolume)
+                        elif float(traded['locked']) != 0.0:
+                            cancelaskorder(keys[0], keys[1], coinn)
+                            print('매도주문 재송신')
+                    else:
+                        print('거래중')
+                else:
+                    canclebidorder(keys[0], keys[1], coinn)
+                    globals()['bcnt_{}'.format(seton[0])] = 1
                 bidasset = iniAsset
-                if bidcnt <=1 :
+                if globals()['bcnt_{}'.format(seton[0])] <= 1 :
                     buymarketpr(keys[0], keys[1], coinn, iniAsset) # 첫번째 설정 구매
                 else:
                     pass
                 for i in range(1,interVal+1):
                     bidprice = ((preprice * 100) - (preprice * intergap*i)) / 100
-                    if bidprice >= 2000000 :
-                        bidprice = round(bidprice,-3)
-                    elif bidprice >= 1000000 and bidprice < 20000000:
-                        bidprice = round(bidprice, -3) + 500
-                    elif bidprice >=500000 and bidprice < 1000000:
-                        bidprice = round(bidprice, -2)
-                    elif bidprice >=100000 and bidprice < 500000:
-                        bidprice = round(bidprice, -2) + 50
-                    elif bidprice >=10000 and bidprice < 100000:
-                        bidprice = round(bidprice, -1)
-                    elif bidprice >=1000 and bidprice < 10000:
-                        bidprice = round(bidprice)
-                    elif bidprice >= 100 and bidprice < 1000:
-                        bidprice = round(bidprice,1)
-                    elif bidprice >= 10 and bidprice < 100:
-                        bidprice = round(bidprice,2)
-                    elif bidprice >= 1 and bidprice < 10:
-                        bidprice = round(bidprice,3)
-                    else:
-                        bidprice = round(bidprice,4)
+                    bidprice = calprice(bidprice)
                     bidasset = bidasset * 2
                     bidvol = bidasset / bidprice
                     print('interval ',i,'예약 거래 적용')
                     print('매수가격',bidprice)
                     print('매수금액',bidasset)
                     print('매수수량',bidvol)
-                    if bidcnt <=1 :
+                    if globals()['bcnt_{}'.format(seton[0])] <=1 :
                         buylimitpr(keys[0],keys[1],coinn, bidprice,bidvol)
                         print("매수 송신")
                     else:
@@ -121,10 +156,18 @@ def runorders():
                         pass
                     # 설정된 매수 진행
                 print('거래 개시')
-                bidcnt = bidcnt + 1
-                print("거래점검 횟수", bidcnt)
+
+                globals()['bcnt_{}'.format(seton[0])] = globals()['bcnt_{}'.format(seton[0])] + 1
+                print("거래점검 횟수", globals()['bcnt_{}'.format(seton[0])])
+                print('-----------------------')
             else:#거래 대기 상태
-                print("거래 대기")
+                print("거래 대기", seton[0])
+                myset = loadmyset(seton)
+                coinn = myset[6]
+                canclebidorder(keys[0], keys[1], coinn)
+                print('-----------------------')
+                globals()['bcnt_{}'.format(seton[0])] = 1
+
     else:
         print("No seton found!!")
     comm.dbconn.clearcache()
@@ -132,6 +175,9 @@ def runorders():
 
 cnt = 1
 
+setons = comm.dbconn.getseton()
+for seton in setons:
+    globals()['bcnt_{}'.format(seton[0])]=1
 
 while True:
     print("Count : ", cnt)
