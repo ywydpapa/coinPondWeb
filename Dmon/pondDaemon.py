@@ -128,6 +128,7 @@ def runorders():
                             selllimitpr(keys[0], keys[1], coinn, setprice, setvolume)
                         elif float(traded['locked']) != 0.0:
                             cancelaskorder(keys[0], keys[1], coinn)
+                            globals()['bcnt_{}'.format(seton[0])] = 1
                             print('매도주문 재송신')
                     else:
                         print('거래중')
@@ -156,7 +157,6 @@ def runorders():
                         pass
                     # 설정된 매수 진행
                 print('거래 개시')
-
                 globals()['bcnt_{}'.format(seton[0])] = globals()['bcnt_{}'.format(seton[0])] + 1
                 print("거래점검 횟수", globals()['bcnt_{}'.format(seton[0])])
                 print('-----------------------')
@@ -183,4 +183,4 @@ while True:
     print("Count : ", cnt)
     runorders()
     cnt = cnt+1
-    time.sleep(10)
+    time.sleep(3)
