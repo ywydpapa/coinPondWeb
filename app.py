@@ -80,7 +80,7 @@ def login():
             if row[0][1] is not None:
                 session['userName'] = row[0][1]
             else:
-                session['userName'] = '점검필요'
+                session['userName'] = '로그인 점검필요'
                 pass
             if row[1] is not None:
                 session['setkey'] = str(row[1])
