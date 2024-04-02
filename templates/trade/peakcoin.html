@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 {% include '/comm/header.html' %}
 <style>
@@ -32,11 +32,18 @@
             <div class="container">
             <hr>
              <div>
-             <ul>
+             <table class="table">
                  {% for coin in coinlist %}
-                 <li><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ coin }}">{{ coin }}</a><a onclick="#"></a>설정변경</li>
+             <tr>
+                 <td>
+                     <a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ coin }}">{{ coin }}</a>
+                 </td>
+                 <td>
+                     <button class="btn-primary" onclick="#">설정변경</button>
+                 </td>
+             </tr>
                  {% endfor %}
-             </ul>
+             </table>
              </div>
             </div>
         </div>
