@@ -69,6 +69,7 @@ def login():
         upw = request.form.get('upw')
         row = selectUsers(uid, upw)
         if row is not None:
+            print("userCheck :",row)
             try:
                 session['userNo'] = row[0][0]
                 session['userName'] = row[0][1]
