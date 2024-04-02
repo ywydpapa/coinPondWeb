@@ -15,17 +15,14 @@ def home():  # put application's code here
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
-    if request.method == 'GET':
-        uno = request.args.get('uno')
-        setkey = request.args.get('skey')
-        data = getsetup(uno)
-        wallet = checkwalletwon(uno,setkey)
-        orderlist = getorderlist(uno)
-        print(data)
-        print(orderlist)
-        return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist)
-    else:
-        return render_template('/trade/trademain.html')
+    uno = request.args.get('uno')
+    setkey = request.args.get('skey')
+    data = getsetup(uno)
+    wallet = checkwalletwon(uno,setkey)
+    orderlist = getorderlist(uno)
+    print(data)
+    print(orderlist)
+    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist)
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
 def tradeSet():
@@ -119,7 +116,7 @@ def setupmybid():
         data = getsetup(uno)
         wallet = checkwalletwon(uno, skey)
         orderlist = getorderlist(uno)
-    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist)
+    return redirect('/trade?uno='+uno+'&skey='+skey)
 
 
 @app.route('/logout')
