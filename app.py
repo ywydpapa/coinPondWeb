@@ -69,26 +69,21 @@ def login():
         upw = request.form.get('upw')
         row = selectUsers(uid, upw)
         if row is not None:
-            if row[0][0] is not None:
+            try:
                 session['userNo'] = row[0][0]
-            else:
-                session['userNo'] = 0
-                pass
-            if row[0][1] is not None:
                 session['userName'] = row[0][1]
-            else:
-                session['userName'] = '로그인 점검필요'
-                pass
-            if row[1] is not None:
                 session['setkey'] = str(row[1])
-            else:
+                uno = row[0][0]
+                ukey = str(row[1])
+                setKeys(uno, ukey)
+            except Exception as e:
+                session['userNo'] = 0
+                session['userName'] = '로그인 점검필요'
                 session['setkey'] = '000000'
-                pass
-            uno = row[0][0]
-            ukey = str(row[1])
-            setKeys(uno, ukey)
-            path = '/trade?uno=' + str(uno) + '&skey=' + str(ukey)
-            return redirect(path)
+                print(e)
+            finally:
+                path = '/trade?uno=' + str(uno) + '&skey=' + str(ukey)
+                return redirect(path)
         else:
             return '''
                 <script>
