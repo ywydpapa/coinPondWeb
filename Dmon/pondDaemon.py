@@ -153,10 +153,7 @@ def runorders():
                 bidasset = iniAsset
                 if globals()['bcnt_{}'.format(seton[0])] <= 1 :
                     buymarketpr(keys[0], keys[1], coinn, iniAsset) # 첫번째 설정 구매
-                else:
-                    pass
-                chkb = checkbidorder(keys[0], keys[1],coinn)
-                if chkb == False:
+                    #기존 주문 취소
                     for i in range(1,interVal+1):
                         bidprice = ((preprice * 100) - (preprice * intergap*i)) / 100
                         bidprice = calprice(bidprice)
@@ -174,7 +171,7 @@ def runorders():
                             pass
                     # 설정된 추가 매수예약 진행
                 else:
-                    print('기존 주문 존재')
+                    print('매도 거래 대기')
                 print('거래 개시')
                 globals()['bcnt_{}'.format(seton[0])] = globals()['bcnt_{}'.format(seton[0])] + 1
                 print("거래점검 횟수", globals()['bcnt_{}'.format(seton[0])])
