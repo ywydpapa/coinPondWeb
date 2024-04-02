@@ -8,7 +8,7 @@ db = pymysql.connect(host='swc9004.iptime.org', user='swc', password='core2020',
 cur = db.cursor()
 
 def check_srv(coinn, perc):
-    values = pyupbit.get_ohlcv(coinn, interval="day", count=30)
+    values = pyupbit.get_ohlcv(coinn, interval="hour", count=48)
     volumes = values['volume']
     if len(volumes) < 21:
         return False
