@@ -47,7 +47,7 @@ def checktraded(key1, key2, coinn):
     checktrad = upbit.get_balances()
     for wallet in checktrad:
         if "KRW-" + wallet['currency'] == coinn:
-            if wallet['balance'] != wallet['locked']:
+            if float(wallet['balance']) != 0.0:
                 print("잔고 남아 재거래")
             else:
                 print('매도 거래 대기중')
@@ -55,7 +55,7 @@ def checktraded(key1, key2, coinn):
         else:
             pass
     if checktrad is None:
-        bidcnt = 1
+
 
 def calprice(bidprice):
     if bidprice >= 2000000:
@@ -122,13 +122,18 @@ def runorders():
                         print('보유수량 변화')
                         if float(traded['locked']) == 0.0:
                             print('최초 매도 수행')
-                            setprice = preprice * (1+(intRate / 100.0))
+                            if globals()['lcnt_{}'.format(seton[0])] == 1:
+                                setprice = preprice * (1.01+(intRate / 100.0))
+                                globals()['lcnt_{}'.format(seton[0])] == 0
+                            else:
+                                setprice = preprice * (1.0 + (intRate / 100.0))
                             setprice = calprice(setprice)
                             setvolume = traded['balance']
                             selllimitpr(keys[0], keys[1], coinn, setprice, setvolume)
                         elif float(traded['locked']) != 0.0:
                             cancelaskorder(keys[0], keys[1], coinn)
                             globals()['bcnt_{}'.format(seton[0])] = 1
+                            globals()['lcnt_{}'.format(seton[0])] = 1
                             print('매도주문 재송신')
                     else:
                         print('거래중')
@@ -140,6 +145,7 @@ def runorders():
                     buymarketpr(keys[0], keys[1], coinn, iniAsset) # 첫번째 설정 구매
                 else:
                     pass
+
                 for i in range(1,interVal+1):
                     bidprice = ((preprice * 100) - (preprice * intergap*i)) / 100
                     bidprice = calprice(bidprice)
@@ -156,6 +162,7 @@ def runorders():
                         print("매수 PASS")
                         pass
                     # 설정된 매수 진행
+
                 print('거래 개시')
                 globals()['bcnt_{}'.format(seton[0])] = globals()['bcnt_{}'.format(seton[0])] + 1
                 print("거래점검 횟수", globals()['bcnt_{}'.format(seton[0])])
@@ -178,6 +185,7 @@ cnt = 1
 setons = comm.dbconn.getseton()
 for seton in setons:
     globals()['bcnt_{}'.format(seton[0])]=1
+    globals()['lcnt_{}'.format(seton[0])]=0
 
 while True:
     print("Count : ", cnt)
