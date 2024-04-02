@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff, checkwalletwon, getorderlist
+from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff, checkwalletwon, getorderlist, sellmycoin
 import pyupbit
 import os
 import time
@@ -117,7 +117,10 @@ def setupmybid():
         skey = request.form.get('skey')
         setupbid(uno,skey,initprice,bidsetps,bidrate,askrate,coinn)
         data = getsetup(uno)
-    return render_template('/trade/trademain.html', result=data)
+        wallet = checkwalletwon(uno, skey)
+        orderlist = getorderlist(uno)
+    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist)
+
 
 @app.route('/logout')
 def logout():
@@ -126,10 +129,19 @@ def logout():
 
 @app.route('/setyn', methods=['POST'])
 def setyn():
-    pla = list(request.get_data().decode('utf-8'))
+    pla = request.get_data().decode('utf-8').split(',')
     uno = pla[0]
-    yesno = pla[2]
+    yesno = pla[1]
     setonoff(uno, yesno)
+    return "YES"
+
+
+@app.route('/sellcoin', methods=['POST'])
+def sellcoin():
+    pla = request.get_data().decode('utf-8').split(',')
+    uno = pla[0]
+    coinn = pla[1]
+    sellmycoin(uno, coinn)
     return "YES"
 
 

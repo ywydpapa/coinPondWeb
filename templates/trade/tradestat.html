@@ -40,10 +40,11 @@
             <table class="table table-bordered">
             <thead>
             <tr style="text-align: center">
-                <td>자산명</td>
-                <td>잔고</td>
-                <td>거래중</td>
-                <td>평균매입가</td>
+                <th>자산명</th>
+                <th>잔고</th>
+                <th>거래중</th>
+                <th>평균매입가</th>
+                <th>청산</th>
             </tr>
             </thead>
                 {% for item in witems %}
@@ -52,6 +53,11 @@
                     <td>{{ item["balance"] }}</td>
                     <td>{{ item["locked"] }}</td>
                     <td>{{ item["avg_buy_price"] }}</td>
+                    <td style="text-align: center">
+                        {% if item["currency"]!="KRW" %}
+                        <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">청산</button>
+                        {% endif %}
+                    </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -62,5 +68,21 @@
 <script>
     $(document).ready(function () {
     });
+
+    function sellcoin(uno,coinn){
+        data = [uno,coinn]
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: '/sellcoin',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                location.reload();
+                }
+        });
+    }
 </script>
 </html>
