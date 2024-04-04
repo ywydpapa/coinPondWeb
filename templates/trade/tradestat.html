@@ -44,18 +44,18 @@
                 <th>잔고</th>
                 <th>거래중</th>
                 <th>평균매입가</th>
-                <th>청산</th>
+                <th>시장가 매도</th>
             </tr>
             </thead>
                 {% for item in witems %}
                     <tr style="text-align: right">
-                    <td style="text-align: center" >{{ item["currency"] }}</td>
+                    <td class = "coins" style="text-align: center" >{{ item["currency"] }}</td>
                     <td>{{ item["balance"] }}</td>
                     <td>{{ item["locked"] }}</td>
-                    <td>{{ item["avg_buy_price"] }}</td>
+                    <td class = "coins">{{ item["avg_buy_price"] }}</td>
                     <td style="text-align: center">
                         {% if item["currency"]!="KRW" %}
-                        <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">청산</button>
+                        <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">매도</button>
                         {% endif %}
                     </td>
                     </tr>
@@ -69,7 +69,9 @@
     $(document).ready(function () {
     });
 
+
     function sellcoin(uno,coinn){
+        if (confirm("본 코인을 시장가로 매도하시겠습니까? 자산이 5,000원 미만인 경우 5,000원을 추가로 매입하여 일괄 매도합니다.")){
         data = [uno,coinn]
         console.log(data);
         $.ajax({
@@ -83,6 +85,6 @@
                 location.reload();
                 }
         });
-    }
+        }else{}}
 </script>
 </html>
