@@ -6,7 +6,7 @@ import random
 
 db = pymysql.connect(host='swc9004.iptime.org', user='swc', password='core2020', db='anteUpbit', charset='utf8')
 cur = db.cursor()
-
+serverNo = 1
 
 def check_srv(coinn, perc):
     values = pyupbit.get_ohlcv(coinn, interval="hour", count=48)
@@ -217,8 +217,8 @@ def getseton():
     data = []
     print("GetKey !!")
     try:
-        sql = "SELECT userNo from tradingSetup where attrib not like %s"
-        cur.execute(sql,'%XXXUP')
+        sql = "SELECT userNo from tradingSetup where attrib not like %s and serverNo = %s"
+        cur.execute(sql,('%XXXUP', serverNo))
         data = cur.fetchall()
         return data
     except Exception as e:

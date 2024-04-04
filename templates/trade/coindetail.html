@@ -69,7 +69,7 @@
                     <td style = text-align:center>
                 {{ item["ord_type"] }}<br>
                     </td>
-                    <td style = text-align:right>
+                    <td style = text-align:right class="mprice">
                 {{ item["price"] }}<br>
                     </td>
                     <td style = text-align:right>
@@ -101,7 +101,23 @@
 </body>
 <script>
     $(document).ready(function () {
+        coinm();
     });
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
+
+    function coinm(){
+        var $Aarr = $(".mprice");
+        for (var i = 0; i < $Aarr.length; i++) {
+            var mval = $Aarr[i].innerText;
+            console.log(mval)
+            $Aarr[i].innerText = numberWithCommas(mval);
+        }
+    }
 
 
 </script>

@@ -111,6 +111,7 @@ def checkbidorder(key1,key2,coinn):
 
 
 def runorders():
+    global buyrest
     setons = comm.dbconn.getseton()
     if setons is not None:
         for seton in setons:
@@ -122,18 +123,16 @@ def runorders():
                 interVal = myset[3]
                 intergap = myset[4]
                 intRate = myset[5]
-                coinn = myset[6]
-                preprice = pyupbit.get_current_price(coinn)
-                print('현재가', preprice)
-                traded = checktraded(keys[0], keys[1], coinn)
-                print("지갑확인 :",traded)
+                coinn = myset[6] #기본 설정 로드
+                preprice = pyupbit.get_current_price(coinn) # 현재값 로드
+                traded = checktraded(keys[0], keys[1], coinn) #설정 코인 지갑내 존재 확인
                 if traded is not None:
                     if float(traded['balance']) != 0.0:
                         print('보유수량 변화')
                         if float(traded['locked']) == 0.0:
                             print('최초 매도 수행')
-                            if globals()['lcnt_{}'.format(seton[0])] == 1:
-                                setprice = preprice * (1.007+(intRate / 100.0))
+                            if globals()['lcnt_{}'.format(seton[0])] == 2:
+                                setprice = preprice * (1.005+(intRate / 100.0))
                                 globals()['lcnt_{}'.format(seton[0])] == 0
                             else:
                                 setprice = preprice * (1.0 + (intRate / 100.0))
@@ -148,12 +147,18 @@ def runorders():
                     else:
                         print('거래중')
                 else:
-                    canclebidorder(keys[0], keys[1], coinn)
-                    globals()['bcnt_{}'.format(seton[0])] = 1
+                    #최초 구매
+                    try:
+                        bidasset = iniAsset
+                        buyrest = buymarketpr(keys[0], keys[1], coinn, bidasset)  # 첫번째 설정 구매
+                        globals()['bcnt_{}'.format(seton[0])] = 1 # 구매 개시 설정
+                    except Exception as e:
+                        print(e)
+                    finally:
+                        print("1단계 매수내역 :", buyrest)
                 bidasset = iniAsset
-                if globals()['bcnt_{}'.format(seton[0])] <= 1 :
-                    buymarketpr(keys[0], keys[1], coinn, iniAsset) # 첫번째 설정 구매
-                    #기존 주문 취소
+                if globals()['bcnt_{}'.format(seton[0])] == 1 :
+                    # 단계별 주문 개시
                     for i in range(1,interVal+1):
                         bidprice = ((preprice * 100) - (preprice * intergap*i)) / 100
                         bidprice = calprice(bidprice)
@@ -163,7 +168,7 @@ def runorders():
                         print('매수가격',bidprice)
                         print('매수금액',bidasset)
                         print('매수수량',bidvol)
-                        if globals()['bcnt_{}'.format(seton[0])] <=1 :
+                        if globals()['bcnt_{}'.format(seton[0])] ==1 :
                             buylimitpr(keys[0],keys[1],coinn, bidprice,bidvol)
                             print("매수 실행")
                         else:
@@ -193,7 +198,7 @@ cnt = 1
 
 setons = comm.dbconn.getseton()
 for seton in setons:
-    globals()['bcnt_{}'.format(seton[0])]=1
+    globals()['bcnt_{}'.format(seton[0])]=0
     globals()['lcnt_{}'.format(seton[0])]=0
 
 while True:
