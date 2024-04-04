@@ -62,6 +62,8 @@ def tradestat():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global uno
+    global skey
     if request.method == 'GET':
         return render_template('/login/login.html')
     else:
@@ -75,15 +77,15 @@ def login():
                 session['userName'] = row[0][1]
                 session['setkey'] = str(row[1])
                 uno = row[0][0]
-                ukey = str(row[1])
-                setKeys(uno, ukey)
+                skey = str(row[1])
+                setKeys(uno, skey)
             except Exception as e:
                 session['userNo'] = 0
                 session['userName'] = '로그인 점검필요'
                 session['setkey'] = '000000'
                 print(e)
             finally:
-                path = '/trade?uno=' + str(uno) + '&skey=' + str(ukey)
+                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey)
                 return redirect(path)
         else:
             return '''
