@@ -7,6 +7,7 @@ import random
 db = pymysql.connect(host='swc9004.iptime.org', user='swc', password='core2020', db='anteUpbit', charset='utf8')
 cur = db.cursor()
 
+
 def check_srv(coinn, perc):
     values = pyupbit.get_ohlcv(coinn, interval="hour", count=48)
     volumes = values['volume']
@@ -25,6 +26,7 @@ def check_srv(coinn, perc):
     if today_vol > avg_vol20 * perc:
         return True
 
+
 def selectUsers(uid, upw):
     cur = db.cursor()
     row = None
@@ -42,6 +44,7 @@ def selectUsers(uid, upw):
         cur.close()
     return row, setkey
 
+
 def setKeys(uno, setkey):
     cur = db.cursor()
     try:
@@ -52,6 +55,7 @@ def setKeys(uno, setkey):
         print('접속오류', e)
     finally:
         cur.close()
+
 
 def check_srv(coinn,perc):
     values = pyupbit.get_ohlcv(coinn, interval="day", count=30)
@@ -71,6 +75,7 @@ def check_srv(coinn,perc):
     if today_vol > avg_vol20 * perc:
         return True
 
+
 def checkwallet(uno, setkey):
     walletitems = []
     cur = db.cursor()
@@ -87,6 +92,7 @@ def checkwallet(uno, setkey):
         print(walletitems)
     return walletitems
 
+
 def checkwalletwon(uno, setkey):
     walletwon = []
     cur = db.cursor()
@@ -101,6 +107,7 @@ def checkwalletwon(uno, setkey):
         upbit = pyupbit.Upbit(key1,key2)
         walletwon = round(upbit.get_balance("KRW"))
     return walletwon
+
 
 def tradehistory(uno, setkey):
     tradelist = []
@@ -121,6 +128,7 @@ def tradehistory(uno, setkey):
         tradelist = upbit.get_order(coinn,state='done')
     return tradelist
 
+
 def checkkey(uno, setkey):
     cur = db.cursor()
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
@@ -131,6 +139,7 @@ def checkkey(uno, setkey):
         return False
     else:
         return True
+
 
 def erasebid(uno, setkey):
     cur = db.cursor()
@@ -145,6 +154,7 @@ def erasebid(uno, setkey):
         cur.execute(sql2,("XXXUPXXXUPXXXUP", uno))
         db.commit()
         return True
+
 
 def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn):
     chkkey = checkkey(uno, setkey)
@@ -163,6 +173,7 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn):
     else:
         return False
 
+
 def getsetup(uno):
     try:
         cur = db.cursor()
@@ -174,6 +185,7 @@ def getsetup(uno):
         print('접속오류', e)
     finally:
         cur.close()
+
 
 def getsetups(uno):
     try:
@@ -187,6 +199,7 @@ def getsetups(uno):
     finally:
         cur.close()
 
+
 def setonoff(uno,yesno):
     cur = db.cursor()
     try:
@@ -197,6 +210,7 @@ def setonoff(uno,yesno):
         print('접속오류', e)
     finally:
         cur.close()
+
 
 def getseton():
     cur = db.cursor()
@@ -212,6 +226,7 @@ def getseton():
     finally:
         cur.close()
 
+
 def getupbitkey(uno):
     cur = db.cursor()
     try:
@@ -224,11 +239,13 @@ def getupbitkey(uno):
     finally:
         cur.close()
 
+
 def clearcache():
     cur = db.cursor()
     sql = "RESET QUERY CACHE"
     cur.execute(sql)
     cur.close()
+
 
 def getorderlist(uno):
     keys = getupbitkey(uno)
@@ -237,6 +254,7 @@ def getorderlist(uno):
     upbit = pyupbit.Upbit(keys[0],keys[1])
     orders = upbit.get_order(coinn)
     return orders
+
 
 def sellmycoin(uno,coinn):
     keys = getupbitkey(uno)
