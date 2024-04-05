@@ -44,15 +44,17 @@
                 <th>잔고</th>
                 <th>거래중</th>
                 <th>평균매입가</th>
+                <th>현재평가액</th>
                 <th>시장가 매도</th>
             </tr>
             </thead>
                 {% for item in witems %}
                     <tr style="text-align: right">
                     <td class = "coins" style="text-align: center" >{{ item["currency"] }}</td>
-                    <td>{{ item["balance"] }}</td>
-                    <td>{{ item["locked"] }}</td>
-                    <td class = "coins">{{ item["avg_buy_price"] }}</td>
+                    <td class="vola">{{ item["balance"] }}</td>
+                    <td class="volb">{{ item["locked"] }}</td>
+                    <td class = "coins aprice">{{ item["avg_buy_price"] }}</td>
+                    <td style="text-align: right" class="cvalue" ></td>
                     <td style="text-align: center">
                         {% if item["currency"]!="KRW" %}
                         <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">매도</button>
@@ -60,6 +62,11 @@
                     </td>
                     </tr>
                 {% endfor %}
+            <tr>
+                <td style="text-align: center" colspan="4">현재 원화 가치 합계</td>
+                <td id="wonsum" style="text-align: right"></td>
+                <td></td>
+            </tr>
             </table>
             </div>
         </div>
@@ -67,6 +74,7 @@
 </body>
 <script>
     $(document).ready(function () {
+        calcvalue();
     });
 
 
@@ -86,5 +94,35 @@
                 }
         });
         }else{}}
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
+
+    function calcvalue(){
+        $Aarr = $(".vola");
+        $Barr = $(".volb");
+        $Carr = $(".aprice");
+        $Darr = $(".cvalue");
+        var nprice = 0;
+        var wonsum = 0;
+        for (var i = 0; i < $Darr.length; i++) {
+            var aval = parseFloat($Aarr[i].innerText);
+            var bval = parseFloat($Barr[i].innerText);
+            var cval = parseFloat($Carr[i].innerText);
+            if (cval == 0) {
+                cval = 1;
+            }
+            nprice = parseInt((aval+bval)*cval);
+            wonsum = wonsum + nprice;
+            $Darr[i].innerText = numberWithCommas(nprice);
+        }
+        console.log(wonsum);
+        $("#wonsum").html(numberWithCommas(wonsum));
+    }
 </script>
 </html>

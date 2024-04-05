@@ -89,7 +89,7 @@
                           설정 코인
                          </td>
                          <td style="text-align: center">
-                             {{ result[0] }}
+                             <a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ result[0] }}">{{ result[0] }}</a>
                          </td>
                      </tr>
                      <tr>
@@ -160,7 +160,7 @@
             <div style="float:left;">
                 <table id="tradestat" name="tradestat" class="table form-control table-bordered">
                     <thead>
-                    <tr>
+                    <tr style="text-align: center;vertical-align: middle">
                         <th>
                         거래일시
                         </th>
@@ -168,7 +168,7 @@
                         코인명
                         </th>
                         <th>
-                        거래종류
+                        거래종류<br>(ask=매도)
                         </th>
                         <th>
                         거래상태
@@ -205,13 +205,13 @@
                         <td style="text-align: center">
                             {{ items['state'] }}
                         </td>
-                        <td style="text-align: right">
+                        <td style="text-align: right" class="oprice">
                             {{ items['price'] }}
                         </td>
-                        <td style="text-align: right">
+                        <td style="text-align: right" class="ovol">
                             {{ items['volume'] }}
                         </td>
-                        <td>
+                        <td style="text-align: right" class="ovalue">
                         </td>
                         <td style="text-align: right">
                             {{ items['remaining_volume'] }}
@@ -232,6 +232,7 @@
 <script>
     $(document).ready(function () {
         calneed();
+        calorder();
     });
 
     $("#chk1").change(function(){
@@ -254,6 +255,18 @@
         $('#needmon').html(numberWithCommas(summ));
         $('#mywon').html(numberWithCommas({{ wallet }}));
         $('#initamount').html(numberWithCommas({{ result[1] }}));
+    }
+
+    function calorder(){
+        $Arr = $(".oprice");
+        $Brr = $(".ovol");
+        $Crr = $(".ovalue");
+        for (i=0; i< $Arr.length; i++){
+            var pri = parseFloat($Arr[i].innerText);
+            var vol = parseFloat($Brr[i].innerText);
+            var oval = parseInt(pri * vol);
+            $Crr[i].innerText = numberWithCommas(oval);
+        }
     }
 
     function setyn(uno,yn){
