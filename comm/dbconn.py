@@ -217,8 +217,21 @@ def getseton():
     data = []
     print("GetKey !!")
     try:
-        sql = "SELECT userNo from tradingSetup where attrib not like %s and serverNo = %s"
-        cur.execute(sql,('%XXXUP', serverNo))
+        sql = "SELECT userNo from tradingSetup where attrib not like %s"
+        cur.execute(sql,'%XXXUP')
+        data = cur.fetchall()
+        return data
+    except Exception as e:
+        print('접속오류',e)
+    finally:
+        cur.close()
+
+def getsetonsvr(svrNo):
+    cur = db.cursor()
+    data = []
+    try:
+        sql = "SELECT userNo from tradingSetup where attrib not like %s and serverNo=%s"
+        cur.execute(sql,('%XXXUP', svrNo))
         data = cur.fetchall()
         return data
     except Exception as e:
