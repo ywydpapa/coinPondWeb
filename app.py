@@ -71,7 +71,6 @@ def login():
         upw = request.form.get('upw')
         row = selectUsers(uid, upw)
         if row is not None:
-            print("userCheck :",row)
             try:
                 session['userNo'] = row[0][0]
                 session['userName'] = row[0][1]
@@ -81,7 +80,7 @@ def login():
                 setKeys(uno, skey)
             except Exception as e:
                 session['userNo'] = 0
-                session['userName'] = '로그인 점검필요'
+                session['userName'] = '브라우저 재시작 필요'
                 session['setkey'] = '000000'
                 print(e)
             finally:
