@@ -237,10 +237,10 @@
 
     $("#chk1").change(function(){
     var uno = {{ session["userNo"] }}
-    if($('input[name="chk1"]').is(":checked") == true){
-    setyn(uno,"Y")
+    if($('input[name="chk1"]').is(":checked") === true){
+        setyn(uno,"Y");
     } else {
-    setyn(uno,"N")
+    setyn(uno,"N");
     }
     });
 

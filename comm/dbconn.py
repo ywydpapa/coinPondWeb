@@ -6,7 +6,7 @@ import random
 
 db = pymysql.connect(host='swc9004.iptime.org', user='swc', password='core2020', db='anteUpbit', charset='utf8')
 cur = db.cursor()
-serverNo = 1
+serverNo = 2
 
 def check_srv(coinn, perc):
     values = pyupbit.get_ohlcv(coinn, interval="hour", count=48)
