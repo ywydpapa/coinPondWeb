@@ -242,7 +242,7 @@ def runorders():
 
 
 def order_cnt_trade():
-    global orderstat, key1, key2, coinn, askcnt, bidcnt
+    global orderstat, key1, key2, coinn, askcnt, bidcnt, traded
     setons = comm.dbconn.getsetonsvr(1)  #서버별 사용자 로드
     try:
         for seton in setons:
@@ -326,6 +326,9 @@ def order_cnt_trade():
                         globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
                 else:
                     print('나머지 단계 거래')
+                if traded is None:
+                    canclebidorder(key1, key2, coinn)
+                    globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
             else:
                 print('주문 대기 user', seton[0])
                 globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
