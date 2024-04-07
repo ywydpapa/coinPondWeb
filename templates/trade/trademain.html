@@ -291,5 +291,12 @@
     function numberNoneCommas(x) {
 		return x.toString().replace(/[\D\s\._\-]+/g, "");
 	}
+
+    window.setInterval('refresh()', 30000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
+
+    // Refresh or reload page.
+    function refresh() {
+        window .location.reload();
+    }
 </script>
 </html>
