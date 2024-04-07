@@ -326,8 +326,9 @@ def order_cnt_trade():
                         globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
                 else:
                     print('나머지 단계 거래')
-                if traded is None:
-                    canclebidorder(key1, key2, coinn)
+                chkcoin = checktraded(key1, key2, coinn)  # 지갑 점검
+                if chkcoin is None: # 지갑내 해당코인이 없을 경우
+                    canclebidorder(key1, key2, coinn) # 주문 취소
                     globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
             else:
                 print('주문 대기 user', seton[0])
