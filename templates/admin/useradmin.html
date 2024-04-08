@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+{% include '/comm/header.html' %}
+<style>
+    .container{
+        padding-right: 0;
+        overflow: auto;
+    }
+
+    .chartContents > div{
+        border: 1px solid #BDBDBD;
+        padding: 10px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+</style>
+</head>
+<body>
+    <div id="commonTopHeader">
+{% include '/comm/commTopHeader.html' %}
+    </div>
+
+    <div id="commonBodyContents">
+{% include '/comm/sidemenu.html' %}
+        <!-- commonSideMenu end-->
+
+        <div id="commonContent">
+            <div class="container">
+            <hr>
+             <div>
+             <table class="table">
+             <thead style="text-align: center">
+             <th>아이디</th>
+             <th>이름</th>
+             <th>접속시간</th>
+             </thead>
+                 {% for user in users %}
+                     <tr>
+                         <td><a href="/userDetail?uno={{ user[0] }}">{{ user[1] }}</a></td>
+                     <td>{{ user[2] }}</td>
+                     <td>{{ user[7] }}</td>
+                     </tr>
+                 {% endfor %}
+             </table>
+             </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+    });
+</script>
+</html>

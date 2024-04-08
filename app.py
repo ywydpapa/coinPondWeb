@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff, checkwalletwon, getorderlist, sellmycoin
+from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff, checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser
 import pyupbit
 import os
 import time
@@ -120,6 +120,19 @@ def setupmybid():
 def logout():
     session.clear()
     return render_template('./login/login.html')
+
+
+@app.route('/userAdmin')
+def useradmin():
+    users = listUsers()
+    return render_template('./admin/useradmin.html', users=users)
+
+
+@app.route('/userDetail')
+def userdetail():
+    userno = request.args.get('uno')
+    user = detailuser(userno)
+    return render_template('./admin/userDetail.html', user=user)
 
 @app.route('/setyn', methods=['POST'])
 def setyn():

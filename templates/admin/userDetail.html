@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+{% include '/comm/header.html' %}
+<style>
+    .container{
+        padding-right: 0;
+        overflow: auto;
+    }
+
+    .chartContents > div{
+        border: 1px solid #BDBDBD;
+        padding: 10px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+</style>
+</head>
+<body>
+    <div id="commonTopHeader">
+{% include '/comm/commTopHeader.html' %}
+    </div>
+
+    <div id="commonBodyContents">
+{% include '/comm/sidemenu.html' %}
+        <!-- commonSideMenu end-->
+
+        <div id="commonContent">
+            <div class="container">
+            <hr>
+             <div>
+                 <table class="table">
+                     <tr>
+                         <td>
+                         userNo
+                         </td>
+                         <td>
+                         {{ user[0] }}
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>
+                         userId
+                         </td>
+                         <td>
+                         {{ user[1] }}
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>
+                         userName
+                         </td>
+                         <td>
+                         {{ user[2] }}
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>
+                         AccessKey
+                         </td>
+                         <td>
+                         {{ user[4] }}
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>
+                         SecureKey
+                         </td>
+                         <td>
+                         {{ user[5] }}
+                         </td>
+                     </tr>
+
+                 </table>
+             </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+    });
+</script>
+</html>

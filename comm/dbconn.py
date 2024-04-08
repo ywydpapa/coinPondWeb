@@ -45,6 +45,35 @@ def selectUsers(uid, upw):
     return row, setkey
 
 
+def listUsers():
+    global rows
+    cur = db.cursor()
+    row = None
+    try:
+        sql = "SELECT * FROM pondUser WHERE attrib NOT LIKE %s"
+        cur.execute(sql, str("%XXX"))
+        rows = cur.fetchall()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()
+    return rows
+
+def detailuser(uno):
+    global rows
+    cur = db.cursor()
+    row = None
+    try:
+        sql = "SELECT * FROM pondUser WHERE userNo = %s and attrib NOT LIKE %s"
+        cur.execute(sql, (uno,str("%XXX")))
+        rows = cur.fetchone()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()
+    return rows
+
+
 def setKeys(uno, setkey):
     cur = db.cursor()
     try:
