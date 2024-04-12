@@ -411,6 +411,8 @@ def order_mod_ask2(key1, key2, coinn, profit):
         totalamt = (tradednew['balance'] + tradednew['locked']) * tradednew['avg_buy_price']  # 전체 구매 금액
         totalvol = tradednew['balance'] + tradednew['locked']  # 전체 구매 수량
         totalamt = totalamt + (totalamt * profit / 100)
+        print(totalamt)
+        print(totalvol)
         setprice = totalamt / totalvol
         setprice = calprice(setprice)
         selllimitpr(key1, key2, coinn, setprice, totalvol)
