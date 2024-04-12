@@ -408,8 +408,8 @@ def order_mod_ask2(key1, key2, coinn, profit):
     try:
         cancelaskorder(key1, key2, coinn)  # 기존 매도 주문 취소
         tradednew = checktraded(key1, key2, coinn)  # 설정 코인 지갑내 존재 확인
-        totalamt = (tradednew['balance'] + tradednew['locked']) * tradednew['avg_buy_price']  # 전체 구매 금액
-        totalvol = tradednew['balance'] + tradednew['locked']  # 전체 구매 수량
+        totalamt = (float(tradednew['balance']) + float(tradednew['locked'])) * float(tradednew['avg_buy_price'])  # 전체 구매 금액
+        totalvol = float(tradednew['balance']) + float(tradednew['locked'])  # 전체 구매 수량
         totalamt = totalamt + (totalamt * profit / 100)
         print(totalamt)
         print(totalvol)
