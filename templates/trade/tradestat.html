@@ -117,11 +117,10 @@
             if (cval == 0) {
                 cval = 1;
             }
-            nprice = parseInt((aval+bval)*cval);
+            nprice = parseInt(Math.round((aval+bval)*cval));
             wonsum = wonsum + nprice;
             $Darr[i].innerText = numberWithCommas(nprice);
         }
-        console.log(wonsum);
         $("#wonsum").html(numberWithCommas(wonsum));
     }
 </script>

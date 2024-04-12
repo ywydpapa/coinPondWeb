@@ -256,7 +256,7 @@ def order_cnt_trade():
             intRate = myset[5]  # 매수 이율
             coinn = myset[6]  # 매수 종목
             if myset[7] == 'Y':  # 주문 ON 인 경우
-                print('주문 개시')
+                print('주문 개시 user', seton[0])
                 preprice = pyupbit.get_current_price(coinn)  # 현재값 로드
                 orderstat = getorders(keys[0], keys[1], myset[6])  # 주문현황 조회
                 if globals()['tcnt_{}'.format(seton[0])] == 0:  #거래단계 처음
@@ -318,7 +318,7 @@ def order_cnt_trade():
                         print('globbidcnt', globals()['bidcnt_{}'.format(seton[0])])
                         #거래수 다를시 재설정
                         print('추가 매수에 의한 재설정')
-                        order_mod_ask(keys[0], keys[1], coinn, intRate)
+                        order_mod_ask2(keys[0], keys[1], coinn, intRate)
                         globals()['tcnt_{}'.format(seton[0])] = 1  # 거래단계 초기화
                     elif askcnt2 == 0:  # 전체 거래 취소 후 재구매
                         print('매도 완료에 따른 재 설정', askcnt2)
@@ -333,7 +333,9 @@ def order_cnt_trade():
             else:
                 print('주문 대기 user', seton[0])
                 globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
-                canclebidorder(key1, key2, coinn)
+                chkcoin = checktraded(key1, key2, coinn)  # 지갑 점검
+                if chkcoin is None:  # 지갑내 해당코인이 없을 경우
+                    canclebidorder(key1, key2, coinn)
                 print('-----------------------')
     except Exception as e:
         print('level 1 Error :', e)
@@ -391,6 +393,27 @@ def order_mod_ask(key1, key2, coinn, profit):
         setprice = calprice(setprice)
         setvolume = tradednew['balance']
         selllimitpr(key1, key2, coinn, setprice, setvolume)
+        # 새로운 매도 주문
+    except Exception as e:
+        print('매도주문 갱신 에러 ',e)
+    finally:
+        print('매도주문 갱신')
+        globals()['tcnt_{}'.format(seton[0])] = 3  # 구매 완료 설정
+        # 새로운 주문 완료
+    return None
+
+
+def order_mod_ask2(key1, key2, coinn, profit):
+    print("매도 주문 재생성")
+    try:
+        cancelaskorder(key1, key2, coinn)  # 기존 매도 주문 취소
+        tradednew = checktraded(key1, key2, coinn)  # 설정 코인 지갑내 존재 확인
+        totalamt = (tradednew['balance'] + tradednew['locked']) * tradednew['avg_buy_price']  # 전체 구매 금액
+        totalvol = tradednew['balance'] + tradednew['locked']  # 전체 구매 수량
+        totalamt = totalamt + (totalamt * profit / 100)
+        setprice = totalamt / totalvol
+        setprice = calprice(setprice)
+        selllimitpr(key1, key2, coinn, setprice, totalvol)
         # 새로운 매도 주문
     except Exception as e:
         print('매도주문 갱신 에러 ',e)
