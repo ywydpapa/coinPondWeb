@@ -49,7 +49,7 @@
                         <td>
                             <select id="coinn" name="coinn" class="form-control form-controm-sm">
                                     {% for coin in coinlist %}
-                                       <option value="{{ coin }}">{{ coin }}</option>
+                                       <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
                                     {% endfor %}
                             </select>
                         </td>
@@ -58,29 +58,29 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: center"> <h5>시작 금액</h5></td>
+                        <td style="text-align: center"> <h5>시작 금액 (1차 구매)</h5></td>
                         <td>
                             <input id="initprice" name="initprice" class="form-control" type="text" value="5000" placeholder="5,000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
                         </td>
                         <td>
                             <input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
                             <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
+                            <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none">
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: center"> <h5>구간 설정</h5></td>
                         <td>
                             <select id="bidsteps" name="bidsteps" class="form-control" style="text-align: right">
-                                <option value="1">01</option>
-                                <option value="2">02</option>
-                                <option value="3">03</option>
-                                <option value="4">04</option>
-                                <option value="5">05</option>
-                                <option value="6">06</option>
-                                <option value="7">07</option>
-                                <option value="8">08</option>
-                                <option value="9">09</option>
-                                <option value="10" selected>10</option>
+                                <option value="1">02</option>
+                                <option value="2">03</option>
+                                <option value="3">04</option>
+                                <option value="4">05</option>
+                                <option value="5">06</option>
+                                <option value="6">07</option>
+                                <option value="7">08</option>
+                                <option value="8">09</option>
+                                <option value="9" selected >10</option>
                             </select>
                         </td>
                         <td>
@@ -220,6 +220,7 @@
     function numberNoneCommas(x) {
 		return x.toString().replace(/[\D\s\._\-]+/g, "");
 	}
+
 
     function setbid(){
         var intv = numberNoneCommas($('#initprice').val());

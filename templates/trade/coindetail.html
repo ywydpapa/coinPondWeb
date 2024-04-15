@@ -40,7 +40,7 @@
             <table class="table table-bordered">
             <thead>
             <tr style="text-align: center">
-                <td>uuid</td>
+                <td>코인명</td>
                 <td>종류</td>
                 <td>방법</td>
                 <td>시장가</td>
@@ -50,6 +50,7 @@
                 <td>지급수수료</td>
                 <td>잠김</td>
                 <td>거래량</td>
+                <td>정산금액</td>
             </tr>
 
             </thead>
@@ -57,7 +58,7 @@
                 {% for item in orderlist %}
                     <tr>
                     <td style = text-align:center>
-                {{ item["uuid"] }}<br>
+                {{ item["market"] }}<br>
                     </td>
                     <td style = text-align:center>
                 {% if item["side"] == 'ask' %}
@@ -87,11 +88,12 @@
                     <td style = text-align:right>
                 {{ item["locked"] }}<br>
                     </td>
-                    <td style = text-align:right>
+                    <td style = text-align:right class="exevol">
                 {{ item["executed_volume"] }}<br>
                     </td>
+                    <td style = text-align:right class = "profit" >
+                    </td>
                     </tr>
-
                 {%  endfor %}
             </tbody>
             </table>
@@ -112,10 +114,17 @@
 
     function coinm(){
         var $Aarr = $(".mprice");
+        var $Barr = $(".exevol");
+        var $Carr = $(".profit");
         for (var i = 0; i < $Aarr.length; i++) {
             var mval = $Aarr[i].innerText;
-            console.log(mval)
+            if (mval === ""){
+                mval=0;
+            }
+            var mvol = $Barr[i].innerText;
+            var settle = parseFloat(mval) * parseFloat(mvol);
             $Aarr[i].innerText = numberWithCommas(mval);
+            $Carr[i].innerText = numberWithCommas(Math.round(settle));
         }
     }
 

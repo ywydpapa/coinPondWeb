@@ -32,7 +32,7 @@ def selectUsers(uid, upw):
     row = None
     setkey = None
     try:
-        sql = "SELECT userNo, userName FROM pondUser WHERE userPasswd=password(%s) AND userId=%s AND attrib NOT LIKE %s"
+        sql = "SELECT userNo, userName, serverNo FROM pondUser WHERE userPasswd=password(%s) AND userId=%s AND attrib NOT LIKE %s"
         cur.execute(sql, (upw, uid, str("%XXX")))
         row = cur.fetchone()
         print(row)
@@ -185,14 +185,14 @@ def erasebid(uno, setkey):
         return True
 
 
-def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn):
+def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno):
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
             erasebid(uno, setkey)
             cur = db.cursor()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin) VALUES (%s, %s, %s, %s, %s, %s)"
-            cur.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, serverNo) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            cur.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, svrno))
             db.commit()
         except Exception as e:
             print('접속오류', e)

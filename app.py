@@ -27,7 +27,8 @@ def trade():
 @app.route('/tradeSet', methods=['GET', 'POST'])
 def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
-    return render_template('/trade/tradesetup.html', coinlist= coinlist)
+    coinn = request.args.get('coinn')
+    return render_template('/trade/tradesetup.html', coinlist= coinlist, coinn=coinn)
 
 @app.route('/peakcoin', methods=['GET', 'POST'])
 def peakcoin():
@@ -62,8 +63,7 @@ def tradestat():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global uno
-    global skey
+    global uno,svrno, skey
     if request.method == 'GET':
         return render_template('/login/login.html')
     else:
@@ -74,17 +74,20 @@ def login():
             try:
                 session['userNo'] = row[0][0]
                 session['userName'] = row[0][1]
+                session['serverNo'] = row[0][2]
                 session['setkey'] = str(row[1])
                 uno = row[0][0]
                 skey = str(row[1])
+                svrno = row[0][2]
                 setKeys(uno, skey)
             except Exception as e:
                 session['userNo'] = 0
                 session['userName'] = '브라우저 재시작 필요'
+                session['serverNo'] = 0
                 session['setkey'] = '000000'
                 print(e)
             finally:
-                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey)
+                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey)+ '&svrno=' + str(svrno)
                 return redirect(path)
         else:
             return '''
@@ -109,7 +112,8 @@ def setupmybid():
         askrate = request.form.get('profitrate')
         coinn = request.form.get('coinn')
         skey = request.form.get('skey')
-        setupbid(uno,skey,initprice,bidsetps,bidrate,askrate,coinn)
+        svrno = request.form.get('svrno')
+        setupbid(uno,skey,initprice,bidsetps,bidrate,askrate,coinn,svrno)
         data = getsetup(uno)
         wallet = checkwalletwon(uno, skey)
         orderlist = getorderlist(uno)

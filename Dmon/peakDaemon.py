@@ -28,11 +28,11 @@ def check_srv(coinn, perc):
 
 
 def get_candle(coinn):
-    candles = pyupbit.get_ohlcv(coinn, interval="minutes60", count=72)
+    candles = pyupbit.get_ohlcv(coinn, interval="minutes30", count=96)
     volumes = candles['volume']
     values = candles['value']
     prices = candles['close']
-    print(prices)
+    print(candles)
 
 
-get_candle("KRW-ETH")
+get_candle("KRW-XTZ")
