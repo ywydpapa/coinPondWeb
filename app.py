@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys , checkwallet, tradehistory, setupbid, getsetup, setonoff, checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser
+from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser
 import pyupbit
 import os
 import time
@@ -9,46 +10,52 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 Bootstrap(app)
 
+
 @app.route('/')
 def home():  # put application's code here
     return render_template('./login/login.html')
+
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
     uno = request.args.get('uno')
     setkey = request.args.get('skey')
     data = getsetup(uno)
-    wallet = checkwalletwon(uno,setkey)
+    wallet = checkwalletwon(uno, setkey)
     orderlist = getorderlist(uno)
     print(data)
     print(orderlist)
     return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist)
 
+
 @app.route('/tradeSet', methods=['GET', 'POST'])
 def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
-    return render_template('/trade/tradesetup.html', coinlist= coinlist, coinn=coinn)
+    return render_template('/trade/tradesetup.html', coinlist=coinlist, coinn=coinn)
+
 
 @app.route('/peakcoin', methods=['GET', 'POST'])
 def peakcoin():
     tickers = pyupbit.get_tickers(fiat="KRW")
     coins = []
     for ticker in tickers:
-        chk = check_srv(ticker,perc = 2)
+        chk = check_srv(ticker, perc=2)
         if chk == True:
             coins.append(ticker)
         else:
             pass
         time.sleep(0.2)
-    return render_template('/trade/peakcoin.html', coinlist= coins)
+    return render_template('/trade/peakcoin.html', coinlist=coins)
+
 
 @app.route('/coindetail', methods=['GET', 'POST'])
 def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
-    orderlist = tradehistory(uno,skey)
-    return render_template('/trade/coindetail.html', orderlist= orderlist)
+    orderlist = tradehistory(uno, skey)
+    return render_template('/trade/coindetail.html', orderlist=orderlist)
+
 
 @app.route('/tradestat', methods=['GET', 'POST'])
 def tradestat():
@@ -58,12 +65,12 @@ def tradestat():
         uno = request.args.get('uno')
         skey = request.args.get('skey')
         walletitems = checkwallet(uno, skey)
-        return render_template('/trade/tradestat.html', witems = walletitems)
+        return render_template('/trade/tradestat.html', witems=walletitems)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global uno,svrno, skey
+    global uno, svrno, skey
     if request.method == 'GET':
         return render_template('/login/login.html')
     else:
@@ -87,7 +94,7 @@ def login():
                 session['setkey'] = '000000'
                 print(e)
             finally:
-                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey)+ '&svrno=' + str(svrno)
+                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey) + '&svrno=' + str(svrno)
                 return redirect(path)
         else:
             return '''
@@ -99,8 +106,10 @@ def login():
                 </script>
             '''
 
+
 @app.route('/setupbid', methods=['GET', 'POST'])
 def setupmybid():
+    global skey, uno
     if request.method == 'GET':
         pass
     else:
@@ -113,11 +122,30 @@ def setupmybid():
         coinn = request.form.get('coinn')
         skey = request.form.get('skey')
         svrno = request.form.get('svrno')
-        setupbid(uno,skey,initprice,bidsetps,bidrate,askrate,coinn,svrno)
-        data = getsetup(uno)
-        wallet = checkwalletwon(uno, skey)
-        orderlist = getorderlist(uno)
-    return redirect('/trade?uno='+uno+'&skey='+skey)
+        g0 = request.form.get('steprate')
+        g1 = request.form.get('gap01')
+        g2 = request.form.get('gap02')
+        g3 = request.form.get('gap03')
+        g4 = request.form.get('gap04')
+        g5 = request.form.get('gap05')
+        g6 = request.form.get('gap06')
+        g7 = request.form.get('gap07')
+        g8 = request.form.get('gap08')
+        g9 = request.form.get('gap09')
+        r0 = request.form.get('profitrate')
+        r1 = request.form.get('int01')
+        r2 = request.form.get('int02')
+        r3 = request.form.get('int03')
+        r4 = request.form.get('int04')
+        r5 = request.form.get('int05')
+        r6 = request.form.get('int06')
+        r7 = request.form.get('int07')
+        r8 = request.form.get('int08')
+        r9 = request.form.get('int09')
+        print(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9)
+        print(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
+        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno)
+    return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 
 @app.route('/logout')
@@ -138,6 +166,7 @@ def userdetail():
     user = detailuser(userno)
     return render_template('./admin/userDetail.html', user=user)
 
+
 @app.route('/setyn', methods=['POST'])
 def setyn():
     pla = request.get_data().decode('utf-8').split(',')
@@ -157,4 +186,4 @@ def sellcoin():
 
 
 if __name__ == '__main__':
-    app.run( debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
