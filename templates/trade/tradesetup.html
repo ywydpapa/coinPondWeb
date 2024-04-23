@@ -298,15 +298,26 @@
 
     $('#steprate').change(function(){
         var grate = $('#steprate').val();
+        var $Garr = $(".gapinput");
         if ($('#gapchkb').is(":checked") === true) {
-
+            for ( i=0; i< $Garr.length; i++){
+             $Garr[i].value = grate;
+            }
         }else{
 
         }
     });
 
     $('#profitrate').change(function(){
+        var irate  = $('#profitrate').val();
+        var $Iarr = $(".intinput");
+        if ($('#intchkb').is(":checked") === true) {
+            for (k=0; k<$Iarr.length; k++){
+                $Iarr[k].value = irate;
+            }
+        } else {
 
+        }
     });
 
     function numberWithCommas(x) {
