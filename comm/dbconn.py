@@ -106,6 +106,7 @@ def check_srv(coinn,perc):
 
 
 def checkwallet(uno, setkey):
+    global key1, key2, walletitems
     walletitems = []
     cur = db.cursor()
     sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
@@ -119,10 +120,12 @@ def checkwallet(uno, setkey):
         upbit = pyupbit.Upbit(key1,key2)
         walletitems = upbit.get_balances()
         print(walletitems)
+    cur.close()
     return walletitems
 
 
 def checkwalletwon(uno, setkey):
+    global key1, key2, walletwon
     walletwon = []
     cur = db.cursor()
     sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
@@ -135,6 +138,7 @@ def checkwalletwon(uno, setkey):
         key2 = keys[0][1]
         upbit = pyupbit.Upbit(key1,key2)
         walletwon = round(upbit.get_balance("KRW"))
+    cur.close()
     return walletwon
 
 
@@ -155,6 +159,7 @@ def tradehistory(uno, setkey):
         key2 = keys[1]
         upbit = pyupbit.Upbit(key1,key2)
         tradelist = upbit.get_order(coinn,state='done')
+    cur.close()
     return tradelist
 
 
@@ -163,6 +168,7 @@ def checkkey(uno, setkey):
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur.execute(sql,(setkey, uno, '%XXX'))
     result = cur.fetchall()
+    cur.close()
     if len(result) == 0:
         print("No match Keys !!")
         return False
@@ -175,6 +181,7 @@ def erasebid(uno, setkey):
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur.execute(sql,(setkey, uno, '%XXX'))
     result = cur.fetchall()
+    cur.close()
     if len(result) == 0:
         print("No match Keys !!")
         return False
