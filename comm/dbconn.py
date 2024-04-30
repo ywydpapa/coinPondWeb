@@ -4,7 +4,7 @@ from datetime import datetime
 import pymysql
 import random
 
-db = pymysql.connect(host='swc9004.iptime.org', user='swc', password='core2020', db='anteUpbit', charset='utf8')
+db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
 cur = db.cursor()
 serverNo = 2
 
@@ -32,7 +32,7 @@ def selectUsers(uid, upw):
     row = None
     setkey = None
     try:
-        sql = "SELECT userNo, userName, serverNo FROM pondUser WHERE userPasswd=password(%s) AND userId=%s AND attrib NOT LIKE %s"
+        sql = "SELECT userNo, userName, serverNo, userRole FROM pondUser WHERE userPasswd=password(%s) AND userId=%s AND attrib NOT LIKE %s"
         cur.execute(sql, (upw, uid, str("%XXX")))
         row = cur.fetchone()
         print(row)
@@ -210,6 +210,24 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno):
         return False
 
 
+def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9):
+    chkkey = checkkey(uno, setkey)
+    if chkkey == True:
+        try:
+            cur = db.cursor()
+            sql = ("insert into tradingSets (setTitle, setInterval, step0, step1, step2, step3, step4, step5, step6, step7, step8, step9, inter0, inter1, inter2, inter3, inter4, inter5, inter6, inter7, inter8, inter9, regdate) "
+                   "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())")
+            cur.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8,int9, ))
+            db.commit()
+        except Exception as e:
+            print('접속오류', e)
+        finally:
+            cur.close()
+            return True
+    else:
+        return False
+
+
 def getsetup(uno):
     try:
         cur = db.cursor()
@@ -323,3 +341,33 @@ def sellmycoin(uno,coinn):
                 pass
         else:
             pass
+
+
+def selectsets():
+    global rows
+    cur = db.cursor()
+    row = None
+    try:
+        sql = "SELECT * FROM tradingSets WHERE attrib NOT LIKE %s"
+        cur.execute(sql, str("%XXX"))
+        rows = cur.fetchall()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()
+    return rows
+
+
+def setdetail(setno):
+    global rows
+    cur = db.cursor()
+    row = None
+    try:
+        sql = "SELECT * FROM tradingSets WHERE setNo = %s"
+        cur.execute(sql, setno)
+        rows = cur.fetchone()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()
+    return rows

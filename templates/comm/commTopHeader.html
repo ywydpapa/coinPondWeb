@@ -8,7 +8,10 @@
         <li><button type="button" data-keyword="dashboard" onClick="location.href='/tradestat?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}'">지갑내용 확인</button></li>
         <li><button type="button" data-keyword="monitoring" onClick="location.href='/coindetail?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}'">거래 내역</button></li>
         <li><button type="button" data-keyword="monitoring" onClick="location.href='/peakcoin'">급등락 코인 목록</button></li>
-        <li><button type="button" data-keyword="adminsetup" onClick="location.href='/tradeSet'">설정</button></li>
+        <li><button type="button" data-keyword="tradingsetup" onClick="location.href='/tradeSet'">설정</button></li>
+        {% if session["userRole"] == 'ADMIN' %}
+        <li><button type="button" data-keyword="tradeingsetupAdmin" onClick="location.href='/adminSet'">관리자 설정</button></li>
+        {% endif %}
     </ul>
 </div>
 <div id="mainInfo">

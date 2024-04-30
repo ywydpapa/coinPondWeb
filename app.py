@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail
 import pyupbit
 import os
 import time
@@ -33,6 +33,13 @@ def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
     return render_template('/trade/tradesetup.html', coinlist=coinlist, coinn=coinn)
+
+
+@app.route('/adminSet', methods=['GET', 'POST'])
+def adminSet():
+    coinlist = pyupbit.get_tickers(fiat="KRW")
+    coinn = request.args.get('coinn')
+    return render_template('/admin/adminsetup.html', coinlist=coinlist, coinn=coinn)
 
 
 @app.route('/peakcoin', methods=['GET', 'POST'])
@@ -82,6 +89,7 @@ def login():
                 session['userNo'] = row[0][0]
                 session['userName'] = row[0][1]
                 session['serverNo'] = row[0][2]
+                session['userRole'] = row[0][3]
                 session['setkey'] = str(row[1])
                 uno = row[0][0]
                 skey = str(row[1])
@@ -122,6 +130,21 @@ def setupmybid():
         coinn = request.form.get('coinn')
         skey = request.form.get('skey')
         svrno = request.form.get('svrno')
+        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno)
+    return redirect('/trade?uno=' + uno + '&skey=' + skey)
+
+
+@app.route('/setupbidadmin', methods=['GET', 'POST'])
+def setupmybidadmin():
+    global skey, uno
+    if request.method == 'GET':
+        pass
+    else:
+        uno = request.form.get('userno')
+        bidsteps = request.form.get('bidsteps')
+        settitle = request.form.get('settitle')
+        skey = request.form.get('skey')
+        svrno = request.form.get('svrno')
         g0 = request.form.get('steprate')
         g1 = request.form.get('gap01')
         g2 = request.form.get('gap02')
@@ -142,10 +165,24 @@ def setupmybid():
         r7 = request.form.get('int07')
         r8 = request.form.get('int08')
         r9 = request.form.get('int09')
-        print(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9)
-        print(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
-        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno)
-    return redirect('/trade?uno=' + uno + '&skey=' + skey)
+        setupbidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
+    return redirect('/setlist')
+
+
+@app.route('/setlist', methods=['GET', 'POST'])
+def setlist():
+    global rows
+    rows = selectsets()
+    return render_template('./admin/setlist.html', rows = rows)
+
+
+@app.route('/setDetail', methods=['GET', 'POST'])
+def detailset():
+    global rows
+    sno = request.args.get('setno')
+    rows = setdetail(sno)
+    print(rows)
+    return render_template('./admin/setdetail.html', rows = rows)
 
 
 @app.route('/logout')

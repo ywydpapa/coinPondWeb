@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+{% include '/comm/header.html' %}
+<style>
+    .container{
+        padding-right: 0;
+        overflow: auto;
+    }
+
+    .chartContents > div{
+        border: 1px solid #BDBDBD;
+        padding: 10px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+</style>
+</head>
+<body>
+    <div id="commonTopHeader">
+{% include '/comm/commTopHeader.html' %}
+    </div>
+
+    <div id="commonBodyContents">
+{% include '/comm/sidemenuadmin.html' %}
+        <!-- commonSideMenu end-->
+
+        <div id="commonContent">
+            <div class="container">
+            <hr>
+             <div>
+             <table class="table">
+             <thead style="text-align: center">
+             <th>설정제목</th>
+             <th>단계</th>
+             <th>1구간 간격</th>
+             <th>2구간 간격</th>
+             <th>3구간 간격</th>
+             <th>4구간 간격</th>
+             <th>5구간 간격</th>
+             <th>1구간 이율</th>
+             <th>2구간 이율</th>
+             <th>3구간 이율</th>
+             <th>4구간 이율</th>
+             <th>5구간 이율</th>
+             <th>사용여부</th>
+             </thead>
+                 {% for row in rows %}
+                     <tr>
+                         <td><a href="/setDetail?setno={{ row[0] }}">{{ row[1] }}</a></td>
+                     <td>{{ row[2] }}</td>
+
+                     <td>{{ row[3] }}</td>
+                     <td>{{ row[4] }}</td>
+                     <td>{{ row[5] }}</td>
+                     <td>{{ row[6] }}</td>
+                     <td>{{ row[7] }}</td>
+
+                     <td>{{ row[13] }}</td>
+                     <td>{{ row[14] }}</td>
+                     <td>{{ row[15] }}</td>
+                     <td>{{ row[16] }}</td>
+                     <td>{{ row[17] }}</td>
+
+                     <td>{{ row[23] }}</td>
+                     </tr>
+                 {% endfor %}
+             </table>
+             </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+    });
+</script>
+</html>
