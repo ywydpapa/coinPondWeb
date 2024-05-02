@@ -5,7 +5,6 @@ import pymysql
 import random
 
 db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
-cur = db.cursor()
 serverNo = 2
 
 def check_srv(coinn, perc):
@@ -196,15 +195,15 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno):
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
-            erasebid(uno, setkey)
             cur = db.cursor()
+            erasebid(uno, setkey)
             sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, serverNo) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             cur.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, svrno))
             db.commit()
-        except Exception as e:
-            print('접속오류', e)
-        finally:
             cur.close()
+        except Exception as e:
+            print('접속오류 setupbid ', e)
+        finally:
             return True
     else:
         return False
@@ -371,3 +370,30 @@ def setdetail(setno):
     finally:
         cur.close()
     return rows
+
+
+def selectsetlist(intv):
+    global rows
+    cur = db.cursor()
+    row = None
+    try:
+        sql = "SELECT * FROM tradingSets WHERE setInterval= %s and attrib NOT LIKE %s"
+        cur.execute(sql, (intv, str("%XXX")))
+        rows = cur.fetchall()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()
+    return rows
+
+
+def setmypasswd(uno, passwd):
+    cur = db.cursor()
+    try:
+        sql = "UPDATE pondUser SET userPasswd = password(%s) where userNo=%s"
+        cur.execute(sql, (passwd, uno))
+        db.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur.close()

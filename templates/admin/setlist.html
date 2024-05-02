@@ -30,6 +30,7 @@
             <div class="container">
             <hr>
              <div>
+             <div style="float:right"><button class="btn btn-danger" onclick="newset()">신규 설정 추가</button></div>
              <table class="table">
              <thead style="text-align: center">
              <th>설정제목</th>
@@ -75,5 +76,9 @@
 <script>
     $(document).ready(function () {
     });
+
+    function newset(){
+          window.location.href = '/adminSet';
+    }
 </script>
 </html>
