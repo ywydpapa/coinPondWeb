@@ -27,62 +27,62 @@ def check_srv(coinn, perc):
 
 
 def selectUsers(uid, upw):
-    cur = db.cursor()
+    cur1 = db.cursor()
     row = None
     setkey = None
     try:
         sql = "SELECT userNo, userName, serverNo, userRole FROM pondUser WHERE userPasswd=password(%s) AND userId=%s AND attrib NOT LIKE %s"
-        cur.execute(sql, (upw, uid, str("%XXX")))
-        row = cur.fetchone()
+        cur1.execute(sql, (upw, uid, str("%XXX")))
+        row = cur1.fetchone()
         print(row)
         if row is not None:
             setkey = random.randint(100000,999999)
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur1.close()
     return row, setkey
 
 
 def listUsers():
     global rows
-    cur = db.cursor()
+    cur2 = db.cursor()
     row = None
     try:
         sql = "SELECT * FROM pondUser WHERE attrib NOT LIKE %s"
-        cur.execute(sql, str("%XXX"))
-        rows = cur.fetchall()
+        cur2.execute(sql, str("%XXX"))
+        rows = cur2.fetchall()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur2.close()
     return rows
 
 def detailuser(uno):
     global rows
-    cur = db.cursor()
+    cur3 = db.cursor()
     row = None
     try:
         sql = "SELECT * FROM pondUser WHERE userNo = %s and attrib NOT LIKE %s"
-        cur.execute(sql, (uno,str("%XXX")))
-        rows = cur.fetchone()
+        cur3.execute(sql, (uno,str("%XXX")))
+        rows = cur3.fetchone()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur3.close()
     return rows
 
 
 def setKeys(uno, setkey):
-    cur = db.cursor()
+    cur4 = db.cursor()
     try:
         sql = "UPDATE pondUser SET setupKey = %s, lastLogin = now() where userNo=%s"
-        cur.execute(sql, (setkey, uno))
+        cur4.execute(sql, (setkey, uno))
         db.commit()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur4.close()
 
 
 def check_srv(coinn,perc):
@@ -107,10 +107,10 @@ def check_srv(coinn,perc):
 def checkwallet(uno, setkey):
     global key1, key2, walletitems
     walletitems = []
-    cur = db.cursor()
+    cur5 = db.cursor()
     sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
-    cur.execute(sql,(setkey, uno, '%XXX'))
-    keys = cur.fetchall()
+    cur5.execute(sql,(setkey, uno, '%XXX'))
+    keys = cur5.fetchall()
     if len(keys) == 0:
         print("No available Keys !!")
     else:
@@ -119,17 +119,17 @@ def checkwallet(uno, setkey):
         upbit = pyupbit.Upbit(key1,key2)
         walletitems = upbit.get_balances()
         print(walletitems)
-    cur.close()
+    cur5.close()
     return walletitems
 
 
 def checkwalletwon(uno, setkey):
     global key1, key2, walletwon
     walletwon = []
-    cur = db.cursor()
+    cur6 = db.cursor()
     sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
-    cur.execute(sql,(setkey, uno, '%XXX'))
-    keys = cur.fetchall()
+    cur6.execute(sql,(setkey, uno, '%XXX'))
+    keys = cur6.fetchall()
     if len(keys) == 0:
         print("No available Keys !!")
     else:
@@ -137,20 +137,20 @@ def checkwalletwon(uno, setkey):
         key2 = keys[0][1]
         upbit = pyupbit.Upbit(key1,key2)
         walletwon = round(upbit.get_balance("KRW"))
-    cur.close()
+    cur6.close()
     return walletwon
 
 
 def tradehistory(uno, setkey):
     tradelist = []
-    cur = db.cursor()
+    cur7 = db.cursor()
     sql = "SELECT bidCoin from tradingSetup where userNo = %s and attrib not like %s "
-    cur.execute(sql,(uno, '%XXXUP'))
-    data = cur.fetchone()
+    cur7.execute(sql,(uno, '%XXXUP'))
+    data = cur7.fetchone()
     coinn = data[0]
     sql2 = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
-    cur.execute(sql2,(setkey, uno, '%XXX'))
-    keys = cur.fetchone()
+    cur7.execute(sql2,(setkey, uno, '%XXX'))
+    keys = cur7.fetchone()
     if len(keys) == 0:
         print("No available Keys !!")
     else:
@@ -158,16 +158,16 @@ def tradehistory(uno, setkey):
         key2 = keys[1]
         upbit = pyupbit.Upbit(key1,key2)
         tradelist = upbit.get_order(coinn,state='done')
-    cur.close()
+    cur7.close()
     return tradelist
 
 
 def checkkey(uno, setkey):
-    cur = db.cursor()
+    cur8 = db.cursor()
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
-    cur.execute(sql,(setkey, uno, '%XXX'))
-    result = cur.fetchall()
-    cur.close()
+    cur8.execute(sql,(setkey, uno, '%XXX'))
+    result = cur8.fetchall()
+    cur8.close()
     if len(result) == 0:
         print("No match Keys !!")
         return False
@@ -176,34 +176,36 @@ def checkkey(uno, setkey):
 
 
 def erasebid(uno, setkey):
-    cur = db.cursor()
+    cur9 = db.cursor()
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
-    cur.execute(sql,(setkey, uno, '%XXX'))
-    result = cur.fetchall()
-    cur.close()
+    cur9.execute(sql,(setkey, uno, '%XXX'))
+    result = cur9.fetchall()
     if len(result) == 0:
         print("No match Keys !!")
+        cur9.close()
         return False
     else:
         sql2 = "update tradingSetup set attrib=%s where userNo=%s"
-        cur.execute(sql2,("XXXUPXXXUPXXXUP", uno))
+        cur9.execute(sql2,("XXXUPXXXUPXXXUP", uno))
         db.commit()
+        cur9.close()
         return True
+
 
 
 def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno):
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
-            cur = db.cursor()
             erasebid(uno, setkey)
+            cur0 = db.cursor()
             sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, serverNo) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            cur.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, svrno))
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, svrno))
             db.commit()
-            cur.close()
         except Exception as e:
-            print('접속오류 setupbid ', e)
+            print('접속오류', e)
         finally:
+            cur0.close()
             return True
     else:
         return False
@@ -213,15 +215,15 @@ def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, 
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
-            cur = db.cursor()
+            cur11 = db.cursor()
             sql = ("insert into tradingSets (setTitle, setInterval, step0, step1, step2, step3, step4, step5, step6, step7, step8, step9, inter0, inter1, inter2, inter3, inter4, inter5, inter6, inter7, inter8, inter9, regdate) "
                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())")
-            cur.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8,int9, ))
+            cur11.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8,int9, ))
             db.commit()
         except Exception as e:
             print('접속오류', e)
         finally:
-            cur.close()
+            cur11.close()
             return True
     else:
         return False
@@ -229,88 +231,88 @@ def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, 
 
 def getsetup(uno):
     try:
-        cur = db.cursor()
+        cur12 = db.cursor()
         sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN from tradingSetup where userNo=%s and attrib not like %s"
-        cur.execute(sql, (uno, '%XXXUP'))
-        data = list(cur.fetchone())
+        cur12.execute(sql, (uno, '%XXXUP'))
+        data = list(cur12.fetchone())
         return data
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur12.close()
 
 
 def getsetups(uno):
     try:
-        cur = db.cursor()
+        cur13 = db.cursor()
         sql = "select * from tradingSetup where userNo=%s and attrib not like %s"
-        cur.execute(sql, (uno, '%XXXUP'))
-        data = list(cur.fetchone())
+        cur13.execute(sql, (uno, '%XXXUP'))
+        data = list(cur13.fetchone())
         return data
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur13.close()
 
 
 def setonoff(uno,yesno):
-    cur = db.cursor()
+    cur14 = db.cursor()
     try:
         sql = "UPDATE tradingSetup SET activeYN = %s where userNo=%s AND attrib not like %s"
-        cur.execute(sql, (yesno, uno,'%XXXUP'))
+        cur14.execute(sql, (yesno, uno,'%XXXUP'))
         db.commit()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur14.close()
 
 
 def getseton():
-    cur = db.cursor()
+    cur15 = db.cursor()
     data = []
     print("GetKey !!")
     try:
         sql = "SELECT userNo from tradingSetup where attrib not like %s"
-        cur.execute(sql,'%XXXUP')
-        data = cur.fetchall()
+        cur15.execute(sql,'%XXXUP')
+        data = cur15.fetchall()
         return data
     except Exception as e:
         print('접속오류',e)
     finally:
-        cur.close()
+        cur15.close()
 
 def getsetonsvr(svrNo):
-    cur = db.cursor()
+    cur16 = db.cursor()
     data = []
     try:
         sql = "SELECT userNo from tradingSetup where attrib not like %s and serverNo=%s"
-        cur.execute(sql,('%XXXUP', svrNo))
-        data = cur.fetchall()
+        cur16.execute(sql,('%XXXUP', svrNo))
+        data = cur16.fetchall()
         return data
     except Exception as e:
         print('접속오류',e)
     finally:
-        cur.close()
+        cur16.close()
 
 
 def getupbitkey(uno):
-    cur = db.cursor()
+    cur17 = db.cursor()
     try:
         sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE userNo=%s and attrib not like %s"
-        cur.execute(sql, (uno,'%XXXUP'))
-        data = cur.fetchone()
+        cur17.execute(sql, (uno,'%XXXUP'))
+        data = cur17.fetchone()
         return data
     except Exception as e:
         print('접속오류',e)
     finally:
-        cur.close()
+        cur17.close()
 
 
 def clearcache():
-    cur = db.cursor()
+    cur18 = db.cursor()
     sql = "RESET QUERY CACHE"
-    cur.execute(sql)
-    cur.close()
+    cur18.execute(sql)
+    cur18.close()
 
 
 def getorderlist(uno):
@@ -344,56 +346,56 @@ def sellmycoin(uno,coinn):
 
 def selectsets():
     global rows
-    cur = db.cursor()
+    cur19 = db.cursor()
     row = None
     try:
         sql = "SELECT * FROM tradingSets WHERE attrib NOT LIKE %s"
-        cur.execute(sql, str("%XXX"))
-        rows = cur.fetchall()
+        cur19.execute(sql, str("%XXX"))
+        rows = cur19.fetchall()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur19.close()
     return rows
 
 
 def setdetail(setno):
     global rows
-    cur = db.cursor()
+    cur20 = db.cursor()
     row = None
     try:
         sql = "SELECT * FROM tradingSets WHERE setNo = %s"
-        cur.execute(sql, setno)
-        rows = cur.fetchone()
+        cur20.execute(sql, setno)
+        rows = cur20.fetchone()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur20.close()
     return rows
 
 
 def selectsetlist(intv):
     global rows
-    cur = db.cursor()
+    cur21 = db.cursor()
     row = None
     try:
         sql = "SELECT * FROM tradingSets WHERE setInterval= %s and attrib NOT LIKE %s"
-        cur.execute(sql, (intv, str("%XXX")))
-        rows = cur.fetchall()
+        cur21.execute(sql, (intv, str("%XXX")))
+        rows = cur21.fetchall()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur21.close()
     return rows
 
 
 def setmypasswd(uno, passwd):
-    cur = db.cursor()
+    cur22 = db.cursor()
     try:
         sql = "UPDATE pondUser SET userPasswd = password(%s) where userNo=%s"
-        cur.execute(sql, (passwd, uno))
+        cur22.execute(sql, (passwd, uno))
         db.commit()
     except Exception as e:
         print('접속오류', e)
     finally:
-        cur.close()
+        cur22.close()
