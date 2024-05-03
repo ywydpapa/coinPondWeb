@@ -372,3 +372,4 @@ def setdetail(setno):
     finally:
         cur20.close()
     return rows
+
