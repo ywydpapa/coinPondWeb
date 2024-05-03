@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd
 import pyupbit
 import os
 import time
@@ -32,7 +32,8 @@ def trade():
 def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
-    return render_template('/trade/tradesetup.html', coinlist=coinlist, coinn=coinn)
+    setlist = selectsetlist(9)
+    return render_template('/trade/tradesetup.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
 
 
 @app.route('/adminSet', methods=['GET', 'POST'])
@@ -211,6 +212,16 @@ def setyn():
     yesno = pla[1]
     setonoff(uno, yesno)
     return "YES"
+
+
+@app.route('/changemypass', methods=['POST'])
+def changemypass():
+    passwd = request.get_data().decode('utf-8').split(',')
+    uno = passwd[0]
+    passwd = passwd[1]
+    setmypasswd(uno, passwd)
+    return "YES"
+
 
 
 @app.route('/sellcoin', methods=['POST'])
