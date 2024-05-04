@@ -62,6 +62,7 @@ def checktraded(key1, key2, coinn):
         pass
 
 
+
 def calprice(bidprice):
     if bidprice >= 2000000:
         bidprice = round(bidprice, -3)
@@ -86,7 +87,7 @@ def calprice(bidprice):
     return bidprice
 
 
-def cancelaskorder(key1, key2, coinn):
+def cancelaskorder(key1, key2, coinn): #매도 주문 취소
     upbit = pyupbit.Upbit(key1, key2)
     orders = upbit.get_order(coinn)
     for order in orders:
@@ -119,141 +120,28 @@ def checkbidorder(key1, key2, coinn):
             return False
 
 
-def runorders():
-    setons = comm.dbconn.getsetonsvr(2)
-    try:
-        for seton in setons:  # 동록자별 동작 개시
-            keys = getkeys(seton)  # 키로드
-            myset = loadmyset(seton)  # 트레이딩 셋업로드
-            orderstat = getorders(keys[0], keys[1], myset[6])  #주문현황 조회
-            if myset[7] == 'Y':  #주문 ON 인 경우
-                iniAsset = myset[2]  #기초 투입금액
-                interVal = myset[3]  #매수 횟수
-                intergap = myset[4]  #매수 간격
-                intRate = myset[5]  #매수 이율
-                coinn = myset[6]  #매수 종목
-                preprice = pyupbit.get_current_price(coinn)  # 현재값 로드
-                traded = checktraded(keys[0], keys[1], coinn)  # 설정 코인 지갑내 존재 확인
-                print(traded)
-                if not orderstat:  #기존 주문내역이 없는 경우
-                    print("기존 주문 없음")
-                    if traded is None:  #지갑안에 해당 코인 없는 경우
-                        canclebidorder(keys[0], keys[1], coinn)  #기존 매수 주문 취소
-                        try:
-                            bidasset = iniAsset
-                            buyrest = buymarketpr(keys[0], keys[1], coinn, bidasset)  # 첫번째 설정 구매
-                            print("시장가 구매", buyrest)
-                            globals()['lcnt_{}'.format(seton[0])] = 1  # 구매 함으로 설정
-                        except Exception as e:
-                            print(e)
-                        finally:
-                            print("1단계 매수내역 :", buyrest)
-                        bidasset = iniAsset
-                        # 추가 예약 매수 실행
-                        for i in range(1, interVal + 1):
-                            bidprice = ((preprice * 100) - (preprice * intergap * i)) / 100
-                            bidprice = calprice(bidprice)
-                            bidasset = bidasset * 2
-                            bidvol = bidasset / bidprice
-                            print('interval ', i, '예약 거래 적용')
-                            print('매수가격', bidprice)
-                            print('매수금액', bidasset)
-                            print('매수수량', bidvol)
-                            if globals()['lcnt_{}'.format(seton[0])] == 1:  # 구매 신호에 따라 구매 진행
-                                buylimitpr(keys[0], keys[1], coinn, bidprice, bidvol)
-                                print("매수 실행")
-                            else:
-                                print("매수 PASS")
-                                pass
-                        # 설정된 추가 매수 진행7
-                        globals()['lcnt_{}'.format(seton[0])] = 2  # 구매 완료 설정
-                    else:  #지갑에 해당 코인이 있는 경우
-                        print("지갑내 자산 거래")
-                        try:
-                            setprice = preprice * (1.0 + (intRate / 100.0))
-                            setprice = calprice(setprice)
-                            setvolume = traded['balance']
-                            selllimitpr(keys[0], keys[1], coinn, setprice, setvolume)
-                            canclebidorder(keys[0], keys[1], coinn)  #기존 구매내역 취소
-                            globals()['lcnt_{}'.format(seton[0])] = 1  # 구매 함으로 설정
-                            bidasset = iniAsset
-                            # 추가 예약 매수만 실행
-                            for i in range(1, interVal + 1):
-                                bidprice = ((preprice * 100) - (preprice * intergap * i)) / 100
-                                bidprice = calprice(bidprice)
-                                bidasset = bidasset * 2
-                                bidvol = bidasset / bidprice
-                                print('interval ', i, '예약 거래 적용')
-                                print('매수가격', bidprice)
-                                print('매수금액', bidasset)
-                                print('매수수량', bidvol)
-                                if globals()['lcnt_{}'.format(seton[0])] == 1:  # 구매 신호에 따라 구매 진행
-                                    buylimitpr(keys[0], keys[1], coinn, bidprice, bidvol)
-                                    print("매수 실행")
-                                else:
-                                    print("매수 PASS")
-                                    pass
-                            # 설정된 추가 매수만 진행
-                            globals()['lcnt_{}'.format(seton[0])] = 2  # 구매 완료 설정
-                        except Exception as e:
-                            print(e)
-                        finally:
-                            print("지갑에 코인이 있는 경우 완료")
-                else:
-                    print("기존 주문 존재")
-                    if traded["balance"] != '0':
-                        print("하락 매수로 인한 잔고 변동")
-                        try:
-                            cancelaskorder(keys[0], keys[1], coinn)  # 기존 매도 주문 취소
-                            tradednew = checktraded(keys[0], keys[1], coinn)  # 설정 코인 지갑내 존재 확인
-                            setprice = preprice * (1.005 + (intRate / 100.0))
-                            setprice = calprice(setprice)
-                            setvolume = tradednew['balance']
-                            selllimitpr(keys[0], keys[1], coinn, setprice, setvolume)
-                            #새로운 매도 주문
-                        except Exception as e:
-                            print(e)
-                        finally:
-                            print('매도주문 갱신')
-                            # 새로운 주문 완료
-                    else:
-                        ordask = orderstat[0]["side"]
-                        print(ordask)
-                        if 'ask' in ordask:
-                            print("전체금액 매도중")
-                            globals()['lcnt_{}'.format(seton[0])] = 2  # 구매 완료 설정 - 변동 대기 모드
-                        else:
-                            canclebidorder(keys[0], keys[1], coinn)  #구매예약 취소
-                            globals()['bcnt_{}'.format(seton[0])] = 0  # 점검횟수 초기화
-                globals()['bcnt_{}'.format(seton[0])] += 1  # 점검횟수 증가
-                print(globals()['bcnt_{}'.format(seton[0])])  #횟수 체크
-            else:
-                print("거래 중지중(N)", seton[0])
-                myset = loadmyset(seton[0])
-                coinn = myset[6]
-                canclebidorder(keys[0], keys[1], coinn)
-                print('-----------------------')
-                globals()['lcnt_{}'.format(seton[0])] = 0
-                globals()['bcnt_{}'.format(seton[0])] = 0  # 점검횟수 초기화
-                print(globals()['bcnt_{}'.format(seton[0])])  #횟수 체크
-    except Exception as e:
-        print(e)
-    comm.dbconn.clearcache()  # 캐쉬 삭제
+def loadtrset(sno):
+    trset = comm.dbconn.setdetail(sno)
+    trsetting = trset[3:23]
+    return trsetting
 
 
-def order_cnt_trade():
+def order_cnt_trade(svrno):
     global orderstat, key1, key2, coinn, askcnt, bidcnt, traded
-    setons = comm.dbconn.getsetonsvr(1)  #서버별 사용자 로드
+    setons = comm.dbconn.getsetonsvr(svrno)  #서버별 사용자 로드
     try:
         for seton in setons:
             keys = getkeys(seton)
             key1 = keys[0]  # 키로드
             key2 = keys[1]  # 키로드
             myset = loadmyset(seton)  # 트레이딩 셋업로드
+            print("User ", myset[1], " start")
             iniAsset = myset[2]  # 기초 투입금액
             interVal = myset[3]  # 매수 횟수
-            intergap = myset[4]  # 매수 간격
-            intRate = myset[5]  # 매수 이율
+            trset = myset[8]
+            trsetting = loadtrset(trset)
+            intergap = trsetting[:10]  # 매수 간격
+            intRate = trsetting[10:20]  # 매수 이율
             coinn = myset[6]  # 매수 종목
             if myset[7] == 'Y':  # 주문 ON 인 경우
                 print('주문 개시 user', seton[0])
@@ -331,7 +219,9 @@ def order_cnt_trade():
                     canclebidorder(key1, key2, coinn) # 주문 취소
                     globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
             else:
+                print('-----------------------')
                 print('주문 대기 user', seton[0])
+                print('-----------------------')
                 globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
                 chkcoin = checktraded(key1, key2, coinn)  # 지갑 점검
                 if chkcoin is None:  # 지갑내 해당코인이 없을 경우
@@ -340,7 +230,9 @@ def order_cnt_trade():
     except Exception as e:
         print('level 1 Error :', e)
     finally:
+        print('**********')
         print('거래점검 완료', cnt)
+        print('**********')
         comm.dbconn.clearcache()  # 캐쉬 삭제
 
 
@@ -358,13 +250,13 @@ def order_new_bid(key1, key2, coinn, initAsset, intval, intergap, profit):
     finally:
         print("1단계 매수내역 :", buyrest)
         traded = checktraded(key1, key2, coinn)  # 설정 코인 지갑내 존재 확인
-        setprice = preprice * (1.0 + (profit / 100.0))
+        setprice = preprice * (1.0 + (profit[0] / 100.0))
         setprice = calprice(setprice)
         setvolume = traded['balance']
         selllimitpr(key1, key2, coinn, setprice, setvolume)
     # 추가 예약 매수 실행
     for i in range(1, intval + 1):
-        bidprice = ((preprice * 100) - (preprice * intergap * i)) / 100
+        bidprice = ((preprice * 100) - (preprice * intergap[i])) / 100
         bidprice = calprice(bidprice)
         bidasset = bidasset * 2
         bidvol = bidasset / bidprice
@@ -383,7 +275,7 @@ def order_new_bid(key1, key2, coinn, initAsset, intval, intergap, profit):
     return None
 
 
-def order_mod_ask(key1, key2, coinn, profit):
+def order_mod_ask(key1, key2, coinn, profit): #기존 계산 방식
     print("매도 주문 재생성")
     try:
         preprice = pyupbit.get_current_price(coinn)  # 현재값 로드
@@ -410,7 +302,7 @@ def order_mod_ask2(key1, key2, coinn, profit):
         tradednew = checktraded(key1, key2, coinn)  # 설정 코인 지갑내 존재 확인
         totalamt = (float(tradednew['balance']) + float(tradednew['locked'])) * float(tradednew['avg_buy_price'])  # 전체 구매 금액
         totalvol = float(tradednew['balance']) + float(tradednew['locked'])  # 전체 구매 수량
-        totalamt = totalamt + (totalamt * profit / 100)
+        totalamt = totalamt + (totalamt * profit[0] / 100)
         print(totalamt)
         print(totalvol)
         setprice = totalamt / totalvol
@@ -438,7 +330,7 @@ for seton in setons:
 while True:
     print("Run Count : ", cnt)
     try:
-        order_cnt_trade()
+        order_cnt_trade(1) #서버 지정해야함.
         cnt = cnt + 1
     except Exception as e:
         print(e)

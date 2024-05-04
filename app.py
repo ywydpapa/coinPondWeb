@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd
+from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail
 import pyupbit
 import os
 import time
@@ -22,9 +23,11 @@ def trade():
     data = getsetup(uno)
     wallet = checkwalletwon(uno, setkey)
     orderlist = getorderlist(uno)
+    setno = data[6]
+    trset = setdetail(setno)
     print(data)
     print(orderlist)
-    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist)
+    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist, trset=trset)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
@@ -52,7 +55,6 @@ def peakcoin():
             coins.append(ticker)
         else:
             pass
-        time.sleep(0.2)
     return render_template('/trade/peakcoin.html', coinlist=coins)
 
 
@@ -77,7 +79,7 @@ def tradestat():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global uno, svrno, skey
+    global uno, svrno, skey, path
     if request.method == 'GET':
         return render_template('/login/login.html')
     else:
@@ -95,22 +97,23 @@ def login():
                 skey = str(row[1])
                 svrno = row[0][2]
                 setKeys(uno, skey)
+                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey) + '&svrno=' + str(svrno)
             except Exception as e:
                 session['userNo'] = 0
                 session['userName'] = '브라우저 재시작 필요'
                 session['serverNo'] = 0
                 session['setkey'] = '000000'
                 print(e)
+                path = '/login/login.html'
             finally:
-                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey) + '&svrno=' + str(svrno)
                 return redirect(path)
         else:
             return '''
                 <script>
                     // 경고창 
-                    alert("로그인 실패, 다시 시도하세요")
+                    alert("로그인 실패, 다시 시도하세요");
                     // 이전페이지로 이동
-                    history.back()
+                    history.back();
                 </script>
             '''
 
@@ -124,13 +127,14 @@ def setupmybid():
         uno = request.form.get('userno')
         bidsetps = request.form.get('bidsteps')
         initprice = request.form.get('initprice')
-        bidrate = request.form.get('steprate')
+        bidrate = 1.00
         initprice = initprice.replace(',', '')
-        askrate = request.form.get('profitrate')
+        askrate = 0.5
+        tradeset = request.form.get('tradeset')
         coinn = request.form.get('coinn')
         skey = request.form.get('skey')
         svrno = request.form.get('svrno')
-        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno)
+        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset)
     return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 
@@ -222,6 +226,15 @@ def changemypass():
     return "YES"
 
 
+@app.route('/updateuser', methods=['POST'])
+def updateuser():
+    uno = request.form.get('uno')
+    key1 = request.form.get('apikey1')
+    key2 = request.form.get('apikey2')
+    svrno = request.form.get('svrno')
+    updateuserdetail(uno, key1, key2, svrno)
+    users = listUsers()
+    return render_template('./admin/useradmin.html', users=users)
 
 @app.route('/sellcoin', methods=['POST'])
 def sellcoin():
@@ -230,6 +243,12 @@ def sellcoin():
     coinn = pla[1]
     sellmycoin(uno, coinn)
     return "YES"
+
+@app.route('/hotcoins')
+def hotcoins():
+    tickers = pyupbit.get_tickers(fiat="KRW")
+    return render_template('/admin/hotcoins.html', coinlist=tickers)
+
 
 
 if __name__ == '__main__':

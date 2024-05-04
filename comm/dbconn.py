@@ -193,14 +193,14 @@ def erasebid(uno, setkey):
 
 
 
-def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno):
+def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset):
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
             erasebid(uno, setkey)
             cur0 = db.cursor()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, serverNo) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, svrno))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno))
             db.commit()
         except Exception as e:
             print('접속오류', e)
@@ -232,7 +232,7 @@ def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, 
 def getsetup(uno):
     try:
         cur12 = db.cursor()
-        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN from tradingSetup where userNo=%s and attrib not like %s"
+        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey from tradingSetup where userNo=%s and attrib not like %s"
         cur12.execute(sql, (uno, '%XXXUP'))
         data = list(cur12.fetchone())
         return data
@@ -373,14 +373,13 @@ def setdetail(setno):
         cur20.close()
     return rows
 
-
-def selectsetlist(intv):
+def selectsetlist(sint):
     global rows
     cur21 = db.cursor()
     row = None
     try:
-        sql = "SELECT * FROM tradingSets WHERE setInterval= %s and attrib NOT LIKE %s"
-        cur21.execute(sql, (intv, str("%XXX")))
+        sql = "SELECT * FROM tradingSets WHERE setInterval = %s and attrib NOT LIKE %s"
+        cur21.execute(sql, (sint, "XXX%"))
         rows = cur21.fetchall()
     except Exception as e:
         print('접속오류', e)
@@ -399,3 +398,15 @@ def setmypasswd(uno, passwd):
         print('접속오류', e)
     finally:
         cur22.close()
+
+
+def updateuserdetail(uno, key1, key2, svrno):
+    cur23 = db.cursor()
+    try:
+        sql= "UPDATE pondUser SET apiKey1 = %s, apiKey2 = %s, serverNo = %s where userNo = %s"
+        cur23.execute(sql, (key1, key2, svrno, uno))
+        db.commit()
+    except Exception as e:
+        print('사용자 업데이트 오류', e)
+    finally:
+        cur23.close()
