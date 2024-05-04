@@ -23,9 +23,11 @@ def trade():
     data = getsetup(uno)
     wallet = checkwalletwon(uno, setkey)
     orderlist = getorderlist(uno)
+    setno = data[6]
+    trset = setdetail(setno)
     print(data)
     print(orderlist)
-    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist)
+    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist, trset=trset)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
@@ -78,7 +80,7 @@ def tradestat():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global uno, svrno, skey
+    global uno, svrno, skey, path
     if request.method == 'GET':
         return render_template('/login/login.html')
     else:
@@ -96,22 +98,23 @@ def login():
                 skey = str(row[1])
                 svrno = row[0][2]
                 setKeys(uno, skey)
+                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey) + '&svrno=' + str(svrno)
             except Exception as e:
                 session['userNo'] = 0
                 session['userName'] = '브라우저 재시작 필요'
                 session['serverNo'] = 0
                 session['setkey'] = '000000'
                 print(e)
+                path = '/login/login.html'
             finally:
-                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey) + '&svrno=' + str(svrno)
                 return redirect(path)
         else:
             return '''
                 <script>
                     // 경고창 
-                    alert("로그인 실패, 다시 시도하세요")
+                    alert("로그인 실패, 다시 시도하세요");
                     // 이전페이지로 이동
-                    history.back()
+                    history.back();
                 </script>
             '''
 
@@ -125,13 +128,14 @@ def setupmybid():
         uno = request.form.get('userno')
         bidsetps = request.form.get('bidsteps')
         initprice = request.form.get('initprice')
-        bidrate = request.form.get('steprate')
+        bidrate = 1.00
         initprice = initprice.replace(',', '')
-        askrate = request.form.get('profitrate')
+        askrate = 0.5
+        tradeset = request.form.get('tradeset')
         coinn = request.form.get('coinn')
         skey = request.form.get('skey')
         svrno = request.form.get('svrno')
-        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno)
+        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset)
     return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 
