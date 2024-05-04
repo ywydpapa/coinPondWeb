@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+{% include '/comm/header.html' %}
+<style>
+    .container{
+        padding-right: 0;
+        overflow: auto;
+    }
+
+    .chartContents > div{
+        border: 1px solid #BDBDBD;
+        padding: 10px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+</style>
+</head>
+<body>
+    <div id="commonTopHeader">
+{% include '/comm/commTopHeader.html' %}
+    </div>
+
+    <div id="commonBodyContents">
+{% include '/comm/sidemenuadmin.html' %}
+        <!-- commonSideMenu end-->
+
+        <div id="commonContent">
+            <div class="container">
+            <hr>
+             <div>
+             <div style="float:right"><button class="btn btn-danger" onclick="savelist()">추천종목 저장</button></div>
+             <table class="table">
+             <thead style="text-align: center">
+             <th>코인명</th>
+             <th>현재가</th>
+             <th>거래량</th>
+             <th>추천여부</th>
+             </thead>
+                 {% for coin in coinlist %}
+                     <tr>
+                     <td style="text-align: center">{{ coin }}</td>
+                     <td></td>
+                     <td></td>
+                     <td style="text-align: center"><input type="checkbox" name="hotchk"></td>
+                     </tr>
+                 {% endfor %}
+             </table>
+             </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+    });
+
+    function savelist(){
+          window.location.href = '/adminSet';
+    }
+</script>
+</html>

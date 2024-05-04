@@ -330,7 +330,7 @@ for seton in setons:
 while True:
     print("Run Count : ", cnt)
     try:
-        order_cnt_trade(2)
+        order_cnt_trade(1) #서버 지정해야함.
         cnt = cnt + 1
     except Exception as e:
         print(e)

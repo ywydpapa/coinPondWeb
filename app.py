@@ -55,7 +55,6 @@ def peakcoin():
             coins.append(ticker)
         else:
             pass
-        time.sleep(0.2)
     return render_template('/trade/peakcoin.html', coinlist=coins)
 
 
@@ -244,6 +243,12 @@ def sellcoin():
     coinn = pla[1]
     sellmycoin(uno, coinn)
     return "YES"
+
+@app.route('/hotcoins')
+def hotcoins():
+    tickers = pyupbit.get_tickers(fiat="KRW")
+    return render_template('/admin/hotcoins.html', coinlist=tickers)
+
 
 
 if __name__ == '__main__':
