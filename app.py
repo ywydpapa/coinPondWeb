@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail
 import pyupbit
 import os
 import time
@@ -227,6 +227,15 @@ def changemypass():
     return "YES"
 
 
+@app.route('/updateuser', methods=['POST'])
+def updateuser():
+    uno = request.form.get('uno')
+    key1 = request.form.get('apikey1')
+    key2 = request.form.get('apikey2')
+    svrno = request.form.get('svrno')
+    updateuserdetail(uno, key1, key2, svrno)
+    users = listUsers()
+    return render_template('./admin/useradmin.html', users=users)
 
 @app.route('/sellcoin', methods=['POST'])
 def sellcoin():

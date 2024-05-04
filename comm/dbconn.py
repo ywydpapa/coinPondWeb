@@ -398,3 +398,15 @@ def setmypasswd(uno, passwd):
         print('접속오류', e)
     finally:
         cur22.close()
+
+
+def updateuserdetail(uno, key1, key2, svrno):
+    cur23 = db.cursor()
+    try:
+        sql= "UPDATE pondUser SET apiKey1 = %s, apiKey2 = %s, serverNo = %s where userNo = %s"
+        cur23.execute(sql, (key1, key2, svrno, uno))
+        db.commit()
+    except Exception as e:
+        print('사용자 업데이트 오류', e)
+    finally:
+        cur23.close()
