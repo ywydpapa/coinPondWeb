@@ -4,8 +4,10 @@ from datetime import datetime
 import pymysql
 import random
 
+
 db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
 serverNo = 2
+
 
 def check_srv(coinn, perc):
     values = pyupbit.get_ohlcv(coinn, interval="hour", count=48)
@@ -27,6 +29,7 @@ def check_srv(coinn, perc):
 
 
 def selectUsers(uid, upw):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur1 = db.cursor()
     row = None
     setkey = None
@@ -41,11 +44,13 @@ def selectUsers(uid, upw):
         print('접속오류', e)
     finally:
         cur1.close()
+        db.close()
     return row, setkey
 
 
 def listUsers():
     global rows
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur2 = db.cursor()
     row = None
     try:
@@ -56,10 +61,13 @@ def listUsers():
         print('접속오류', e)
     finally:
         cur2.close()
+        db.close()
     return rows
+
 
 def detailuser(uno):
     global rows
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur3 = db.cursor()
     row = None
     try:
@@ -70,10 +78,12 @@ def detailuser(uno):
         print('접속오류', e)
     finally:
         cur3.close()
+        db.close()
     return rows
 
 
 def setKeys(uno, setkey):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur4 = db.cursor()
     try:
         sql = "UPDATE pondUser SET setupKey = %s, lastLogin = now() where userNo=%s"
@@ -83,6 +93,7 @@ def setKeys(uno, setkey):
         print('접속오류', e)
     finally:
         cur4.close()
+        db.close()
 
 
 def check_srv(coinn,perc):
@@ -107,6 +118,7 @@ def check_srv(coinn,perc):
 def checkwallet(uno, setkey):
     global key1, key2, walletitems
     walletitems = []
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur5 = db.cursor()
     sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur5.execute(sql,(setkey, uno, '%XXX'))
@@ -120,12 +132,14 @@ def checkwallet(uno, setkey):
         walletitems = upbit.get_balances()
         print(walletitems)
     cur5.close()
+    db.close()
     return walletitems
 
 
 def checkwalletwon(uno, setkey):
     global key1, key2, walletwon
     walletwon = []
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur6 = db.cursor()
     sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur6.execute(sql,(setkey, uno, '%XXX'))
@@ -138,11 +152,13 @@ def checkwalletwon(uno, setkey):
         upbit = pyupbit.Upbit(key1,key2)
         walletwon = round(upbit.get_balance("KRW"))
     cur6.close()
+    db.close()
     return walletwon
 
 
 def tradehistory(uno, setkey):
     tradelist = []
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur7 = db.cursor()
     sql = "SELECT bidCoin from tradingSetup where userNo = %s and attrib not like %s "
     cur7.execute(sql,(uno, '%XXXUP'))
@@ -159,15 +175,18 @@ def tradehistory(uno, setkey):
         upbit = pyupbit.Upbit(key1,key2)
         tradelist = upbit.get_order(coinn,state='done')
     cur7.close()
+    db.close()
     return tradelist
 
 
 def checkkey(uno, setkey):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur8 = db.cursor()
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur8.execute(sql,(setkey, uno, '%XXX'))
     result = cur8.fetchall()
     cur8.close()
+    db.close()
     if len(result) == 0:
         print("No match Keys !!")
         return False
@@ -176,6 +195,7 @@ def checkkey(uno, setkey):
 
 
 def erasebid(uno, setkey):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur9 = db.cursor()
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
     cur9.execute(sql,(setkey, uno, '%XXX'))
@@ -183,12 +203,14 @@ def erasebid(uno, setkey):
     if len(result) == 0:
         print("No match Keys !!")
         cur9.close()
+        db.close()
         return False
     else:
         sql2 = "update tradingSetup set attrib=%s where userNo=%s"
         cur9.execute(sql2,("XXXUPXXXUPXXXUP", uno))
         db.commit()
         cur9.close()
+        db.close()
         return True
 
 
@@ -198,6 +220,7 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
     if chkkey == True:
         try:
             erasebid(uno, setkey)
+            db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit',  charset='utf8')
             cur0 = db.cursor()
             sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
             cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno))
@@ -206,6 +229,7 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
             print('접속오류', e)
         finally:
             cur0.close()
+            db.close()
             return True
     else:
         return False
@@ -215,6 +239,8 @@ def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, 
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
+            db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit',
+                                 charset='utf8')
             cur11 = db.cursor()
             sql = ("insert into tradingSets (setTitle, setInterval, step0, step1, step2, step3, step4, step5, step6, step7, step8, step9, inter0, inter1, inter2, inter3, inter4, inter5, inter6, inter7, inter8, inter9, regdate) "
                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())")
@@ -224,6 +250,7 @@ def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, 
             print('접속오류', e)
         finally:
             cur11.close()
+            db.close()
             return True
     else:
         return False
@@ -231,6 +258,8 @@ def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, 
 
 def getsetup(uno):
     try:
+        db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit',
+                             charset='utf8')
         cur12 = db.cursor()
         sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey from tradingSetup where userNo=%s and attrib not like %s"
         cur12.execute(sql, (uno, '%XXXUP'))
@@ -240,10 +269,13 @@ def getsetup(uno):
         print('접속오류', e)
     finally:
         cur12.close()
+        db.close()
 
 
 def getsetups(uno):
     try:
+        db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit',
+                             charset='utf8')
         cur13 = db.cursor()
         sql = "select * from tradingSetup where userNo=%s and attrib not like %s"
         cur13.execute(sql, (uno, '%XXXUP'))
@@ -253,9 +285,11 @@ def getsetups(uno):
         print('접속오류', e)
     finally:
         cur13.close()
+        db.close()
 
 
 def setonoff(uno,yesno):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur14 = db.cursor()
     try:
         sql = "UPDATE tradingSetup SET activeYN = %s where userNo=%s AND attrib not like %s"
@@ -265,9 +299,11 @@ def setonoff(uno,yesno):
         print('접속오류', e)
     finally:
         cur14.close()
+        db.close()
 
 
 def getseton():
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur15 = db.cursor()
     data = []
     print("GetKey !!")
@@ -280,8 +316,11 @@ def getseton():
         print('접속오류',e)
     finally:
         cur15.close()
+        db.close()
+
 
 def getsetonsvr(svrNo):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur16 = db.cursor()
     data = []
     try:
@@ -293,9 +332,11 @@ def getsetonsvr(svrNo):
         print('접속오류',e)
     finally:
         cur16.close()
+        db.close()
 
 
 def getupbitkey(uno):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur17 = db.cursor()
     try:
         sql = "SELECT apiKey1, apiKey2 FROM pondUser WHERE userNo=%s and attrib not like %s"
@@ -306,13 +347,16 @@ def getupbitkey(uno):
         print('접속오류',e)
     finally:
         cur17.close()
+        db.close()
 
 
 def clearcache():
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur18 = db.cursor()
     sql = "RESET QUERY CACHE"
     cur18.execute(sql)
     cur18.close()
+    db.close()
 
 
 def getorderlist(uno):
@@ -346,6 +390,7 @@ def sellmycoin(uno,coinn):
 
 def selectsets():
     global rows
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur19 = db.cursor()
     row = None
     try:
@@ -356,11 +401,13 @@ def selectsets():
         print('접속오류', e)
     finally:
         cur19.close()
+        db.close()
     return rows
 
 
 def setdetail(setno):
     global rows
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur20 = db.cursor()
     row = None
     try:
@@ -371,10 +418,12 @@ def setdetail(setno):
         print('접속오류', e)
     finally:
         cur20.close()
+        db.close()
     return rows
 
 def selectsetlist(sint):
     global rows
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur21 = db.cursor()
     row = None
     try:
@@ -385,10 +434,12 @@ def selectsetlist(sint):
         print('접속오류', e)
     finally:
         cur21.close()
+        db.close()
     return rows
 
 
 def setmypasswd(uno, passwd):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur22 = db.cursor()
     try:
         sql = "UPDATE pondUser SET userPasswd = password(%s) where userNo=%s"
@@ -398,9 +449,11 @@ def setmypasswd(uno, passwd):
         print('접속오류', e)
     finally:
         cur22.close()
+        db.close()
 
 
 def updateuserdetail(uno, key1, key2, svrno):
+    db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
     cur23 = db.cursor()
     try:
         sql= "UPDATE pondUser SET apiKey1 = %s, apiKey2 = %s, serverNo = %s where userNo = %s"
@@ -410,3 +463,4 @@ def updateuserdetail(uno, key1, key2, svrno):
         print('사용자 업데이트 오류', e)
     finally:
         cur23.close()
+        db.close()
