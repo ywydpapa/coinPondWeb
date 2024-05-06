@@ -259,6 +259,7 @@ def order_new_bid(key1, key2, coinn, initAsset, intval, intergap, profit):
         bidprice = ((preprice * 100) - (preprice * intergap[i])) / 100
         bidprice = calprice(bidprice)
         bidasset = bidasset * 2
+        preprice = bidprice #현재가에 적용
         bidvol = bidasset / bidprice
         print('interval ', i, '예약 거래 적용')
         print('매수가격', bidprice)
