@@ -427,8 +427,10 @@ def selectsetlist(sint):
     cur21 = db.cursor()
     row = None
     try:
-        sql = "SELECT * FROM tradingSets WHERE setInterval = %s and attrib NOT LIKE %s"
-        cur21.execute(sql, (sint, "XXX%"))
+        sql = "SELECT * FROM tradingSets WHERE useYN = %s and attrib NOT LIKE %s"
+        if sint > 0:
+            useyn = 'Y'
+        cur21.execute(sql, (useyn, "XXX%"))
         rows = cur21.fetchall()
     except Exception as e:
         print('접속오류', e)
@@ -464,3 +466,24 @@ def updateuserdetail(uno, key1, key2, svrno):
     finally:
         cur23.close()
         db.close()
+
+
+def updatebidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, setno):
+    chkkey = checkkey(uno, setkey)
+    if chkkey == True:
+        db24 = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit',
+                             charset='utf8')
+        cur24 = db.cursor()
+        try:
+            sql = ("UPDATE tradingSets set setTitle = %s, setInterval = %s, step0 = %s, step1 = %s, step2 = %s, step3 = %s, step4 = %s, step5 = %s, step6 = %s, step7 = %s, step8 = %s, step9 = %s, "
+                   "inter0 = %s, inter1 = %s, inter2 = %s, inter3 = %s, inter4 = %s, inter5 = %s, inter6 = %s, inter7 = %s, inter8 = %s, inter9 = %s where setNo = %s ")
+            cur24.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, setno ))
+            db24.commit()
+        except Exception as e:
+            print('접속오류', e)
+        finally:
+            cur24.close()
+            db24.close()
+            return True
+    else:
+        return False

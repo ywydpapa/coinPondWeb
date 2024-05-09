@@ -171,6 +171,8 @@ def order_cnt_trade(svrno):
                             globals()['tcnt_{}'.format(seton[0])] = 2  # 확인 단계로 진행
                             print('ask 수', globals()['askcnt_{}'.format(seton[0])])
                             print('bid 수', globals()['bidcnt_{}'.format(seton[0])])
+                            if traded['balance'] != 0.0:
+                                order_mod_ask2(keys[0], keys[1], coinn, intRate) #주문이 있는데 잔고가 있을경우 매도 재설정
                 elif globals()['tcnt_{}'.format(seton[0])] == 1:
                     print('1단계 거래') # 주문 카운트
                     bidcnt1 =0

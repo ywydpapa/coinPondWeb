@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin
 import pyupbit
 import os
 import time
@@ -248,6 +248,39 @@ def sellcoin():
 def hotcoins():
     tickers = pyupbit.get_tickers(fiat="KRW")
     return render_template('/admin/hotcoins.html', coinlist=tickers)
+
+
+@app.route('/updateset', methods=['POST'] )
+def updateset():
+    global rows
+    uno = request.form.get('userno')
+    bidsteps = request.form.get('bidsteps')
+    settitle = request.form.get('settitle')
+    skey = request.form.get('skey')
+    g0 = request.form.get('steprate')
+    g1 = request.form.get('gap01')
+    g2 = request.form.get('gap02')
+    g3 = request.form.get('gap03')
+    g4 = request.form.get('gap04')
+    g5 = request.form.get('gap05')
+    g6 = request.form.get('gap06')
+    g7 = request.form.get('gap07')
+    g8 = request.form.get('gap08')
+    g9 = request.form.get('gap09')
+    r0 = request.form.get('profitrate')
+    r1 = request.form.get('int01')
+    r2 = request.form.get('int02')
+    r3 = request.form.get('int03')
+    r4 = request.form.get('int04')
+    r5 = request.form.get('int05')
+    r6 = request.form.get('int06')
+    r7 = request.form.get('int07')
+    r8 = request.form.get('int08')
+    r9 = request.form.get('int09')
+    setno = request.form.get('setno')
+    updatebidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9 ,setno)
+    rows = selectsets()
+    return render_template('/admin/setlist.html' , rows = rows)
 
 
 
