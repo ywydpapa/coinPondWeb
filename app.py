@@ -278,9 +278,9 @@ def updateset():
     r8 = request.form.get('int08')
     r9 = request.form.get('int09')
     setno = request.form.get('setno')
-    updatebidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9 ,setno)
+    updatebidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, setno)
     rows = selectsets()
-    return render_template('/admin/setlist.html' , rows = rows)
+    return render_template('./admin/setlist.html', rows = rows)
 
 
 

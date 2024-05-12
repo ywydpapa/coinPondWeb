@@ -217,13 +217,15 @@ def order_cnt_trade(svrno):
                 else:
                     print('나머지 단계 거래')
                     #매수 평균가 조회
-                    myeve = traded["avg_buy_price"]
+                    myeve = float(traded["avg_buy_price"])
                     #매도 주문 금액 조회
                     myask = globals()['mysell_{}'.format(seton[0])]
                     # 매수평균* 이율 과 매도 주문 비교
-                    if (myask/myeve*100-100 > intRate):
+                    if (myask/myeve*100-100 > intRate[0]):
                         order_mod_ask2(keys[0], keys[1], coinn, intRate)
                         print("금액추적 매도주문 재설정")
+                    else:
+                        print("주문 금액 비율 :", myask/myeve*100)
                     # 차이 발생이 일정비율 이상시 재주문
 
                 chkcoin = checktraded(key1, key2, coinn)  # 지갑 점검
