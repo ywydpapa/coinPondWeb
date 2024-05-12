@@ -54,7 +54,7 @@
                         </td>
                         <td colspan="3">
                             <input name="settitle" type="text" class="form-control" value="{{ rows[1] }}">
-                            <input name="setno" type="text" class="form-control" value="{{ rows[0] }}" style = "display: none">
+                            <input name="setno" id="setno" type="text" class="form-control" value="{{ rows[0] }}" style = "display: none">
                         </td>
                         <td>
                             <button type="submit" value="submit" class="form-control btn btn-primary"> 수정 </button>
@@ -65,10 +65,12 @@
                         <td colspan="3">
                             <input id="initprice" name="initprice" class="form-control" type="text" value="5000" placeholder="5,000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
                         </td>
-                        <td>
+                        <td style="text-align: center">
                             <input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
                             <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
                             <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none">
+                            사용여부 <br>
+                            <input type="checkbox" id="chkyn" name="chkyn" {% if rows[23]=='Y' %}checked{% endif %}>
                         </td>
                     </tr>
                     <tr>
@@ -304,6 +306,30 @@
 
         }
     });
+
+    $("#chkyn").change(function(){
+    var sno = $("#setno").val();
+    if($('input[name="chkyn"]').is(":checked") === true){
+        settyn(sno,"Y");
+    } else {
+    settyn(sno,"N");
+    }
+    });
+
+    function settyn(sno,yn){
+        data = [sno,yn]
+        $.ajax({
+            type: "POST",
+            url: '/settingyn',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                location.reload();
+                }
+        });
+    }
 
     $('#profitrate').change(function(){
         var irate  = $('#profitrate').val();

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff
 import pyupbit
 import os
 import time
@@ -215,6 +215,15 @@ def setyn():
     yesno = pla[1]
     setonoff(uno, yesno)
     return "YES"
+
+@app.route('/settingyn', methods=['POST'])
+def settingyn():
+    pla = request.get_data().decode('utf-8').split(',')
+    sno = pla[0]
+    yesno = pla[1]
+    settingonoff(sno, yesno)
+    return "YES"
+
 
 
 @app.route('/changemypass', methods=['POST'])

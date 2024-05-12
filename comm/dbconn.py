@@ -488,3 +488,17 @@ def updatebidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4,
             return True
     else:
         return False
+
+
+def settingonoff(sno, yesno):
+    db25 = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
+    cur25 = db25.cursor()
+    try:
+        sql = "UPDATE tradingSets SET useYN = %s where setNo=%s"
+        cur25.execute(sql, (yesno, sno))
+        db25.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur25.close()
+        db25.close()
