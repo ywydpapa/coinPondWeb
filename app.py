@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin
 import pyupbit
 import os
 import time
@@ -27,7 +27,7 @@ def trade():
     trset = setdetail(setno)
     print(data)
     print(orderlist)
-    return render_template('/trade/trademain.html', result=data, wallet=wallet, list=orderlist, trset=trset)
+    return render_template('./trade/trademain.html', result=data, wallet=wallet, list=orderlist, trset=trset)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
@@ -35,27 +35,20 @@ def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
     setlist = selectsetlist(9)
-    return render_template('/trade/tradesetup.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
+    return render_template('./trade/tradesetup.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
 
 
 @app.route('/adminSet', methods=['GET', 'POST'])
 def adminSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
-    return render_template('/admin/adminsetup.html', coinlist=coinlist, coinn=coinn)
+    return render_template('./admin/adminsetup.html', coinlist=coinlist, coinn=coinn)
 
 
 @app.route('/peakcoin', methods=['GET', 'POST'])
 def peakcoin():
-    tickers = pyupbit.get_tickers(fiat="KRW")
-    coins = []
-    for ticker in tickers:
-        chk = check_srv(ticker, perc=2)
-        if chk == True:
-            coins.append(ticker)
-        else:
-            pass
-    return render_template('/trade/peakcoin.html', coinlist=coins)
+    coins = hotcoinlist()
+    return render_template('./trade/peakcoin.html', coinlist=coins)
 
 
 @app.route('/coindetail', methods=['GET', 'POST'])
@@ -63,7 +56,7 @@ def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     orderlist = tradehistory(uno, skey)
-    return render_template('/trade/coindetail.html', orderlist=orderlist)
+    return render_template('./trade/coindetail.html', orderlist=orderlist)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])
@@ -74,14 +67,14 @@ def tradestat():
         uno = request.args.get('uno')
         skey = request.args.get('skey')
         walletitems = checkwallet(uno, skey)
-        return render_template('/trade/tradestat.html', witems=walletitems)
+        return render_template('./trade/tradestat.html', witems=walletitems)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global uno, svrno, skey, path
     if request.method == 'GET':
-        return render_template('/login/login.html')
+        return render_template('./login/login.html')
     else:
         uid = request.form.get('uid')
         upw = request.form.get('upw')
@@ -216,6 +209,13 @@ def setyn():
     setonoff(uno, yesno)
     return "YES"
 
+
+@app.route('/sethotcoin', methods=['POST'])
+def sethotcoin():
+    coinn = request.args.get('coinn')
+    sethotcoin(coinn)
+    return "YES"
+
 @app.route('/settingyn', methods=['POST'])
 def settingyn():
     pla = request.get_data().decode('utf-8').split(',')
@@ -223,7 +223,6 @@ def settingyn():
     yesno = pla[1]
     settingonoff(sno, yesno)
     return "YES"
-
 
 
 @app.route('/changemypass', methods=['POST'])
@@ -256,7 +255,7 @@ def sellcoin():
 @app.route('/hotcoins')
 def hotcoins():
     tickers = pyupbit.get_tickers(fiat="KRW")
-    return render_template('/admin/hotcoins.html', coinlist=tickers)
+    return render_template('./admin/hotcoins.html', coinlist=tickers)
 
 
 @app.route('/updateset', methods=['POST'] )

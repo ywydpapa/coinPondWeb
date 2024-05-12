@@ -40,10 +40,10 @@
              </thead>
                  {% for coin in coinlist %}
                      <tr>
-                     <td style="text-align: center">{{ coin }}</td>
+                     <td style="text-align: center" class="coinn">{{ coin }}</td>
                      <td></td>
                      <td></td>
-                     <td style="text-align: center"><input type="checkbox" name="hotchk"></td>
+                     <td style="text-align: center"><input type="checkbox" class="chkhot" name="hotchk"></td>
                      </tr>
                  {% endfor %}
              </table>
@@ -57,7 +57,14 @@
     });
 
     function savelist(){
-          window.location.href = '/adminSet';
+          var $Aarr = $(".coinn");
+          var $Barr = $(".chkhot");
+          for (var i = 0; i < $Aarr.length; i++){
+              if ($Barr.is(":checked") === true){
+
+              }
+          }
+
     }
 </script>
 </html>

@@ -502,3 +502,39 @@ def settingonoff(sno, yesno):
     finally:
         cur25.close()
         db25.close()
+
+
+def hotcoinlist():
+    global rows
+    db26 = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')
+    cur26 = db26.cursor()
+    row = None
+    try:
+        sql = "SELECT * FROM hotCoins WHERE attrib NOT LIKE %s"
+        cur26.execute(sql, "XXX%")
+        rows = cur26.fetchall()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur26.close()
+        db26.close()
+    return rows
+
+
+def sethotcoin(coinn):
+    global rows
+    db27 = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit',
+                           charset='utf8')
+    cur27 = db27.cursor()
+    try:
+        sql = "UPDATE hotCoins SET attrib = %s where coinName=%s"
+        cur27.execute(sql, ("XXX00XXX00XXX00",coinn))
+        db27.commit()
+        sql = "INSERT INTO hotCoins (coinName, regDate) VALUES (%s, %s)"
+        cur27.execute(sql,(coinn, 'now()'))
+        db27.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur27.close()
+        db27.close()
