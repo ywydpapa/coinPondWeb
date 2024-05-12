@@ -216,6 +216,16 @@ def order_cnt_trade(svrno):
                         globals()['tcnt_{}'.format(seton[0])] = 0  # 거래단계 초기화
                 else:
                     print('나머지 단계 거래')
+                    #매수 평균가 조회
+                    myeve = traded["avg_buy_price"]
+                    #매도 주문 금액 조회
+                    myask = globals()['mysell_{}'.format(seton[0])]
+                    # 매수평균* 이율 과 매도 주문 비교
+                    if (myask/myeve*100-100 > intRate):
+                        order_mod_ask2(keys[0], keys[1], coinn, intRate)
+                        print("금액추적 매도주문 재설정")
+                    # 차이 발생이 일정비율 이상시 재주문
+
                 chkcoin = checktraded(key1, key2, coinn)  # 지갑 점검
                 if chkcoin is None: # 지갑내 해당코인이 없을 경우
                     canclebidorder(key1, key2, coinn) # 주문 취소
@@ -255,6 +265,7 @@ def order_new_bid(key1, key2, coinn, initAsset, intval, intergap, profit):
         setprice = preprice * (1.0 + (profit[0] / 100.0))
         setprice = calprice(setprice)
         setvolume = traded['balance']
+        globals()['mysell_{}'.format(seton[0])] = setprice
         selllimitpr(key1, key2, coinn, setprice, setvolume)
     # 추가 예약 매수 실행
     for i in range(1, intval + 1):
@@ -306,10 +317,12 @@ def order_mod_ask2(key1, key2, coinn, profit):
         totalamt = (float(tradednew['balance']) + float(tradednew['locked'])) * float(tradednew['avg_buy_price'])  # 전체 구매 금액
         totalvol = float(tradednew['balance']) + float(tradednew['locked'])  # 전체 구매 수량
         totalamt = totalamt + (totalamt * profit[0] / 100)
+        print("재설정 이윤 :", profit[0])
         print(totalamt)
         print(totalvol)
         setprice = totalamt / totalvol
         setprice = calprice(setprice)
+        globals()['mysell_{}'.format(seton[0])] = setprice
         selllimitpr(key1, key2, coinn, setprice, totalvol)
         # 새로운 매도 주문
     except Exception as e:
@@ -329,6 +342,7 @@ for seton in setons:
     globals()['tcnt_{}'.format(seton[0])] = 0  # 거래 예약 횟수 초기화
     globals()['askcnt_{}'.format(seton[0])] = 0  # 매도거래 수
     globals()['bidcnt_{}'.format(seton[0])] = 0  # 매수거래 수
+    globals()['mysell_{}'.format(seton[0])] = 0 #매도 설정 금액
 
 while True:
     print("Run Count : ", cnt)

@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 import pymysql
 import random
+import pandas as pd
 
 
 db = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit', charset='utf8')

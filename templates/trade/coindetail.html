@@ -36,6 +36,29 @@
 
         <div id="commonContent">
             <div class="container">
+            <table class="table table-bordered dailyprofit"  id = "dailyrecord">
+                <thead>
+                <tr style="text-align: center">
+                    <th>
+                        일자
+                    </th>
+                    <th>
+                        매수금액합계
+                    </th>
+                    <th>
+                        매도금액합계
+                    </th>
+                    <th>
+                        잔고
+                    </th>
+                    <th>
+                        수익금액
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
             <table class="table table-bordered">
             <thead>
             <tr style="text-align: center">
@@ -59,15 +82,15 @@
                     <td style = text-align:center>
                 {{ item["market"] }}<br>
                     </td>
-                    <td style = text-align:center>
+                    <td style = text-align:center class="buysell">
                 {% if item["side"] == 'ask' %}
                         매도
                     {% else %}
                         매수
                 {% endif %}
                     </td>
-                    <td style = text-align:center>
-                {{ item["ord_type"] }}<br>
+                    <td style = text-align:center class="ordtyp">
+                {{ item["ord_type"]}}<br>
                     </td>
                     <td style = text-align:right class="mprice">
                 {{ item["price"] }}<br>
@@ -75,13 +98,13 @@
                     <td style = text-align:right>
                 {{ item["volume"] }}<br>
                     </td>
-                    <td style = text-align:right>
+                    <td style = text-align:right class="remaincoin">
                 {{ item["remaining_volume"] }}<br>
                     </td>
-                    <td style = text-align:right>
+                    <td style = text-align:right class="trdate">
                 {{ item["created_at"][0:10] }} {{ item["created_at"][11:19] }}<br>
                     </td>
-                    <td style = text-align:right>
+                    <td style = text-align:right class="trfee">
                 {{ item["paid_fee"] }}<br>
                     </td>
                     <td style = text-align:right>
@@ -108,25 +131,51 @@
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
     function numberNoneCommas(x) {
-		return x.toString().replace(/[\D\s\._\-]+/g, "");
+		return x.toString().replace(/,/g, "");
 	}
 
     function coinm(){
         var $Aarr = $(".mprice");
         var $Barr = $(".exevol");
         var $Carr = $(".profit");
+        var $Darr = $(".trfee");
+        var $Earr = $(".ordtyp");
+        var $Farr = $(".trdate");
         for (var i = 0; i < $Aarr.length; i++) {
             var mval = $Aarr[i].innerText;
             if (mval === ""){
                 mval=0;
             }
             var mvol = $Barr[i].innerText;
-            var settle = parseFloat(mval) * parseFloat(mvol);
+            var fee = $Darr[i].innerText;
+            if ($Earr[i] === '매도'){
+            var settle = parseFloat(mval) * parseFloat(mvol) - parseFloat(fee);
+            }else{
+            var settle = parseFloat(mval) * parseFloat(mvol) + parseFloat(fee);
+            }
             $Aarr[i].innerText = numberWithCommas(mval);
             $Carr[i].innerText = numberWithCommas(Math.round(settle));
         }
-    }
+        var lastdate = $Farr[0].innerText.substr(0,10);
+        var bidamt = 0;
+        var askamt = 0;
+        for (var k = 0; k < $Aarr.length; k++){
+            var trdate = $Farr[k].innerText.substr(0,10);
+            if (trdate === lastdate){
+                if ($Earr[k].innerText === "매수"){
+                    var bidresult = numberNoneCommas($Carr[k].innerText);
+                    bidamt = bidamt + parseFloat(bidresult);
+                }else if($Earr[k].innerText === "매도"){
+                    var askresult = numberNoneCommas($Carr[k].innerText);
+                    askamt = askamt + parseFloat(askresult);
+                }
+            }else{
 
+            }
+        }
+        var profits = askamt - bidamt;
+        console.log(profits);
+    }
 
 </script>
 </html>
