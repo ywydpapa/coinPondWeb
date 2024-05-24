@@ -5,7 +5,9 @@ from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehisto
 import pyupbit
 import os
 import time
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 Bootstrap(app)
@@ -14,6 +16,11 @@ Bootstrap(app)
 @app.route('/')
 def home():  # put application's code here
     return render_template('./login/login.html')
+
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('./trade/dashboard.html')
 
 
 @app.route('/trade', methods=['GET', 'POST'])

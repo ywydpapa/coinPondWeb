@@ -84,9 +84,9 @@
                     </td>
                     <td style = text-align:center class="buysell">
                 {% if item["side"] == 'ask' %}
-                        매도
+                        <span style="color: blue; ">매도</span>
                     {% else %}
-                        매수
+                        <span style="color: red; ">매수</span>
                 {% endif %}
                     </td>
                     <td style = text-align:center class="ordtyp">
@@ -126,6 +126,7 @@
 <script>
     $(document).ready(function () {
         coinm();
+        cutfee();
     });
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -175,6 +176,16 @@
         }
         var profits = askamt - bidamt;
         console.log(profits);
+    }
+
+    function cutfee(){
+        var $Darr = $(".trfee");
+        for (var c = 0; c < $Darr.length; c++){
+            var val = $Darr[c].innerText;
+            val = Math.ceil(val*10)/10;
+            $Darr[c].innerText = val;
+        }
+
     }
 
 </script>
