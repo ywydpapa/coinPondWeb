@@ -1,7 +1,7 @@
 import time
 import comm.dbconn
 import pyupbit
-import math
+
 
 bidcnt = 1
 
@@ -60,7 +60,6 @@ def checktraded(key1, key2, coinn):
             pass
     if checktrad is None:
         pass
-
 
 
 def calprice(bidprice):
@@ -379,7 +378,7 @@ def order_mod_ask2(key1, key2, coinn, profit): #이윤 변동식 계산 방식
     return None
 
 
-def order_mod_ask3(key1, key2, coinn, profit):
+def order_mod_ask3(key1, key2, coinn, profit): #분산형 매도주문 생성
     print("4단계 매도 주문 재생성")
     try:
         cancelaskorder(key1, key2, coinn)  # 기존 매도 주문 취소
@@ -417,9 +416,9 @@ for seton in setons:
 while True:
     print("Run Count : ", cnt)
     try:
-        order_cnt_trade(1) #서버 지정해야함.
+        order_cnt_trade(3)
         cnt = cnt + 1
     except Exception as e:
         print(e)
     finally:
-        time.sleep(1.5)
+        time.sleep(1)
