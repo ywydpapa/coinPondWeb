@@ -291,7 +291,50 @@ def order_new_bid(key1, key2, coinn, initAsset, intval, intergap, profit):
     return None
 
 
-def order_mod_ask(key1, key2, coinn, profit): #기존 계산 방식
+def order_new_bid2(key1, key2, coinn, initAsset, intval, intergap, profit): #고정간격 기법 새구매
+    global buyrest, bidasset, bidcnt, askcnt
+    print("고정간격 새로운 주문 함수 실행")
+    preprice = pyupbit.get_current_price(coinn)  # 현재값 로드
+    try:
+        bidasset = initAsset
+        buyrest = buymarketpr(key1, key2, coinn, bidasset)  # 첫번째 설정 구매
+        print("시장가 구매", buyrest)
+        globals()['tcnt_{}'.format(seton[0])] = 1  # 구매 함으로 설정
+    except Exception as e:
+        print(e)
+    finally:
+        print("1단계 매수내역 :", buyrest)
+        traded = checktraded(key1, key2, coinn)  # 설정 코인 지갑내 존재 확인
+        setprice = preprice * (1.0 + (profit[0] / 100.0))
+        setprice = calprice(setprice)
+        setvolume = traded['balance']
+        globals()['mysell_{}'.format(seton[0])] = setprice
+        # 분산 매도주문 입력
+
+        selllimitpr(key1, key2, coinn, setprice, setvolume)
+    # 추가 예약 매수 실행 - 균등 방법으로 변경
+    for i in range(1, intval + 1):
+        bidprice = ((preprice * 100) - (preprice * intergap[i])) / 100
+        bidprice = calprice(bidprice)
+        bidasset = bidasset * 2
+        preprice = bidprice #현재가에 적용
+        bidvol = bidasset / bidprice
+        print('interval ', i, '예약 거래 적용')
+        print('매수가격', bidprice)
+        print('매수금액', bidasset)
+        print('매수수량', bidvol)
+        if globals()['tcnt_{}'.format(seton[0])] == 1:  # 구매 신호에 따라 구매 진행
+            buylimitpr(key1, key2, coinn, bidprice, bidvol)
+            print("매수 실행")
+        else:
+            print("매수 PASS")
+    # 설정된 추가 매수 진행
+    globals()['tcnt_{}'.format(seton[0])] = 1  # 구매 완료 설정
+    #주문 개수 확인
+    return None
+
+
+def order_mod_ask(key1, key2, coinn, profit): #이윤 고정식 계산 방식
     print("매도 주문 재생성")
     try:
         preprice = pyupbit.get_current_price(coinn)  # 현재값 로드
@@ -311,8 +354,33 @@ def order_mod_ask(key1, key2, coinn, profit): #기존 계산 방식
     return None
 
 
-def order_mod_ask2(key1, key2, coinn, profit):
+def order_mod_ask2(key1, key2, coinn, profit): #이윤 변동식 계산 방식
     print("매도 주문 재생성")
+    try:
+        cancelaskorder(key1, key2, coinn)  # 기존 매도 주문 취소
+        tradednew = checktraded(key1, key2, coinn)  # 설정 코인 지갑내 존재 확인
+        totalamt = (float(tradednew['balance']) + float(tradednew['locked'])) * float(tradednew['avg_buy_price'])  # 전체 구매 금액
+        totalvol = float(tradednew['balance']) + float(tradednew['locked'])  # 전체 구매 수량
+        totalamt = totalamt + (totalamt * profit[0] / 100)
+        print("재설정 이윤 :", profit[0])
+        print(totalamt)
+        print(totalvol)
+        setprice = totalamt / totalvol
+        setprice = calprice(setprice)
+        globals()['mysell_{}'.format(seton[0])] = setprice
+        selllimitpr(key1, key2, coinn, setprice, totalvol)
+        # 새로운 매도 주문
+    except Exception as e:
+        print('매도주문 갱신 에러 ',e)
+    finally:
+        print('매도주문 갱신')
+        globals()['tcnt_{}'.format(seton[0])] = 3  # 구매 완료 설정
+        # 새로운 주문 완료
+    return None
+
+
+def order_mod_ask3(key1, key2, coinn, profit):
+    print("4단계 매도 주문 재생성")
     try:
         cancelaskorder(key1, key2, coinn)  # 기존 매도 주문 취소
         tradednew = checktraded(key1, key2, coinn)  # 설정 코인 지갑내 존재 확인
