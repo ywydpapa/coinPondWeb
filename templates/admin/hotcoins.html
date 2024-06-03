@@ -35,14 +35,16 @@
              <thead style="text-align: center">
              <th>코인명</th>
              <th>현재가</th>
-             <th>거래량</th>
+             <th>매수 거래량</th>
+             <th>매도 거래량</th>
              <th>추천여부</th>
              </thead>
-                 {% for coin in coinlist %}
+                 {% for coin in coindtls %}
                      <tr>
-                     <td style="text-align: center" class="coinn">{{ coin }}</td>
-                     <td></td>
-                     <td></td>
+                     <td style="text-align: center" class="coinn">{{ coin["market"] }}</td>
+                     <td style="text-align:right"> {{ coin["orderbook_units"][0]['ask_price'] }}</td>
+                     <td style="text-align:right"> {{ coin["total_bid_size"] }}</td>
+                         <td style="text-align:right">{{ coin["total_ask_size"] }}</td>
                      <td style="text-align: center"><input type="checkbox" class="chkhot" name="hotchk"></td>
                      </tr>
                  {% endfor %}

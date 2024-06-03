@@ -274,7 +274,9 @@ def sellcoin():
 @app.route('/hotcoins')
 def hotcoins():
     tickers = pyupbit.get_tickers(fiat="KRW")
-    return render_template('./admin/hotcoins.html', coinlist=tickers)
+    coindtl = pyupbit.get_orderbook(ticker=tickers)
+    print(coindtl)
+    return render_template('./admin/hotcoins.html', coinlist=tickers, coindtls = coindtl)
 
 
 @app.route('/updateset', methods=['POST'] )
