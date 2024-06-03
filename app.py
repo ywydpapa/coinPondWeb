@@ -208,6 +208,13 @@ def userdetail():
     return render_template('./admin/userDetail.html', user=user)
 
 
+@app.route('/changemySet')
+def mydetail():
+    userno = request.args.get('uno')
+    user = detailuser(userno)
+    return render_template('./admin/myDetail.html', user=user)
+
+
 @app.route('/setyn', methods=['POST'])
 def setyn():
     pla = request.get_data().decode('utf-8').split(',')

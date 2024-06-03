@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+{% include '/comm/header.html' %}
+<style>
+    .container{
+        padding-right: 0;
+        overflow: auto;
+    }
+
+    .chartContents > div{
+        border: 1px solid #BDBDBD;
+        padding: 10px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+</style>
+</head>
+<body>
+    <div id="commonTopHeader">
+{% include '/comm/commTopHeader.html' %}
+    </div>
+
+    <div id="commonBodyContents">
+{% include '/comm/sidemenu.html' %}
+        <!-- commonSideMenu end-->
+
+        <div id="commonContent">
+            <div class="container">
+            <hr>
+             <div>
+                 <form action="/updateuser" method="post" onsubmit="return confirm('사용자의 정보를 저장하시겠습니까?');">
+                 <table class="table">
+                     <tr style="display: none">
+                         <td>
+                         userNo
+                         </td>
+                         <td>
+                             <label for="uno"></label><input type="number" id="uno" name="uno" value="{{ user[0] }}">
+                         </td>
+                         <td></td>
+                     </tr>
+                     <tr>
+                         <td>
+                         userId
+                         </td>
+                         <td>
+                         {{ user[1] }}
+                         </td>
+                         <td>
+                             <button class="btn btn-primary"> 개인정보 수정 </button>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>
+                         userName
+                         </td>
+                         <td>
+                         {{ user[2] }}
+                         </td>
+                         <td></td>
+                     </tr>
+                     <tr>
+                         <td>
+                         AccessKey
+                         </td>
+                         <td>
+                             <label for="apikey1"></label><input type="text" id="apikey1" name="apikey1" value="{{ user[4] }}" class="form-control">
+                         </td>
+                         <td></td>
+                     </tr>
+                     <tr>
+                         <td>
+                         SecureKey
+                         </td>
+                         <td>
+                             <label for="apikey2"></label><input type="text" id="apikey2" name="apikey2" value="{{ user[5] }}" class="form-control">
+                         </td>
+                         <td></td>
+                     </tr>
+                     <tr>
+                         <td>Daemon server No</td>
+                         <td><input type="number" id="svrno" name="svrno" min="1" max="100000" value="{{ user[8] }}"> </td>
+                         <td></td>
+                     </tr>
+                     <tr>
+                         <td>password</td>
+                         <td><input id = "mypasswd" name = "mypasswd" type="password" class="form-control"> </td>
+                         <td><button class="btn btn-danger" onclick="setmypass({{ user[0] }})">암호변경</button></td>
+                     </tr>
+
+                 </table>
+                 </form>
+             </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+    });
+        function setmypass(uno,passwd){
+            passwd = $('#mypasswd').val();
+            if (passwd == ""){
+                alert("변경하려는 암호가 없습니다.");
+                return;
+            }
+        data = [uno,passwd]
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: '/changemypass',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                location.reload();
+                alert("암호가 변경되었습니다. 원활한 사용을 위해 다시 로그인 해주세요.")
+                }
+        });
+    }
+</script>
+</html>
