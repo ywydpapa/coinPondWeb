@@ -224,11 +224,16 @@ def setyn():
     return "YES"
 
 
-@app.route('/sethotcoin', methods=['POST'])
-def sethotcoin():
-    coinn = request.args.get('coinn')
-    sethotcoin(coinn)
+@app.route('/hotyn', methods=['POST'])
+def hotyn():
+    pla = request.get_data().decode('utf-8').split(',')
+    coinn = pla[0]
+    yesno = pla[1]
+    print(coinn)
+    print(yesno)
+    sethotcoin(coinn, yesno)
     return "YES"
+
 
 @app.route('/settingyn', methods=['POST'])
 def settingyn():

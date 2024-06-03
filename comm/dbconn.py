@@ -521,18 +521,23 @@ def hotcoinlist():
     return rows
 
 
-def sethotcoin(coinn):
+def sethotcoin(coinn, yn):
     global rows
     db27 = pymysql.connect(host='swc9004.iptime.org', user='swcdjk', password='core2020', db='anteUpbit',
                            charset='utf8')
     cur27 = db27.cursor()
     try:
-        sql = "UPDATE hotCoins SET attrib = %s where coinName=%s"
-        cur27.execute(sql, ("XXX00XXX00XXX00",coinn))
-        db27.commit()
-        sql = "INSERT INTO hotCoins (coinName, regDate) VALUES (%s, %s)"
-        cur27.execute(sql,(coinn, 'now()'))
-        db27.commit()
+        if yn == 'N':
+            sql = "UPDATE hotCoins SET attrib = %s where coinName=%s"
+            cur27.execute(sql, ("XXX00XXX00XXX00",coinn))
+            db27.commit()
+        else:
+            sql = "UPDATE hotCoins SET attrib = %s where coinName=%s"
+            cur27.execute(sql, ("XXX00XXX00XXX00", coinn))
+            db27.commit()
+            sql2 = "INSERT INTO hotCoins (coinName, regDate) VALUES (%s, now())"
+            cur27.execute(sql2,coinn)
+            db27.commit()
     except Exception as e:
         print('접속오류', e)
     finally:

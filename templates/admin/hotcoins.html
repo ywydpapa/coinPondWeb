@@ -56,15 +56,34 @@
     $(document).ready(function () {
     });
 
+    function hotyn(coinn,yn){
+        data = [coinn,yn]
+        $.ajax({
+            type: "POST",
+            url: '/hotyn',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                }
+        });
+    }
+
     function savelist(){
           var $Aarr = $(".coinn");
           var $Barr = $(".chkhot");
           for (var i = 0; i < $Aarr.length; i++){
-              if ($Barr.is(":checked") === true){
-
+              if ($Barr[i].checked === true){
+                  var coin = $Aarr[i].innerText;
+                  var yn = 'Y';
+                  hotyn(coin, yn);
+              } else {
+                  var coin = $Aarr[i].innerText;
+                  var yn = 'N';
+                  hotyn(coin, yn);
               }
           }
-
     }
 </script>
 </html>
