@@ -97,14 +97,15 @@ def login():
                 skey = str(row[1])
                 svrno = row[0][2]
                 setKeys(uno, skey)
-                path = '/trade?uno=' + str(uno) + '&skey=' + str(skey) + '&svrno=' + str(svrno)
+                path = '/dashboard'
+                #path = '/t1rade?uno=' + str(uno) + '&skey=' + str(skey) + '&svrno=' + str(svrno)
             except Exception as e:
                 session['userNo'] = 0
                 session['userName'] = '브라우저 재시작 필요'
                 session['serverNo'] = 0
                 session['setkey'] = '000000'
                 print(e)
-                path = '/login/login.html'
+                path = '/login'
             finally:
                 return redirect(path)
         else:
