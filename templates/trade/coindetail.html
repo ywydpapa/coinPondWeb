@@ -55,6 +55,23 @@
                         수익금액
                     </th>
                 </tr>
+                <tr>
+                    <td id = "profdate" style="text-align: center">
+
+                    </td>
+                    <td id = "bidsum" style="text-align: right">
+
+                    </td>
+                    <td id = "asksum" style="text-align: right">
+
+                    </td>
+                    <td id = "restcoin" style="text-align: right">
+
+                    </td>
+                    <td id = "resultprofit" style="text-align: right">
+
+                    </td>
+                </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -79,7 +96,7 @@
             <tbody>
                 {% for item in orderlist %}
                     <tr>
-                    <td style = text-align:center>
+                    <td style = text-align:center class="coinn">
                 {{ item["market"] }}<br>
                     </td>
                     <td style = text-align:center class="buysell">
@@ -113,7 +130,7 @@
                     <td style = text-align:right class="exevol">
                 {{ item["executed_volume"] }}<br>
                     </td>
-                    <td style = text-align:right class = "profit" >
+                    <td style = text-align:right class = "settle" >
                     </td>
                     </tr>
                 {%  endfor %}
@@ -125,8 +142,8 @@
 </body>
 <script>
     $(document).ready(function () {
-        coinm();
         cutfee();
+        calprofit();
     });
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -135,57 +152,57 @@
 		return x.toString().replace(/,/g, "");
 	}
 
-    function coinm(){
+
+    function calprofit(){
         var $Aarr = $(".mprice");
         var $Barr = $(".exevol");
-        var $Carr = $(".profit");
-        var $Darr = $(".trfee");
-        var $Earr = $(".ordtyp");
+        var $Carr = $(".settle");
+        var $Darr = $(".buysell");
+        var $Earr = $(".trfee");
         var $Farr = $(".trdate");
-        for (var i = 0; i < $Aarr.length; i++) {
-            var mval = $Aarr[i].innerText;
-            if (mval === ""){
-                mval=0;
-            }
-            var mvol = $Barr[i].innerText;
-            var fee = $Darr[i].innerText;
-            if ($Earr[i] === '매도'){
-            var settle = parseFloat(mval) * parseFloat(mvol) - parseFloat(fee);
-            }else{
-            var settle = parseFloat(mval) * parseFloat(mvol) + parseFloat(fee);
-            }
-            $Aarr[i].innerText = numberWithCommas(mval);
-            $Carr[i].innerText = numberWithCommas(Math.round(settle));
-        }
-        var lastdate = $Farr[0].innerText.substr(0,10);
-        var bidamt = 0;
-        var askamt = 0;
-        for (var k = 0; k < $Aarr.length; k++){
-            var trdate = $Farr[k].innerText.substr(0,10);
-            if (trdate === lastdate){
-                if ($Earr[k].innerText === "매수"){
-                    var bidresult = numberNoneCommas($Carr[k].innerText);
-                    bidamt = bidamt + parseFloat(bidresult);
-                }else if($Earr[k].innerText === "매도"){
-                    var askresult = numberNoneCommas($Carr[k].innerText);
-                    askamt = askamt + parseFloat(askresult);
+        var caldate = $Farr[0].innerText;
+            caldate = caldate.substring(0,10);
+        var bidsum = 0;
+        var asksum = 0;
+        for (var i = 0; i < $Aarr.length; i++){
+            var mpr = $Aarr[i].innerText;
+            var exvol = $Barr[i].innerText;
+            var buysel = $Darr[i].innerText;
+            var fee = $Earr[i].innerText;
+            var tdate = $Farr[i].innerText.substring(0,10);
+            if (caldate === tdate) {
+                if (buysel === "매수") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) + parseFloat(fee);
+                    bidsum = bidsum + sett;
+                } else if (buysel === "매도") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) - parseFloat(fee);
+                    asksum = asksum + sett;
                 }
-            }else{
-
+            } else {
+                 if (buysel === "매수") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) + parseFloat(fee);
+                } else if (buysel === "매도") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) - parseFloat(fee);
+                }
             }
+            sett = Math.round(sett);
+            $Carr[i].innerText = numberWithCommas(sett);
         }
-        var profits = askamt - bidamt;
-        console.log(profits);
+        var profit = asksum - bidsum;
+        $("#bidsum").html(numberWithCommas(Math.round(bidsum)));
+        $("#asksum").html(numberWithCommas(Math.round(asksum)));
+        $("#resultprofit").html(numberWithCommas(Math.round(profit)));
+        $("#profdate").html(caldate);
     }
+
 
     function cutfee(){
         var $Darr = $(".trfee");
         for (var c = 0; c < $Darr.length; c++){
-            var val = $Darr[c].innerText;
-            val = Math.ceil(val*10)/10;
-            $Darr[c].innerText = val;
+            var valu = $Darr[c].innerText;
+            valu = Math.ceil(valu);
+            $Darr[c].innerText = valu;
         }
-
     }
 
 </script>

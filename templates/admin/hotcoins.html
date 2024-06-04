@@ -42,9 +42,9 @@
                  {% for coin in coindtls %}
                      <tr>
                      <td style="text-align: center" class="coinn">{{ coin["market"] }}</td>
-                     <td style="text-align:right"> {{ coin["orderbook_units"][0]['ask_price'] }}</td>
-                     <td style="text-align:right"> {{ coin["total_bid_size"] }}</td>
-                         <td style="text-align:right">{{ coin["total_ask_size"] }}</td>
+                     <td style="text-align:right" class="askprice"> {{ coin["orderbook_units"][0]['ask_price'] }}</td>
+                     <td style="text-align:right" class="bidsize"> {{ coin["total_bid_size"] }}</td>
+                         <td style="text-align:right" class="asksize">{{ coin["total_ask_size"] }}</td>
                      <td style="text-align: center"><input type="checkbox" class="chkhot" name="hotchk"></td>
                      </tr>
                  {% endfor %}
@@ -56,7 +56,31 @@
 </body>
 <script>
     $(document).ready(function () {
+        makecurrency();
     });
+
+    function makecurrency(){
+        var $Aarr = $(".askprice");
+        var $Barr = $(".bidsize");
+        var $Carr = $(".asksize");
+        for (var i = 0; i < $Aarr.length; i++){
+            var price = $Aarr[i].innerText;
+            var bidsz = $Barr[i].innerText;
+            bidsz = Math.round(bidsz);
+            var asksz = $Carr[i].innerText;
+            asksz = Math.round(asksz);
+            $Aarr[i].innerText = numberWithCommas(price);
+            $Barr[i].innerText = numberWithCommas(bidsz);
+            $Carr[i].innerText = numberWithCommas(asksz);
+        }
+    }
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
 
     function hotyn(coinn,yn){
         data = [coinn,yn]
