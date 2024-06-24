@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include '/comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include '/comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include '/comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- Page Heading -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">추천 코인 목록</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead style="text-align: center">
+                                    <th>코인명</th>
+                                    <th>설정변경링크</th>
+                                </thead>
+                                    <tbody>
+                                    {% for coin in coinlist %}
+                                        <tr>
+                                            <td style="text-align: center" class="coinn"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ coin[1]}}">{{ coin[1] }}</a></td>
+                                            <td style="text-align: center"><button class="btn-primary" onclick="location.href='/tradeSet?coinn={{ coin[1] }}'">투자 설정 변경</button></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+
+{% include '/comm/adscript.html' %}
+    <script>
+    $(document).ready(function () {
+        calcvalue();
+    });
+
+
+    function sellcoin(uno,coinn){
+        if (confirm("본 코인을 시장가로 매도하시겠습니까? 자산이 5,000원 미만인 경우 5,000원을 추가로 매입하여 일괄 매도합니다.")){
+        data = [uno,coinn]
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: '/sellcoin',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                location.reload();
+                }
+        });
+        }else{}}
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
+
+    function calcvalue(){
+        $Aarr = $(".vola");
+        $Barr = $(".volb");
+        $Carr = $(".aprice");
+        $Darr = $(".cvalue");
+        var nprice = 0;
+        var wonsum = 0;
+        for (var i = 0; i < $Darr.length; i++) {
+            var aval = parseFloat($Aarr[i].innerText);
+            var bval = parseFloat($Barr[i].innerText);
+            var cval = parseFloat($Carr[i].innerText);
+            if (cval == 0) {
+                cval = 1;
+            }
+            nprice = parseInt(Math.round((aval+bval)*cval));
+            wonsum = wonsum + nprice;
+            $Darr[i].innerText = numberWithCommas(nprice);
+        }
+        $("#wonsum").html(numberWithCommas(wonsum));
+    }
+</script>
+</body>
+</html>

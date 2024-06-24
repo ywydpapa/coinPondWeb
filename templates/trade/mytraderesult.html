@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include '/comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include '/comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include '/comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- Page Heading -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">나의 거래 현황</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                       <tr style="text-align: center">
+                                           <th>일자</th>
+                                           <th>매수금액합계</th>
+                                           <th>매도금액합계</th>
+                                           <th>잔고</th>
+                                           <th>수익금액</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                           <td id = "profdate" style="text-align: center"></td>
+                                           <td id = "bidsum" style="text-align: right"></td>
+                                           <td id = "asksum" style="text-align: right"></td>
+                                           <td id = "restcoin" style="text-align: right"></td>
+                                           <td id = "resultprofit" style="text-align: right"></td>
+                                       </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                                   <thead>
+                                       <tr style="text-align: center">
+                                           <td>코인명</td>
+                                           <td>종류</td>
+                                           <td>방법</td>
+                                           <td>시장가</td>
+                                           <td>보유량</td>
+                                           <td>남은량</td>
+                                           <td>거래시각</td>
+                                           <td>지급수수료</td>
+                                           <td>잠김</td>
+                                           <td>거래량</td>
+                                           <td>정산금액</td>
+                                       </tr>
+                                   </thead>
+                                   <tbody>
+                                   {% for item in orderlist %}
+                                       <tr>
+                                           <td style = text-align:center class="coinn">{{ item["market"] }}<br></td>
+                                           <td style = text-align:center class="buysell">{% if item["side"] == 'ask' %}<span style="color: blue; ">매도</span>{% else %}<span style="color: red; ">매수</span>{% endif %}</td>
+                                           <td style = text-align:center class="ordtyp">{{ item["ord_type"]}}<br></td>
+                                           <td style = text-align:right class="mprice">{{ item["price"] }}<br></td>
+                                           <td style = text-align:right>{{ item["volume"] }}<br></td>
+                                           <td style = text-align:right class="remaincoin">{{ item["remaining_volume"] }}<br></td>
+                                           <td style = text-align:right class="trdate">{{ item["created_at"][0:10] }} {{ item["created_at"][11:19] }}<br></td>
+                                           <td style = text-align:right class="trfee">{{ item["paid_fee"] }}<br></td>
+                                           <td style = text-align:right>{{ item["locked"] }}<br></td>
+                                           <td style = text-align:right class="exevol">{{ item["executed_volume"] }}<br></td>
+                                           <td style = text-align:right class = "settle" ></td>
+                                       </tr>
+                                   {%  endfor %}
+                                   </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+
+{% include '/comm/adscript.html' %}
+</body>
+<script>
+    $(document).ready(function () {
+        cutfee();
+        calprofit();
+    });
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/,/g, "");
+	}
+
+
+    function calprofit(){
+        var $Aarr = $(".mprice");
+        var $Barr = $(".exevol");
+        var $Carr = $(".settle");
+        var $Darr = $(".buysell");
+        var $Earr = $(".trfee");
+        var $Farr = $(".trdate");
+        var caldate = $Farr[0].innerText;
+            caldate = caldate.substring(0,10);
+        var bidsum = 0;
+        var asksum = 0;
+        for (var i = 0; i < $Aarr.length; i++){
+            var mpr = $Aarr[i].innerText;
+            var exvol = $Barr[i].innerText;
+            var buysel = $Darr[i].innerText;
+            var fee = $Earr[i].innerText;
+            var tdate = $Farr[i].innerText.substring(0,10);
+            if (caldate === tdate) {
+                if (buysel === "매수") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) + parseFloat(fee);
+                    bidsum = bidsum + sett;
+                } else if (buysel === "매도") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) - parseFloat(fee);
+                    asksum = asksum + sett;
+                }
+            } else {
+                 if (buysel === "매수") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) + parseFloat(fee);
+                } else if (buysel === "매도") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) - parseFloat(fee);
+                }
+            }
+            sett = Math.round(sett);
+            $Carr[i].innerText = numberWithCommas(sett);
+        }
+        var profit = asksum - bidsum;
+        $("#bidsum").html(numberWithCommas(Math.round(bidsum)));
+        $("#asksum").html(numberWithCommas(Math.round(asksum)));
+        $("#resultprofit").html(numberWithCommas(Math.round(profit)));
+        $("#profdate").html(caldate);
+    }
+
+
+    function cutfee(){
+        var $Darr = $(".trfee");
+        for (var c = 0; c < $Darr.length; c++){
+            var valu = $Darr[c].innerText;
+            valu = Math.ceil(valu);
+            $Darr[c].innerText = valu;
+        }
+    }
+
+</script>
+</html>

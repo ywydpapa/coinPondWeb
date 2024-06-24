@@ -6,7 +6,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-calendar-day"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">CoinPond<sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">CoinPond<sup>2024</sup></div>
             </a>
 
             <!-- Divider -->
@@ -32,13 +32,14 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>설정</span>
+                    <span>상태확인</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
                         <a class="collapse-item" href="/trade?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}">매매설정 확인</a>
                         <a class="collapse-item" href="/tradestat?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}">지갑내용 확인</a>
+                        <a class="collapse-item" href="/coindetail?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}">거래내역 확인</a>
                     </div>
                 </div>
             </li>
@@ -48,7 +49,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
+                    <span>설정변경</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
@@ -70,18 +71,10 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="/trade?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                    <span>트레이딩 상태확인</span></a>
             </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

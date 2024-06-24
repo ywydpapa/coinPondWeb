@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include '/comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include '/comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include '/comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- Page Heading -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">트레이딩 설정</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <form action="/setupbid" method="post" onsubmit="return confirm('설정내용을 저장하시겠습니까?');">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                         <colgroup>
+                                             <col width="20%" />
+                                             <col width="30%" />
+                                             <col width="30%" />
+                                             <col width="20%" />
+                                         </colgroup>
+                                         <thead>
+                                         <tr>
+                                             <td style="text-align: center"><h5>선택 코인</h5></td>
+                                             <td colspan="2"><select id="coinn" name="coinn" class="form-control form-controm-sm">
+                                                 {% for coin in coinlist %}
+                                                     <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
+                                                 {% endfor %}</select></td>
+                                             <td><button type="submit" value="submit" class="form-control btn btn-primary">저장</button></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>시작 금액 (1차 매수)</h5></td>
+                                             <td colspan="2">
+                                                 <input id="initprice" name="initprice" class="form-control" type="text" value="5000" placeholder="5,000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                                 </td>
+                                             <td><input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
+                                                 <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
+                                                 <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>구간 설정</h5></td>
+                                             <td colspan="2"><select id="bidsteps" name="bidsteps" class="form-control" style="text-align: right">
+                                                                 <option value="5">06</option>
+                                                                 <option value="6">07</option>
+                                                                 <option value="7">08</option>
+                                                                 <option value="8">09</option>
+                                                                 <option value="9" selected >10</option></select></td>
+                                             <td><button type="button" class="form-control btn btn-primary" onclick="setbid()">소요금액확인</button></td>
+                                         </tr>
+                                         </thead>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>투자 성향 </h5></td>
+                                             <td colspan="2"><select id="tradeset" name="tradeset" class="form-control" style="text-align: right">
+                                                             {% for set in setlist %}
+                                                                 <option value="{{ set[0] }}">{{ set[1] }}</option>
+                                                             {% endfor %}</select></td>
+                                             <td></td>
+                                         </tr>
+                                         <tr style="text-align: center">
+                                             <td></td>
+                                             <td>매수금액</td>
+                                             <td>필요금액</td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center; vertical-align: center"> <h5>1차 매수 </h5></td>
+                                             <td id="trvalst" style="text-align: right"></td>
+                                             <td style="text-align: right" id = "trsumst"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>2차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>3차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>4차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>5차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>6차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>7차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>8차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>9차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"> <h5>10차 매수 </h5></td>
+                                             <td class="trval" style="text-align: right"></td>
+                                             <td style="text-align: right" class = "trsum"></td>
+                                         </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+
+{% include '/comm/adscript.html' %}
+</body>
+<script>
+    $(document).ready(function () {
+    });
+
+    $('#initprice').change(function(){
+        var valu = $('#initprice').val();
+        if (valu < 5000){
+            valu = 5000
+        }
+        $('#initprice').val(numberWithCommas(valu));
+        document.getElementById('trvalst').innerText = "-";
+        document.getElementById('trsumst').innerText = "-";
+    });
+
+    $('#steprate').change(function(){
+        var grate = $('#steprate').val();
+
+
+    });
+
+    $('#profitrate').change(function(){
+        var irate  = $('#profitrate').val();
+        var $Iarr = $(".intinput");
+        if ($('#intchkb').is(":checked") === true) {
+            for (k=0; k<$Iarr.length; k++){
+                $Iarr[k].value = irate;
+            }
+        } else {
+
+        }
+    });
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
+
+    function setbid(){
+        var intv = numberNoneCommas($('#initprice').val());
+        var $Aarr = $(".trval");
+        var $Barr = $(".trsum");
+        var setval = intv;
+        var sumval = parseInt(intv);
+        document.getElementById('trvalst').innerText = numberWithCommas(setval);
+        document.getElementById('trsumst').innerText = numberWithCommas(setval);
+        for (var i = 0; i < 10; i++) {
+            if (i < $("#bidsteps").val()){
+            setval = setval *2 ;
+            sumval = parseInt(sumval) + parseInt(setval);
+            $Aarr[i].innerText = numberWithCommas(setval);
+            $Barr[i].innerText = numberWithCommas(sumval);
+            } else {
+                $Aarr[i].innerText = "0";
+                $Barr[i].innerText = "0";
+            }
+        }
+    }
+</script>
+</html>

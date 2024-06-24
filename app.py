@@ -34,7 +34,7 @@ def trade():
     trset = setdetail(setno)
     print(data)
     print(orderlist)
-    return render_template('./trade/trademain.html', result=data, wallet=wallet, list=orderlist, trset=trset)
+    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
@@ -42,7 +42,7 @@ def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
     setlist = selectsetlist(9)
-    return render_template('./trade/tradesetup.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
+    return render_template('./trade/setmytrade.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
 
 
 @app.route('/adminSet', methods=['GET', 'POST'])
@@ -55,7 +55,7 @@ def adminSet():
 @app.route('/peakcoin', methods=['GET', 'POST'])
 def peakcoin():
     coins = hotcoinlist()
-    return render_template('./trade/peakcoin.html', coinlist=coins)
+    return render_template('./trade/hotcoins.html', coinlist=coins)
 
 
 @app.route('/coindetail', methods=['GET', 'POST'])
@@ -63,7 +63,7 @@ def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     orderlist = tradehistory(uno, skey)
-    return render_template('./trade/coindetail.html', orderlist=orderlist)
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])
@@ -74,7 +74,7 @@ def tradestat():
         uno = request.args.get('uno')
         skey = request.args.get('skey')
         walletitems = checkwallet(uno, skey)
-        return render_template('./trade/tradestat.html', witems=walletitems)
+        return render_template('./trade/mywallet.html', witems=walletitems)
 
 
 @app.route('/login', methods=['GET', 'POST'])
