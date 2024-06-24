@@ -213,7 +213,7 @@ def userdetail():
 def mydetail():
     userno = request.args.get('uno')
     user = detailuser(userno)
-    return render_template('./admin/myDetail.html', user=user)
+    return render_template('./trade/mysettings.html', user=user)
 
 
 @app.route('/setyn', methods=['POST'])
