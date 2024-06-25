@@ -22,8 +22,38 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">DashBoard Page</h1>
-
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-5">
+                            <!-- Area Chart -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">BTC Trend</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myChart1"></canvas>
+                                    </div>
+                                    <hr>
+                                    24시간 비트코인 트렌드
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-5">
+                            <!-- Bar Chart -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">ETH Trend</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <canvas id="myChart2"></canvas>
+                                    </div>
+                                    <hr>
+                                    24시간 이더리움 트렌트
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -49,7 +79,6 @@
     </a>
      <!-- Bootstrap core JavaScript-->
 {% include '/comm/adscript.html' %}
-
 </body>
 
 </html>

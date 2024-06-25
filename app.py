@@ -264,6 +264,17 @@ def updateuser():
     users = listUsers()
     return render_template('./admin/useradmin.html', users=users)
 
+
+@app.route('/updatemyuser', methods=['POST'])
+def updatemyuser():
+    uno = request.form.get('uno')
+    key1 = request.form.get('apikey1')
+    key2 = request.form.get('apikey2')
+    svrno = request.form.get('svrno')
+    updateuserdetail(uno, key1, key2, svrno)
+    users = listUsers()
+    return render_template('./trade/dashboard.html', users=users)
+
 @app.route('/sellcoin', methods=['POST'])
 def sellcoin():
     pla = request.get_data().decode('utf-8').split(',')
