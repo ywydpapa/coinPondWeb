@@ -178,7 +178,7 @@ def setupmybidadmin():
 def setlist():
     global rows
     rows = selectsets()
-    return render_template('./admin/setlist.html', rows = rows)
+    return render_template('./admin/setlistn.html', rows = rows)
 
 
 @app.route('/setDetail', methods=['GET', 'POST'])
@@ -187,7 +187,7 @@ def detailset():
     sno = request.args.get('setno')
     rows = setdetail(sno)
     print(rows)
-    return render_template('./admin/setdetail.html', rows = rows)
+    return render_template('./admin/setdetailn.html', rows = rows)
 
 
 @app.route('/logout')
@@ -199,14 +199,14 @@ def logout():
 @app.route('/userAdmin')
 def useradmin():
     users = listUsers()
-    return render_template('./admin/useradmin.html', users=users)
+    return render_template('./admin/useradminn.html', users=users)
 
 
 @app.route('/userDetail')
 def userdetail():
     userno = request.args.get('uno')
     user = detailuser(userno)
-    return render_template('./admin/userDetail.html', user=user)
+    return render_template('./admin/userDetailn.html', user=user)
 
 
 @app.route('/changemySet')
@@ -262,7 +262,7 @@ def updateuser():
     svrno = request.form.get('svrno')
     updateuserdetail(uno, key1, key2, svrno)
     users = listUsers()
-    return render_template('./admin/useradmin.html', users=users)
+    return render_template('./admin/useradminn.html', users=users)
 
 
 @app.route('/updatemyuser', methods=['POST'])
@@ -288,7 +288,7 @@ def hotcoins():
     tickers = pyupbit.get_tickers(fiat="KRW")
     coindtl = pyupbit.get_orderbook(ticker=tickers)
     print(coindtl)
-    return render_template('./admin/hotcoins.html', coinlist=tickers, coindtls = coindtl)
+    return render_template('./admin/hotcoinsn.html', coinlist=tickers, coindtls = coindtl)
 
 
 @app.route('/updateset', methods=['POST'] )
@@ -321,7 +321,7 @@ def updateset():
     setno = request.form.get('setno')
     updatebidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, setno)
     rows = selectsets()
-    return render_template('./admin/setlist.html', rows = rows)
+    return render_template('./admin/setlistn.html', rows = rows)
 
 
 
