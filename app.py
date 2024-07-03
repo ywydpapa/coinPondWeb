@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin
+from comm.upbitdata import dashcandle548
 import pyupbit
 import os
 import time
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +22,9 @@ def home():  # put application's code here
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('./trade/dashboard.html')
+    btccand = [dashcandle548("KRW-BTC")]
+    ethcand = [dashcandle548("KRW-ETH")]
+    return render_template('./trade/dashboard.html', btccands=btccand, ethcands=ethcand)
 
 
 @app.route('/trade', methods=['GET', 'POST'])

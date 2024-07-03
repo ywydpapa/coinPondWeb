@@ -545,4 +545,3 @@ def sethotcoin(coinn, yn):
     finally:
         cur27.close()
         db27.close()
-
