@@ -1,9 +1,11 @@
 from flask import jsonify
 import requests
+import pyupbit
 import json
 
+from pandas import DataFrame
+
+
 def dashcandle548(coinn):
-    url = "https://api.upbit.com/v1/candles/minutes/5?count=48&market="+coinn
-    headers = {"accept": "application/json"}
-    response = requests.get(url, headers=headers)
-    return jsonify(response.text)
+    candles: DataFrame | None = pyupbit.get_ohlcv(coinn, interval="minute5", count=48)
+    return candles
