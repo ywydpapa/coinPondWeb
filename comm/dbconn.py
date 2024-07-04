@@ -552,8 +552,8 @@ def selectboardlist(brdid):
     db28 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur28 = db28.cursor()
     try:
-        sql = "SELECT * FROM board WHERE boardId=%s"
-        cur28.execute(sql, brdid)
+        sql = "SELECT * FROM board WHERE boardId=%s and attrib NOT LIKE %s"
+        cur28.execute(sql, (brdid,"XXX%"))
         rows = cur28.fetchall()
         return rows
     except Exception as e:

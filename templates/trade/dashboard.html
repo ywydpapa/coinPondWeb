@@ -80,7 +80,7 @@
                                             {% for notice in noticelist %}
                                             <tr style="text-align: center">
                                                 <td>{{ notice[0] }}</td>
-                                                <td>{{ notice[3] }}</td>
+                                                <td><a href="/boardedit?boardno={{ notice[0] }}">{{ notice[3] }}</a></td>
                                                 <td>{{ notice[6] }}</td>
                                             </tr>
                                             {% endfor %}

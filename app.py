@@ -24,7 +24,6 @@ def home():  # put application's code here
 @app.route('/dashboard')
 def dashboard():
     noticelist = selectboardlist(0) #공지사항 조회
-    print(noticelist)
     btccand = [dashcandle548("KRW-BTC")]
     ethcand = [dashcandle548("KRW-ETH")]
     indexv = btccand[0].index.tolist()
