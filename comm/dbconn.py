@@ -545,3 +545,21 @@ def sethotcoin(coinn, yn):
     finally:
         cur27.close()
         db27.close()
+
+
+def selectboardlist(brdid):
+    global rows
+    db28 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur28 = db28.cursor()
+    try:
+        sql = "SELECT * FROM board WHERE boardId=%s"
+        cur28.execute(sql, brdid)
+        rows = cur28.fetchall()
+        return rows
+    except Exception as e:
+        print('게시판 조회 오류',e)
+    finally:
+        cur28.close()
+        db28.close()
+
+

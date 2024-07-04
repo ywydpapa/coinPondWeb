@@ -77,11 +77,13 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                            {% for notice in noticelist %}
+                                            <tr style="text-align: center">
+                                                <td>{{ notice[0] }}</td>
+                                                <td>{{ notice[3] }}</td>
+                                                <td>{{ notice[6] }}</td>
                                             </tr>
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>

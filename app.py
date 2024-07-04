@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist
 from comm.upbitdata import dashcandle548
 import pyupbit
 import os
@@ -23,12 +23,14 @@ def home():  # put application's code here
 
 @app.route('/dashboard')
 def dashboard():
+    noticelist = selectboardlist(0) #공지사항 조회
+    print(noticelist)
     btccand = [dashcandle548("KRW-BTC")]
     ethcand = [dashcandle548("KRW-ETH")]
     indexv = btccand[0].index.tolist()
     listbtc = btccand[0]['open'].tolist()
     listeth = ethcand[0]['open'].tolist()
-    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, indexv=indexv)
+    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, indexv=indexv, noticelist=noticelist)
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
@@ -329,6 +331,21 @@ def updateset():
     updatebidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, setno)
     rows = selectsets()
     return render_template('./admin/setlistn.html', rows = rows)
+
+
+@app.route('/boardlist')
+def boardlist():
+    return render_template('./board/boardlist.html')
+
+
+@app.route('/boardwrite')
+def boardwrite():
+    return render_template('./board/boardwrite.html')
+
+
+@app.route('/boardedit')
+def boardedit():
+    return render_template('./board/boardedit.html')
 
 
 
