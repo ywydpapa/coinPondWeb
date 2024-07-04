@@ -104,12 +104,14 @@
     </a>
      <!-- Bootstrap core JavaScript-->
 
-{% include '/comm/adscript.html' %}
+{% include './comm/adscript.html' %}
+{% include './comm/adscripttable.html' %}
 </body>
 <script>
     $(document).ready(function () {
         cutfee();
         calprofit();
+        $('#dataTable2').DataTable();
     });
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
