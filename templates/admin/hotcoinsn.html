@@ -59,14 +59,15 @@
         <i class="fas fa-angle-up"></i>
     </a>
      <!-- Bootstrap core JavaScript-->
-{% include '/comm/adscript.html' %}
+{% include './comm/adscript.html' %}
+{% include './comm/adscripttable.html' %}
 </body>
 <script src="{{ url_for('static', filename ='vendor/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ url_for('static', filename ='vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script>
     $(document).ready(function () {
         makecurrency();
-        $('#coinTable').DataTable();
+        $('#coinTables').DataTable();
     });
 
     function makecurrency(){

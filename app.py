@@ -7,6 +7,7 @@ import pyupbit
 import os
 import time
 import json
+import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,8 +25,10 @@ def home():  # put application's code here
 def dashboard():
     btccand = [dashcandle548("KRW-BTC")]
     ethcand = [dashcandle548("KRW-ETH")]
-    return render_template('./trade/dashboard.html', btccands=btccand, ethcands=ethcand)
-
+    indexv = btccand[0].index.tolist()
+    listbtc = btccand[0]['open'].tolist()
+    listeth = ethcand[0]['open'].tolist()
+    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, indexv=indexv)
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
