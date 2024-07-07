@@ -363,14 +363,11 @@ def boardedit():
 def updateboard():
     brdno = request.form.get('boardno')
     brdid = request.form.get('boardid')
-    print(brdno, brdid)
     btitle = request.form.get('boardtitle')
     bcontents = request.form.get('boardcontents')
-    print(brdno, brdid, btitle, bcontents)
     boardupdate(brdno, btitle, bcontents)
     boardcont = selectboardlist(brdid)
-    print(boardcont)
-    return render_template('./board/boardlist.html', boardcont=boardcont)
+    return render_template('./board/boardlist.html', items = boardcont)
 
 
 @app.route('/writeboard', methods=['POST'])
