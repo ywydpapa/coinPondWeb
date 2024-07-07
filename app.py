@@ -337,6 +337,7 @@ def updateset():
 @app.route('/boardlist')
 def boardlist():
     items = selectboardlist(1)
+    print(items)
     return render_template('./board/boardlist.html', items = items)
 
 
@@ -362,12 +363,14 @@ def boardedit():
 def updateboard():
     brdno = request.form.get('boardno')
     brdid = request.form.get('boardid')
+    print(brdno, brdid)
     btitle = request.form.get('boardtitle')
     bcontents = request.form.get('boardcontents')
     print(brdno, brdid, btitle, bcontents)
     boardupdate(brdno, btitle, bcontents)
-    boardcont = boarddetail(brdno)
-    return render_template('./board/boardedit.html', boardcont=boardcont)
+    boardcont = selectboardlist(brdid)
+    print(boardcont)
+    return render_template('./board/boardlist.html', boardcont=boardcont)
 
 
 @app.route('/writeboard', methods=['POST'])

@@ -584,7 +584,7 @@ def boardupdate(brdno, btitle, bcontents):
     db30 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur30 = db30.cursor()
     try:
-        sql = "UPDATE board SET title = %s, context = %s where boardno=%s"
+        sql = "UPDATE board SET title = %s, context = %s, modDate = now() where boardno=%s"
         cur30.execute(sql, (btitle, bcontents,brdno))
         db30.commit()
     except Exception as e:
@@ -599,7 +599,7 @@ def boardnewwrite(brdid, btitle, bcontents, userid):
     db31 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur31 = db31.cursor()
     try:
-        sql = "INSERT into board (boardId, title, context, userId, regDate) values (%s,%s,%s,%s,now())"
+        sql = "INSERT into board (boardId, title, context, userId, regDate, modDate) values (%s,%s,%s,%s,now(),now())"
         cur31.execute(sql, (brdid, btitle, bcontents, userid))
         db31.commit()
     except Exception as e:
