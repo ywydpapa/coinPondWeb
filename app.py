@@ -337,7 +337,6 @@ def updateset():
 @app.route('/boardlist')
 def boardlist():
     items = selectboardlist(1)
-    print(items)
     return render_template('./board/boardlist.html', items = items)
 
 
@@ -376,7 +375,6 @@ def writeboard():
     brdid = request.form.get('boardId')
     btitle = request.form.get('boardtitle')
     bcontents = request.form.get('boardcontents')
-    print(brdid, btitle, bcontents)
     boardnewwrite(brdid, btitle, bcontents, userid)
     return render_template('./board/boardlist.html')
 
