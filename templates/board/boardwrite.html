@@ -16,6 +16,33 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">새글 작성</h1>
+                    <form action="/writeboard" method="post" onsubmit="return confirm('새글을 저장하시겠습니까?');">
+                    <div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style="text-align: center">
+                                    제목
+                                </td>
+                                <td>
+                                    <input type="hidden" id="boardId" name="boardId" class="form-control" value="1">
+                                    <input type="hidden" id="userId" name="userId" class="form-control" value="{{ session["userName"] }}">
+                                    <input type="text" id="boardtitle" name="boardtitle" class="form-control" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    내용
+                                </td>
+                                <td>
+                                    <textarea class="form-control" id="boardcontents" name="boardcontents"></textarea>
+                                </td>
+                            </tr>
+                            <tr style="text-align: center">
+                                <td colspan="2"><button type="submit" class="btn btn-primary" id="updateboard">등록</button> <button type="reset" class="btn btn-danger" id="canceledit">취소</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
             </div>

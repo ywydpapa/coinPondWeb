@@ -15,7 +15,42 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">작성글 편집</h1>
+                    <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                        <h1 class="h3 mb-4 text-gray-800">편집</h1>
+                        </div>
+                        <div>
+                            <a href="/boardlist"><h3 class="h3 mb-4 text-gray-800">목록으로</h3></a>
+                        </div>
+                    </div>
+
+                    <form action="/updateboard" method="post" onsubmit="return confirm('수정한 내용을 저장하시겠습니까?');">
+                    <div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style="text-align: center">
+                                    제목
+                                </td>
+                                <td>
+                                    <input type="hidden" id="boardno" name="boardno" class="form-control" value="{{ boardcont[0][0] }}">
+                                    <input type="hidden" id="boardid" name="boardid" class="form-control" value="{{ boardcont[0][1] }}">
+                                    <input type="text" id="boardtitle" name="boardtitle" class="form-control" value="{{ boardcont[0][3] }}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    내용
+                                </td>
+                                <td>
+                                    <textarea class="form-control" id="boardcontents" name="boardcontents">{{ boardcont[0][4] }}</textarea>
+                                </td>
+                            </tr>
+                            <tr style="text-align: center">
+                                <td colspan="2"><button type="submit" class="btn btn-primary" id="updateboard">저장</button> <button type="reset" class="btn btn-danger" id="canceledit">취소</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
             </div>

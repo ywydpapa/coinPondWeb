@@ -16,6 +16,36 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">게시판 목록</h1>
+                    <table class="table table-bordered">
+                        <thead style="text-align: center">
+                        <th>
+                            글번호
+                        </th>
+                        <th>
+                            제목
+                        </th>
+                        <th>내용</th>
+                        <th>
+                            작성자
+                        </th>
+                        <th>
+                            작성일자
+                        </th>
+                        </thead>
+                        <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td style="text-align: center">{{ item[0] }}</td>
+                            <td><a href="/boardedit?boardno={{ item[0] }}">{{ item[3] }}</a></td>
+                            <td>{{ item[4] }}</td>
+                            <td style="text-align: center">{{ item[5] }}</td>
+                            <td style="text-align: center">{{ item[6] }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
                 </div>
                 <!-- /.container-fluid -->
             </div>

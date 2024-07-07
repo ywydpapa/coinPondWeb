@@ -94,7 +94,9 @@
                             <!-- Bar Chart -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">게시판</h6>
+                                    <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div><h6 class="m-0 font-weight-bold text-primary">게시판</h6></div><div><a style="text-align: right" href="/boardwrite?boardid=1"><h6 class="m-0 font-weight-bold text-primary">새글작성</h6></a></div>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -106,13 +108,13 @@
                                             <th>등록일</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                            {% for bitem in boarditem %}
+                                            <tr style="text-align: center">
+                                                <td>{{ bitem[0] }}</td>
+                                                <td><a href="/boardedit?boardno={{ bitem[0] }}">{{ bitem[3] }}</a></td>
+                                                <td>{{ bitem[6] }}</td>
                                             </tr>
-                                            </tbody>
+                                            {% endfor %}
                                         </table>
                                     </div>
                                 </div>

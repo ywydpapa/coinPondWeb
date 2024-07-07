@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, boardupdate, boardnewwrite
 from comm.upbitdata import dashcandle548
 import pyupbit
 import os
@@ -24,12 +24,14 @@ def home():  # put application's code here
 @app.route('/dashboard')
 def dashboard():
     noticelist = selectboardlist(0) #공지사항 조회
+    boarditems = selectboardlist(1)
+
     btccand = [dashcandle548("KRW-BTC")]
     ethcand = [dashcandle548("KRW-ETH")]
     indexv = btccand[0].index.tolist()
     listbtc = btccand[0]['open'].tolist()
     listeth = ethcand[0]['open'].tolist()
-    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, indexv=indexv, noticelist=noticelist)
+    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, indexv=indexv, noticelist=noticelist, boarditem = boarditems)
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
@@ -334,7 +336,14 @@ def updateset():
 
 @app.route('/boardlist')
 def boardlist():
-    return render_template('./board/boardlist.html')
+    items = selectboardlist(1)
+    return render_template('./board/boardlist.html', items = items)
+
+
+@app.route('/noticelist')
+def noticelist():
+    items = selectboardlist(0)
+    return render_template('./board/boardlist.html', items = items)
 
 
 @app.route('/boardwrite')
@@ -344,8 +353,32 @@ def boardwrite():
 
 @app.route('/boardedit')
 def boardedit():
-    return render_template('./board/boardedit.html')
+    brdno = request.args.get('boardno')
+    boardcont = boarddetail(brdno)
+    return render_template('./board/boardedit.html', boardcont=boardcont)
 
+
+@app.route('/updateboard', methods=['POST'])
+def updateboard():
+    brdno = request.form.get('boardno')
+    brdid = request.form.get('boardid')
+    btitle = request.form.get('boardtitle')
+    bcontents = request.form.get('boardcontents')
+    print(brdno, brdid, btitle, bcontents)
+    boardupdate(brdno, btitle, bcontents)
+    boardcont = boarddetail(brdno)
+    return render_template('./board/boardedit.html', boardcont=boardcont)
+
+
+@app.route('/writeboard', methods=['POST'])
+def writeboard():
+    userid = request.form.get('userId')
+    brdid = request.form.get('boardId')
+    btitle = request.form.get('boardtitle')
+    bcontents = request.form.get('boardcontents')
+    print(brdid, btitle, bcontents)
+    boardnewwrite(brdid, btitle, bcontents, userid)
+    return render_template('./board/boardlist.html')
 
 
 if __name__ == '__main__':

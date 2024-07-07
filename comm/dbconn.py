@@ -563,3 +563,52 @@ def selectboardlist(brdid):
         db28.close()
 
 
+def boarddetail(brdno):
+    global rows
+    db29 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur29 = db29.cursor()
+    try:
+        sql = "SELECT * FROM board WHERE boardno=%s and attrib NOT LIKE %s"
+        cur29.execute(sql, (brdno, "XXX%"))
+        rows = cur29.fetchall()
+        return rows
+    except Exception as e:
+        print('게시판 조회 오류', e)
+    finally:
+        cur29.close()
+        db29.close()
+
+
+def boardupdate(brdno, btitle, bcontents):
+    global rows
+    db30 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur30 = db30.cursor()
+    try:
+        sql = "UPDATE board SET title = %s, context = %s where boardno=%s"
+        cur30.execute(sql, (btitle, bcontents,brdno))
+        db30.commit()
+    except Exception as e:
+        print('게시판 업데이트 오류',e)
+    finally:
+        cur30.close()
+        db30.close()
+
+
+def boardnewwrite(brdid, btitle, bcontents, userid):
+    global rows
+    db31 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur31 = db31.cursor()
+    try:
+        sql = "INSERT into board (boardId, title, context, userId, regDate) values (%s,%s,%s,%s,now())"
+        cur31.execute(sql, (brdid, btitle, bcontents, userid))
+        db31.commit()
+    except Exception as e:
+        print('게시판 작성 오류',e)
+    finally:
+        cur31.close()
+        db31.close()
+
+
+
+
+
