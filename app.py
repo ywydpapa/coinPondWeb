@@ -25,13 +25,14 @@ def home():  # put application's code here
 def dashboard():
     noticelist = selectboardlist(0) #공지사항 조회
     boarditems = selectboardlist(1)
-
     btccand = [dashcandle548("KRW-BTC")]
     ethcand = [dashcandle548("KRW-ETH")]
     indexv = btccand[0].index.tolist()
     listbtc = btccand[0]['open'].tolist()
     listeth = ethcand[0]['open'].tolist()
-    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, indexv=indexv, noticelist=noticelist, boarditem = boarditems)
+    listbtcc = btccand[0]['close'].tolist()
+    listethc = ethcand[0]['close'].tolist()
+    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, btccandsc=listbtcc, ethcandsc=listethc, indexv=indexv, noticelist=noticelist, boarditem=boarditems)
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():

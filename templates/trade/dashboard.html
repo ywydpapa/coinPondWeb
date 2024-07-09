@@ -36,7 +36,7 @@
                                     <hr>
                                     <br>
                                     <br>
-                                    5분 간격 4시간 비트코인 트렌드 (종가 기준)
+                                    5분 간격 4시간 비트코인 트렌드
                                 </div>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                                     <hr>
                                     <br>
                                     <br>
-                                    5분 간격 4시간 이더리움 트렌트 (종가 기준)
+                                    5분 간격 4시간 이더리움 트렌트
                                 </div>
                             </div>
                         </div>
@@ -156,6 +156,10 @@
     dataArr1.reverse();
     dataArr2 = {{ ethcands }};
     dataArr2.reverse();
+    dataArr3 = {{ btccandsc }};
+    dataArr3.reverse();
+    dataArr4 = {{ ethcandsc }};
+    dataArr4.reverse();
     indexArr.reverse();
 
     new Chart(document.getElementById("myChart1"), {
@@ -163,9 +167,15 @@
     data: {
         labels: indexArr ,
         datasets: [{
-            label: 'btc',
+            label: 'open',
             data: dataArr1,
             borderColor: "rgb(247,85,16)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: 'close',
+            data: dataArr3,
+            borderColor: "rgb(16,247,58)",
             fill: false,
             lineTension: 0
         }]
@@ -207,9 +217,15 @@
     data: {
         labels: indexArr ,
         datasets: [{
-            label: 'eth',
+            label: 'open',
             data: dataArr2,
             borderColor: "rgb(16,89,247)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: 'close',
+            data: dataArr4,
+            borderColor: "rgb(16,247,58)",
             fill: false,
             lineTension: 0
         }]
