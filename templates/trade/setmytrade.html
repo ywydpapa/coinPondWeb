@@ -202,7 +202,7 @@
         document.getElementById('trsumst').innerText = numberWithCommas(setval);
         for (var i = 0; i < 10; i++) {
             if (i < $("#bidsteps").val()){
-            setval = setval *2 ;
+            setval = sumval *2 ;
             sumval = parseInt(sumval) + parseInt(setval);
             $Aarr[i].innerText = numberWithCommas(setval);
             $Barr[i].innerText = numberWithCommas(sumval);
