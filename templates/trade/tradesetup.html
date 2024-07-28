@@ -211,9 +211,8 @@
 
     $('#steprate').change(function(){
         var grate = $('#steprate').val();
-
-
     });
+
 
     $('#profitrate').change(function(){
         var irate  = $('#profitrate').val();
@@ -230,6 +229,7 @@
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+
     function numberNoneCommas(x) {
 		return x.toString().replace(/[\D\s\._\-]+/g, "");
 	}
@@ -249,8 +249,8 @@
             $Aarr[i].innerText = numberWithCommas(setval);
             $Barr[i].innerText = numberWithCommas(sumval);
             } else {
-                $Aarr[i].innerText = "0";
-                $Barr[i].innerText = "0";
+                $Aarr[i].innerText = numberWithCommas(0);
+                $Barr[i].innerText = numberWithCommas(0);
             }
         }
     }
