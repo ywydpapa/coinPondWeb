@@ -2,51 +2,6 @@
 <html lang="euc-kr">
 <head>
         {% include '/comm/adheader.html' %}
-<style>
-    label {
-        display: block;
-        position: relative;
-        width: 100px;
-        height: 45px;
-        background: #d3d3d3;
-        border-radius: 60px;
-        transition: background 0.4s;
-}
-    label::after {
-  content: "";
-  position: absolute;
-  left: 2.5px;
-  top: 50%;
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background-color: #fff;
-  transform: translateY(-50%);
-  box-shadow: 1px 3px 4px rgba(0,0,0,0.1);
-  transition: all 0.4s;
-}
-    label::before {
-  content: "OFF";
-  font-size: 24px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  left: 45px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: all 0.4s;
-}
-    #chk1:checked + label {
-  background:rgba(13, 202, 240)
-}
-    #chk1:checked + label::after {
- left: calc(100% - 42.5px);
-}
-    #chk1:checked + label::before {
-  content: "ON";
-  color: #fff;
-  left: 15px;
-}
-</style>
 
 </head>
 <body id="page-top">
@@ -89,7 +44,12 @@
                                     </tr>
                                     <tr>
                                         <td style="text-align: center">동작상태</td>
-                                        <td style="text-align:center"><input type="checkbox" id="chk1" name="chk1" {% if result[5]=='Y' %}checked{% endif %} /><label for="switch"></label></td>
+                                        <td style="text-align:center">
+                                            <div class="custom-control custom-switch">
+                                                   <input type="checkbox" class="custom-control-input" id="chk1" name="chk1" {% if result[5]=='Y' %}checked{% endif %} />
+                                                   <label class="custom-control-label" for="chk1">on/off</label>
+                                            </div>
+                                        </td>
                                     </tr>
                                     </tbody>
                                     </table>
@@ -196,6 +156,7 @@
     var uno = {{ session["userNo"] }}
     if($('input[name="chk1"]').is(":checked") === true){
         setyn(uno,"Y");
+
     } else {
     setyn(uno,"N");
     }
