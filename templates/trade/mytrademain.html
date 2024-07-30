@@ -49,6 +49,10 @@
                                                    <input type="checkbox" class="custom-control-input" id="chk1" name="chk1" {% if result[5]=='Y' %}checked{% endif %} />
                                                    <label class="custom-control-label" for="chk1">on/off</label>
                                             </div>
+                                            <div class="custom-control custom-switch">
+                                                   <input type="checkbox" class="custom-control-input" id="chk2" name="chk2" {% if result[7]=='Y' %}checked{% endif %}{% if result[5]=='N' %} disabled{% endif %} />
+                                                   <label class="custom-control-label" for="chk2">hold</label>
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -156,9 +160,17 @@
     var uno = {{ session["userNo"] }}
     if($('input[name="chk1"]').is(":checked") === true){
         setyn(uno,"Y");
-
     } else {
     setyn(uno,"N");
+    }
+    });
+
+    $("#chk2").change(function(){
+    var uno = {{ session["userNo"] }}
+    if($('input[name="chk2"]').is(":checked") === true){
+        sethr(uno,"Y");
+    } else {
+    sethr(uno,"N");
     }
     });
 
@@ -189,7 +201,6 @@
 
     function setyn(uno,yn){
         data = [uno,yn]
-        console.log(data);
         $.ajax({
             type: "POST",
             url: '/setyn',
@@ -197,7 +208,20 @@
             processData: false,
             contentType: false,
             success: (res) => {
-                console.log(res);
+                location.reload();
+                }
+        });
+    }
+
+    function sethr(uno,hr){
+        data = [uno,hr]
+        $.ajax({
+            type: "POST",
+            url: '/sethr',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
                 location.reload();
                 }
         });
@@ -210,7 +234,7 @@
 		return x.toString().replace(/[\D\s\._\-]+/g, "");
 	}
 
-    window.setInterval('refresh()', 30000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
+    window.setInterval('refresh()', 15000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
 
     // Refresh or reload page.
     function refresh() {

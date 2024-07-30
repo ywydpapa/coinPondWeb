@@ -266,7 +266,7 @@ def getsetup(uno):
     try:
         db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
         cur12 = db.cursor()
-        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey from tradingSetup where userNo=%s and attrib not like %s"
+        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey,holdYN  from tradingSetup where userNo=%s and attrib not like %s"
         cur12.execute(sql, (uno, '%XXXUP'))
         data = list(cur12.fetchone())
         return data
@@ -303,6 +303,20 @@ def setonoff(uno,yesno):
         print('접속오류', e)
     finally:
         cur14.close()
+        db.close()
+
+
+def setholdreset(uno,hr):
+    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur14_1 = db.cursor()
+    try:
+        sql = "UPDATE tradingSetup SET holdYN = %s where userNo=%s AND attrib not like %s"
+        cur14_1.execute(sql, (hr, uno,'%XXXUP'))
+        db.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur14_1.close()
         db.close()
 
 

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, boardupdate, boardnewwrite
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, boardupdate, boardnewwrite, setholdreset
 from comm.upbitdata import dashcandle548
 import pyupbit
 import os
@@ -233,6 +233,15 @@ def setyn():
     uno = pla[0]
     yesno = pla[1]
     setonoff(uno, yesno)
+    return "YES"
+
+
+@app.route('/sethr', methods=['POST'])
+def sethr():
+    pla = request.get_data().decode('utf-8').split(',')
+    uno = pla[0]
+    hldrst = pla[1]
+    setholdreset(uno,hldrst)
     return "YES"
 
 
