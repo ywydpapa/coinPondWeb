@@ -146,7 +146,13 @@ def setupmybid():
         coinn = request.form.get('coinn')
         skey = request.form.get('skey')
         svrno = request.form.get('svrno')
-        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset)
+        hno = request.form.get('holdno')
+        dyn = request.form.get('doublechk')
+        if dyn == 'on':
+            dyn = 'Y'
+        else:
+            dyn = 'N'
+        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset, hno, dyn)
     return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 
@@ -181,7 +187,13 @@ def setupmybidadmin():
         r7 = request.form.get('int07')
         r8 = request.form.get('int08')
         r9 = request.form.get('int09')
-        setupbidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
+        hyn = request.form.get('holdon')
+        dyn = request.form.get('doublechk')
+        if dyn == 'on':
+            dyn = 'Y'
+        else:
+            dyn = 'N'
+        setupbidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, hyn, dyn)
     return redirect('/setlist')
 
 
@@ -338,8 +350,14 @@ def updateset():
     r7 = request.form.get('int07')
     r8 = request.form.get('int08')
     r9 = request.form.get('int09')
+    hyn = request.form.get('holdon')
+    dyn = request.form.get('doublechk')
+    if dyn == 'on':
+        dyn = 'Y'
+    else:
+        dyn = 'N'
     setno = request.form.get('setno')
-    updatebidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, setno)
+    updatebidadmin(uno, skey, settitle, bidsteps, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, hyn, dyn, setno)
     rows = selectsets()
     return render_template('./admin/setlistn.html', rows = rows)
 

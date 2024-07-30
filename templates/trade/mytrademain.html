@@ -46,12 +46,12 @@
                                         <td style="text-align: center">동작상태</td>
                                         <td style="text-align:center">
                                             <div class="custom-control custom-switch">
-                                                   <input type="checkbox" class="custom-control-input" id="chk1" name="chk1" {% if result[5]=='Y' %}checked{% endif %} />
-                                                   <label class="custom-control-label" for="chk1">on/off</label>
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk1" name="chk1" {% if result[5]=='Y' %}checked{% endif %} />
+                                                       <label class="custom-control-label" for="chk1">on/off</label></h4>
                                             </div>
                                             <div class="custom-control custom-switch">
-                                                   <input type="checkbox" class="custom-control-input" id="chk2" name="chk2" {% if result[7]=='Y' %}checked{% endif %}{% if result[5]=='N' %} disabled{% endif %} />
-                                                   <label class="custom-control-label" for="chk2">hold</label>
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk2" name="chk2" {% if result[7]=='Y' %}checked{% endif %}{% if result[5]=='N' %} disabled{% endif %} />
+                                                   <label class="custom-control-label" for="chk2">hold</label></h4>
                                             </div>
                                         </td>
                                     </tr>
@@ -71,12 +71,24 @@
                                       <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
                                     <tbody>
                                     <tr>
-                                        <td style="text-align: center">현재 잔고</td>
+                                        <td style="text-align: center">현재 원화 잔고</td>
                                         <td id="mywon" style="text-align: right"></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center">필요금액</td>
                                         <td id = "needmon" style="text-align: right"> </td>
+                                    </tr>
+                                    <tr>
+                                         <td style="text-align: center">hold 설정 매수 단계</td>
+                                        <td id = "holdon">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                         <td style="text-align: center">더블 투입 여부</td>
+                                        <td id = "holdon">
+
+                                        </td>
                                     </tr>
                                     </tbody>
                                      </table>
@@ -162,6 +174,7 @@
         setyn(uno,"Y");
     } else {
     setyn(uno,"N");
+    sethr(uno,"N")
     }
     });
 

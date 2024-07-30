@@ -222,15 +222,15 @@ def erasebid(uno, setkey):
 
 
 
-def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset):
+def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
             erasebid(uno, setkey)
             db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
             cur0 = db.cursor()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN))
             db.commit()
         except Exception as e:
             print('접속오류', e)
@@ -242,15 +242,15 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         return False
 
 
-def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9):
+def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, hno, dyn):
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
             db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
             cur11 = db.cursor()
-            sql = ("insert into tradingSets (setTitle, setInterval, step0, step1, step2, step3, step4, step5, step6, step7, step8, step9, inter0, inter1, inter2, inter3, inter4, inter5, inter6, inter7, inter8, inter9, regdate) "
-                   "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())")
-            cur11.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8,int9, ))
+            sql = ("insert into tradingSets (setTitle, setInterval, step0, step1, step2, step3, step4, step5, step6, step7, step8, step9, inter0, inter1, inter2, inter3, inter4, inter5, inter6, inter7, inter8, inter9, holdNo, doubleYN, regdate) "
+                   "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())")
+            cur11.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8,int9,hno,dyn ))
             db.commit()
         except Exception as e:
             print('접속오류', e)
@@ -487,15 +487,15 @@ def updateuserdetail(uno, key1, key2, svrno):
         db.close()
 
 
-def updatebidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, setsno):
+def updatebidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, holdyn ,dblyn ,setsno):
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         db24 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
         cur24 = db24.cursor()
         try:
             sql = ("UPDATE tradingSets set setTitle = %s, setInterval = %s, step0 = %s, step1 = %s, step2 = %s, step3 = %s, step4 = %s, step5 = %s, step6 = %s, step7 = %s, step8 = %s, step9 = %s, "
-                   "inter0 = %s, inter1 = %s, inter2 = %s, inter3 = %s, inter4 = %s, inter5 = %s, inter6 = %s, inter7 = %s, inter8 = %s, inter9 = %s where setNo = %s")
-            cur24.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, setsno))
+                   "inter0 = %s, inter1 = %s, inter2 = %s, inter3 = %s, inter4 = %s, inter5 = %s, inter6 = %s, inter7 = %s, inter8 = %s, inter9 = %s, holdNo = %s, doubleYN = %s, modDate = now() where setNo = %s")
+            cur24.execute(sql, (settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, holdyn, dblyn, setsno))
             db24.commit()
         except Exception as e:
             print('접속오류', e)

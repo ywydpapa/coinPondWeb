@@ -57,7 +57,16 @@
                                                                  <option value="7">08</option>
                                                                  <option value="8">09</option>
                                                                  <option value="9" selected >10</option></select></td>
-                                             <td><button type="button" class="form-control btn btn-primary" onclick="setbid()">소요금액확인</button></td>
+                                             <td style="text-align: center">
+                                                 <div class="row" style="display: inline-block">
+                                                 <div style="display: inline-block">
+                                                 <button type="button" class="form-control btn btn-primary" onclick="setbid()">소요금액확인</button>
+                                                 </div>
+                                                 <div style="display: inline-block">
+                                                 <button type="button" class="form-control btn btn-danger" onclick="setbid2()">소요금액확인(더블)</button>
+                                                 </div>
+                                                 </div>
+                                             </td>
                                          </tr>
                                          </thead>
                                          <tr>
@@ -66,62 +75,73 @@
                                                              {% for set in setlist %}
                                                                  <option value="{{ set[0] }}">{{ set[1] }}</option>
                                                              {% endfor %}</select></td>
-                                             <td></td>
+                                             <td style="text-align: center"><input type="checkbox" id="doublechk" name="doublechk"><label for="doublechk">자금투입(더블)</label> </td>
                                          </tr>
                                          <tr style="text-align: center">
                                              <td></td>
                                              <td>매수금액</td>
                                              <td>필요금액</td>
+                                             <td>hold 설정</td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center; vertical-align: center"> <h5>1차 매수 </h5></td>
                                              <td id="trvalst" style="text-align: right"></td>
                                              <td style="text-align: right" id = "trsumst"></td>
+                                             <td></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>2차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>3차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>4차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td style="text-align: center"><input type="radio" name="holdno" value="" checked><label for="holdno" >  hold 설정 없음</label></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>5차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td style="text-align: center"><input type="radio" name="holdno" value="4"><label for="holdno">  5 단계 hold 설정</label> </td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>6차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td style="text-align: center"><input type="radio" name="holdno" value="5"><label for="holdno">  6 단계 hold 설정</label></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>7차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td style="text-align: center"><input type="radio" name="holdno" value="6"><label for="holdno">  7 단계 hold 설정</label></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>8차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td style="text-align: center"><input type="radio" name="holdno" value="7"><label for="holdno">  8 단계 hold 설정</label></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>9차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td style="text-align: center"><input type="radio" name="holdno" value="8"><label for="holdno">  9 단계 hold 설정</label></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>10차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
+                                             <td style="text-align: center"><input type="radio" name="holdno" value="9"><label for="holdno">  10 단계 hold 설정</label></td>
                                          </tr>
                                     </table>
                                 </form>
@@ -193,6 +213,27 @@
 	}
 
     function setbid(){
+        var intv = numberNoneCommas($('#initprice').val());
+        var $Aarr = $(".trval");
+        var $Barr = $(".trsum");
+        var setval = intv;
+        var sumval = parseInt(intv);
+        document.getElementById('trvalst').innerText = numberWithCommas(setval);
+        document.getElementById('trsumst').innerText = numberWithCommas(setval);
+        for (var i = 0; i < 10; i++) {
+            if (i < $("#bidsteps").val()){
+            setval = setval *2 ;
+            sumval = parseInt(sumval) + parseInt(setval);
+            $Aarr[i].innerText = numberWithCommas(setval);
+            $Barr[i].innerText = numberWithCommas(sumval);
+            } else {
+                $Aarr[i].innerText = "0";
+                $Barr[i].innerText = "0";
+            }
+        }
+    }
+
+    function setbid2(){
         var intv = numberNoneCommas($('#initprice').val());
         var $Aarr = $(".trval");
         var $Barr = $(".trsum");

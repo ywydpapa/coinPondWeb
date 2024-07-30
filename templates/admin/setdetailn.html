@@ -22,30 +22,31 @@
                 <table class="table table-bordered">
                 <colgroup>
     	             <col width="20%" />
-                     <col width="25%" />
-                     <col width="25%" />
+                     <col width="20%" />
+                     <col width="20%" />
                      <col width="15%" />
                      <col width="15%" />
+                     <col width="10%" />
                 </colgroup>
                     <thead>
                     <tr>
                         <td style="text-align: center">
                             <h5>트레이딩 설정명</h5>
                         </td>
-                        <td colspan="3">
+                        <td colspan="2">
                             <input name="settitle" type="text" class="form-control" value="{{ rows[1] }}">
                             <input name="setno" id="setno" type="text" class="form-control" value="{{ rows[0] }}" style = "display: none">
                         </td>
-                        <td>
+                        <td colspan="2">
                             <button type="submit" value="submit" class="form-control btn btn-primary"> 수정 </button>
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: center"> <h5>시작 금액 (1차 구매)</h5></td>
-                        <td colspan="3">
+                        <td colspan="2">
                             <input id="initprice" name="initprice" class="form-control" type="text" value="5000" placeholder="5,000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
                         </td>
-                        <td style="text-align: center">
+                        <td  colspan="2" style="text-align: center">
                             <input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
                             <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
                             <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none">
@@ -55,7 +56,7 @@
                     </tr>
                     <tr>
                         <td style="text-align: center"> <h5>구간 설정</h5></td>
-                        <td colspan="3">
+                        <td colspan="2">
                             <select id="bidsteps" name="bidsteps" class="form-control" style="text-align: right">
                                 <option value="1" {% if rows[2]==1 %}selected{% endif %}>02</option>
                                 <option value="2" {% if rows[2]==2 %}selected{% endif %}>03</option>
@@ -68,35 +69,41 @@
                                 <option value="9" {% if rows[2]==9 %}selected{% endif %}>10</option>
                             </select>
                         </td>
-                        <td>
-                            <button type="button" class="form-control btn btn-primary" onclick="setbid()">설정적용</button>
+                        <td colspan="2">
+                            <button type="button" class="form-control btn btn-primary" onclick="setbid()">일반설정적용</button>
                         </td>
+                    <td><button type="button" class="form-control btn btn-primary" onclick="setbid2()">더블설정적용</button></td>
                     </tr>
                     </thead>
                     <tr>
                         <td style="text-align: center"> <h5>구간 간격 (%) </h5></td>
-                        <td colspan="3">
+                        <td colspan="2">
                             <div style="text-align: right">
                             <div>
                             <input id="steprate" name="steprate" style="text-align: right" class="form-control" type="number" min="0" max="10" step="0.01" value="{{ rows[3] }}">
                             </div>
                             </div>
                         </td>
-                        <td style="text-align: center">
+                        <td colspan="2" style="text-align: center">
                             일괄설정<br>
                             <input type="checkbox" id="gapchkb">
+                        </td>
+                        <td style="text-align: center" rowspan="2">
+                            <label for ="doublechk">더블 투자 적용</label>
+                            <br>
+                            <input type="checkbox" id="doublechk" name="doublechk" {% if rows[25]=='Y' %}checked{% endif %}>
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: center"> <h5>설정 이율 (%) </h5></td>
-                        <td colspan="3">
+                        <td colspan="2">
                             <div>
                             <div>
                             <input id="profitrate" name="profitrate" style="text-align: right" class="form-control" type="number" min="0" max="10" step="0.01" value="{{ rows[13] }}">
                             </div>
                             </div>
                         </td>
-                        <td style="text-align: center">
+                        <td colspan="2" style="text-align: center">
                             일괄설정<br>
                             <input type="checkbox" id="intchkb">
                         </td>
@@ -117,6 +124,9 @@
                         <td>
                             이율(%)
                         </td>
+                        <td>
+                            Hold 작동
+                        </td>
 
                     </tr>
                     <tr>
@@ -124,6 +134,8 @@
                         <td id="trvalst" style="text-align: right">
                         </td>
                         <td style="text-align: right" id = "trsumst">
+                        </td>
+                        <td>
                         </td>
                         <td>
                         </td>
@@ -143,6 +155,8 @@
                         <td>
                             <input id="int01" name="int01" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[14] }}">
                         </td>
+                        <td>
+                        </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>3차 구매 </h5></td>
@@ -156,6 +170,8 @@
                         <td>
                             <input id="int02" name="int02" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[15] }}">
                         </td>
+                        <td>
+                        </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>4차 구매 </h5></td>
@@ -168,6 +184,8 @@
                         </td>
                         <td>
                             <input id="int03" name="int03" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[16] }}">
+                        </td>
+                        <td>
                         </td>
                     </tr>
                 <tr>
@@ -183,6 +201,8 @@
                         <td>
                             <input id="int04" name="int04" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[17] }}">
                         </td>
+                        <td>
+                        </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>6차 구매 </h5></td>
@@ -196,6 +216,10 @@
                         </td>
                         <td>
                             <input id="int05" name="int05" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[18] }}">
+                        </td>
+                        <td style="vertical-align: center; text-align: center">
+                                <input type="radio" name = "holdon" value="5" {% if rows[24]==5 %}checked{% endif %}>
+                            <label for="holdon"> 6차 매수 홀딩</label>
                         </td>
                     </tr>
                 <tr>
@@ -211,6 +235,10 @@
                         <td>
                             <input id="int06" name="int06" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[19] }}">
                         </td>
+                        <td style="vertical-align: center; text-align: center">
+                            <input type="radio" name = "holdon" value="6" {% if rows[24]==6 %}checked{% endif %}>
+                            <label for="holdon"> 7차 매수 홀딩</label>
+                        </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>8차 구매 </h5></td>
@@ -225,6 +253,9 @@
                         <td>
                             <input id="int07" name="int07" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[20] }}">
                         </td>
+                    <td style="vertical-align: center; text-align: center"><input type="radio" name = "holdon" value="7" {% if rows[24]==7 %}checked{% endif %}>
+                        <label for="holdon"> 8차 매수 홀딩</label>
+                    </td>
                     </tr>
                 <tr>
                         <td style="text-align: center"> <h5>9차 구매 </h5></td>
@@ -238,6 +269,9 @@
                         </td>
                         <td>
                             <input id="int08" name="int08" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[21] }}">
+                        </td>
+                        <td style="vertical-align: center; text-align: center"><input type="radio" name = "holdon" value="8" {% if rows[24]==8 %}checked{% endif %}>
+                            <label for="holdon"> 9차 매수 홀딩</label>
                         </td>
                     </tr>
                 <tr>
@@ -253,146 +287,9 @@
                         <td>
                             <input id="int09" name="int09" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
                         </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>11차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap10" name="gap10" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int10" name="int10" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>12차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap11" name="gap11" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int11" name="int11" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>13차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap12" name="gap12" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int12" name="int12" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>14차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap13" name="gap13" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int13" name="int13" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>15차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap14" name="gap14" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int14" name="int14" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>16차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap15" name="gap15" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int15" name="int15" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>17차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap16" name="gap16" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int16" name="int16" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>18차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap17" name="gap17" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int17" name="int17" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>19차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap18" name="gap18" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int18" name="int18" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
-                </tr>
-                <tr>
-                        <td style="text-align: center"> <h5>20차 구매 </h5></td>
-                        <td class="trval" style="text-align: right">
-
-                        </td>
-                        <td style="text-align: right" class = "trsum">
-                        </td>
-                        <td>
-                             <input id="gap19" name="gap19" style="text-align: right" class="form-control gapinput" type="number" min="0" max="5" step="0.01" value="{{ rows[12] }}">
-                        </td>
-                        <td>
-                            <input id="int19" name="int19" style="text-align: right" class="form-control intinput" type="number" min="0" max="5" step="0.01" value="{{ rows[22] }}">
-                        </td>
+                    <td style="vertical-align: center; text-align: center"><input type="radio" name = "holdon" value="9" {% if rows[24]==9 %}checked{% endif %}>
+                        <label for="holdon"> 10차 매수 홀딩</label>
+                    </td>
                 </tr>
                 </table>
              </form>
@@ -479,7 +376,6 @@
                 $Iarr[k].value = irate;
             }
         } else {
-
         }
     });
 
@@ -501,6 +397,27 @@
         for (var i = 0; i < 10; i++) {
             if (i < $("#bidsteps").val()){
             setval = setval *2 ;
+            sumval = parseInt(sumval) + parseInt(setval);
+            $Aarr[i].innerText = numberWithCommas(setval);
+            $Barr[i].innerText = numberWithCommas(sumval);
+            } else {
+                $Aarr[i].innerText = "0";
+                $Barr[i].innerText = "0";
+            }
+        }
+    }
+
+    function setbid2(){
+        var intv = numberNoneCommas($('#initprice').val());
+        var $Aarr = $(".trval");
+        var $Barr = $(".trsum");
+        var setval = intv;
+        var sumval = parseInt(intv);
+        document.getElementById('trvalst').innerText = numberWithCommas(setval);
+        document.getElementById('trsumst').innerText = numberWithCommas(setval);
+        for (var i = 0; i < 10; i++) {
+            if (i < $("#bidsteps").val()){
+            setval = sumval *2 ;
             sumval = parseInt(sumval) + parseInt(setval);
             $Aarr[i].innerText = numberWithCommas(setval);
             $Barr[i].innerText = numberWithCommas(sumval);
