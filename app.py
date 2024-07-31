@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, boardupdate, boardnewwrite, setholdreset
+from comm.dbconn import (selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
+    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
+    setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
+    boardupdate, boardnewwrite, setholdreset, getmessage, readmsg)
 from comm.upbitdata import dashcandle548
 import pyupbit
 import os
@@ -410,6 +412,15 @@ def writeboard():
 @app.route('/tests')
 def tests():
     return render_template('./trade/test.html')
+
+
+@app.route('/msglist')
+def msglist():
+    uno = request.args.get('uno')
+    items = getmessage(uno)
+    print(uno)
+    print(items)
+    return render_template('./board/msglist.html', items = items)
 
 
 if __name__ == '__main__':

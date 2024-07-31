@@ -625,7 +625,31 @@ def boardnewwrite(brdid, btitle, bcontents, userid):
         cur31.close()
         db31.close()
 
+def getmessage(uno):
+    global rows
+    db32 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur32 = db32.cursor()
+    try:
+        sql = "SELECT * FROM error_Log WHERE userNo=%s and attrib NOT LIKE %s"
+        cur32.execute(sql, (uno, 'RRR%'))
+        rows = cur32.fetchall()
+        return rows
+    except Exception as e:
+        print('메세지 조회 오류', e)
+    finally:
+        cur32.close()
+        db32.close()
 
 
-
-
+def readmsg(errno):
+    db33 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur33 = db33.cursor()
+    try:
+        sql = "UPDATE error_log SET attrib = %s where errorNo=%s"
+        cur33.execute(sql, ("RRR00RRR00RRR00", errno))
+        db33.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur33.close()
+        db33.close()
