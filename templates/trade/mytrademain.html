@@ -35,7 +35,7 @@
                                         <td id = "initamount" style="text-align: right"></td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: center">설정단계</td>
+                                        <td style="text-align: center">추가매수설정</td>
                                         <td style="text-align: right">{{ result[2] }}</td>
                                     </tr>
                                     <tr>
@@ -80,14 +80,14 @@
                                     </tr>
                                     <tr>
                                          <td style="text-align: center">hold 설정 매수 단계</td>
-                                        <td id = "holdon">
-
+                                        <td style="text-align: center" id = "holdon">
+                                            {{ result[8] }}
                                         </td>
                                     </tr>
                                     <tr>
                                          <td style="text-align: center">더블 투입 여부</td>
-                                        <td id = "holdon">
-
+                                        <td style="text-align: center" id = "holdon">
+                                            <input type="checkbox" id="doublechk" name="doublechk" {% if result[9] == 'Y' %}checked{% endif %} disabled>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -190,12 +190,17 @@
     function calneed(){
         var stm = {{ result[1] }};
         var times = {{ result[2] }};
-        var summ = stm;
-        var vsum = stm;
-        for (i=1; i < times +1; i++) {
-            summ = summ + vsum*2**i;
+        var setval = stm;
+        var sumval = stm;
+        for (var i = 0; i < times; i++) {
+        if ($('#doublechk').is(":checked") === true) {
+                    setval = sumval *2 ;
+                } else {
+                    setval = setval *2 ;
+                }
+            sumval = parseInt(sumval) + parseInt(setval);
         }
-        $('#needmon').html(numberWithCommas(summ));
+        $('#needmon').html(numberWithCommas(sumval));
         $('#mywon').html(numberWithCommas({{ wallet }}));
         $('#initamount').html(numberWithCommas({{ result[1] }}));
     }

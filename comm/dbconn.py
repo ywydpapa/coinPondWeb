@@ -223,6 +223,7 @@ def erasebid(uno, setkey):
 
 
 def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
+    global cur0, db
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
@@ -243,6 +244,7 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
 
 
 def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, hno, dyn):
+    global cur11, db
     chkkey = checkkey(uno, setkey)
     if chkkey == True:
         try:
@@ -263,10 +265,11 @@ def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, 
 
 
 def getsetup(uno):
+    global cur12, db
     try:
         db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
         cur12 = db.cursor()
-        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey,holdYN  from tradingSetup where userNo=%s and attrib not like %s"
+        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey, holdYN, holdNo, doubleYN  from tradingSetup where userNo=%s and attrib not like %s"
         cur12.execute(sql, (uno, '%XXXUP'))
         data = list(cur12.fetchone())
         return data
