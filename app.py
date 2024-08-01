@@ -414,6 +414,11 @@ def tests():
     return render_template('./trade/test.html')
 
 
+@app.route('/help01')
+def help01():
+    return render_template('./help/help001.html')
+
+
 @app.route('/msglist')
 def msglist():
     uno = request.args.get('uno')

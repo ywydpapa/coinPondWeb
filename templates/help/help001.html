@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include './comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include './comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include './comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">API 키 재설정 도움말 </h1>
+                    <h3>CoinPond Web 접속장애 해결방법</h3>
+                    <h4>로그인 후 트레이딩 상태 확인시 아래와 같은 에러메세지가 발생하는 경우 업비트에서 API키를 다시 발급받고 등록해야 합니다. </h4>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image001.png')}}" width="600" alt="">
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image003.png')}}" width="600" alt="">
+                    <br>
+                    <br>
+                    <h5>업비트 API 키 발급 및 등록 방법</h5>
+                    <br>
+                    <h5>1. 업비트에 로그인 합니다. </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image005.png')}}" width="400" alt="">
+                    <br>
+                    <h5>2. 로그아웃 옆에 있는 MY를 클릭하면 마이페이지가 나옵니다. </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image007.png')}}" width="400" alt="">
+                    <br>
+                    <h5>3. 마이페이지에서 Open API 관리를 클릭하면 아래 화면이 나옵니다. </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image009.png')}}" width="600" alt="">
+                    <br>
+                    <h5>4. 서버주소는 게시판에서 확인 할 수 있습니다. 121.174.79.160 </h5>
+                    <br>
+                    <h5>5. 단말기를 운영하려고 하는 곳의 IP를 확인 해야 합니다. https://findip.kr 에 접속하면 자신의 사용중인 장소의 IP를 확인 하실 수 있습니다.  </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image011.png')}}" width="600" alt="">
+                    <br>
+                    <h5>6. 서버 주소인 121.174.79.160과 단말기를 운영할 예시인 61.76.157.230 (자신의 IP)을 등록하여 키를 받습니다.  </h5>
+                    <br>
+                    <h5>7. CoinPond 서비스에서 필요한 기능은 자산조회, 주문조회, 주문하기 3가지 입니다.  </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image013.png')}}" width="600" alt="">
+                    <br>
+                    <h5>8. 위와 같이 설정 후 발급받기를 누릅니다. </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image015.png')}}" width="600" alt="">
+                    <br>
+                    <h5>9. 2채널 인증을 통해 발급이 가능합니다. </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image017.png')}}" width="600" alt="">
+                    <br>
+                    <h5>10. 업비트에서 발급받은 키입니다. 발급받은 IP에서만 작동하므로 다릇 곳에서 단말기를 운영하시려면 새로 발급을 받아야 합니다.  </h5>
+                    <br>
+                    <h5>11. 키가 노출되어 있는 상태에서 CoinPond Web에 로그인 합니다. </h5>
+                    <br>
+                    <h5>12. 로그인 후 이름옆에 있는 Settings 를 클릭합니다. </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image019.png')}}" width="600" alt="">
+                    <br>
+                    <h5>13. Settings 를 누르면 나의정보 변경 창이 나오며 현재 설정되어 있는 값을 새로 발급받은 값으로 변경하여야 합니다.</h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image021.png')}}" width="600" alt="">
+                    <br>
+                    <h5>14. 두값을 동일하기 입력한 후 개인정보 수정을 누르면 정보가 업데이트 됩니다. </h5>
+                    <br>
+                    <img src="{{ url_for('static',filename='images/helpimg/image023.png')}}" width="800" alt="">
+                    <br>
+                    <h5>15. 로그아웃 후 다시 로그인을 하시면 됩니다. </h5>
+
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+{% include './comm/adscript.html' %}
+</body>
+</html>
