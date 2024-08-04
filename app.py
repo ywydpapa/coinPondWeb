@@ -329,7 +329,7 @@ def sellcoin():
 def hotcoins():
     tickers = pyupbit.get_tickers(fiat="KRW")
     coindtl = pyupbit.get_orderbook(ticker=tickers)
-    trval = get_ticker_tradevalue()
+    trval = get_ticker_tradevalue() # 코인 거래금액 추가
     return render_template('./admin/hotcoinsn.html', coinlist=tickers, coindtls = coindtl, trval = trval)
 
 

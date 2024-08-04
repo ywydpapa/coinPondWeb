@@ -17,7 +17,7 @@ def dashcandle160(coinn):
     return candles
 
 
-def get_ticker_tradevalue():
+def get_ticker_tradevalue():  # 핫코인 추가
     tickers = pyupbit.get_tickers("KRW")
     dic_ticker = {}
     for ticker in tickers:
