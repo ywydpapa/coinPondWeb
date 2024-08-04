@@ -19,7 +19,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">트레이딩 설정(단계 설정형)          </h5><h6><a href="/tradeSet2">투자금액기반 설정형으로 이동</a></h6>
+                            <h5 class="m-0 font-weight-bold text-primary">트레이딩 설정 (투입금액 확정형)        </h5><h6><a href="/tradeSet"> 단계별 투입방식으로 이동</a></h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -33,10 +33,10 @@
                                          </colgroup>
                                          <thead>
                                          <tr>
-                                             <td style="text-align: center"><h5>선택 코인</h5></td>
+                                             <td style="text-align: center"><h5>선택 코인(추천코인)</h5></td>
                                              <td colspan="2"><select id="coinn" name="coinn" class="form-control form-controm-sm">
                                                  {% for coin in coinlist %}
-                                                     <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
+                                                     <option value="{{ coin[1] }}" {% if coin==coinn %}selected{% endif %}>{{ coin[1] }}</option>
                                                  {% endfor %}</select></td>
                                              <td style="text-align: center">
                                                  <div style="display: inline-block">
@@ -45,40 +45,53 @@
                                              </td>
                                          </tr>
                                          <tr>
-                                             <td style="text-align: center"> <h5>시작 금액 (1차 매수)</h5></td>
-                                             <td colspan="2">
-                                                 <input id="initprice" name="initprice" class="form-control" type="text" value="5000" placeholder="5,000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
-                                                 </td>
-                                             <td><input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
+                                             <td style="text-align: center"> <h5>투입 금액 (코인당 투자금액)</h5></td>
+                                             <td colspan="2"><select id="trasset" name="trasset" class="form-control" style="text-align: right">
+                                                                 <option value="1000000">1,000,000</option>
+                                                                 <option value="2000000">2,000,000</option>
+                                                                 <option value="3000000">3,000,000</option>
+                                                                 <option value="4000000">4,000,000</option>
+                                                                 <option value="5000000">5,000,000</option>
+                                                                 <option value="6000000">6,000,000</option>
+                                                                 <option value="7000000">7,000,000</option>
+                                                                 <option value="8000000">8,000,000</option>
+                                                                 <option value="9000000">9,000,000</option>
+                                                                 <option value="10000000">10,000,000</option>
+                                                                 <option value="11000000">11,000,000</option>
+                                                                 <option value="12000000">12,000,000</option>
+                                                                 <option value="13000000">13,000,000</option>
+                                                                 <option value="14000000">14,000,000</option>
+                                                                 <option value="15000000">15,000,000</option>
+                                                                 <option value="16000000">16,000,000</option>
+                                                                 <option value="17000000">17,000,000</option>
+                                                                 <option value="18000000">18,000,000</option>
+                                                                 <option value="19000000">19,000,000</option>
+                                                                 <option value="20000000">20,000,000</option>
+                                                 </select></td>
+                                             <td style="text-align: center"><input type="text" id="initprice" name="initprice" value="32250" style="display: none">
+                                                 <input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
                                                  <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
-                                                 <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none"></td>
+                                                 <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none">
+                                                 <div style="display: inline-block"><button type="button" class="form-control btn btn-primary" onclick="setbid()">투자플랜확인</button></div></td>
                                          </tr>
-                                         <tr>
+                                         <tr style="display: none">
                                              <td style="text-align: center"> <h5>구간 설정</h5></td>
                                              <td colspan="2"><select id="bidsteps" name="bidsteps" class="form-control" style="text-align: right">
                                                                  <option value="3">04</option>
-                                                                 <option value="4">05</option>
-                                                                 <option value="5">06</option>
-                                                                 <option value="6">07</option>
-                                                                 <option value="7">08</option>
-                                                                 <option value="8">09</option>
-                                                                 <option value="9" selected >10</option></select></td>
+                                                                 <option value="4" selected>05</option>
+                                             </select></td>
                                              <td style="text-align: center">
-                                                 <div class="row" style="display: inline-block">
-                                                 <div style="display: inline-block">
-                                                 <button type="button" class="form-control btn btn-primary" onclick="setbid()">소요금액확인</button>
-                                                 </div>
-                                                 </div>
+
                                              </td>
                                          </tr>
                                          </thead>
-                                         <tr>
+                                         <tr style="display: none">
                                              <td style="text-align: center"> <h5>투자 성향 </h5></td>
                                              <td colspan="2"><select id="tradeset" name="tradeset" class="form-control" style="text-align: right">
                                                              {% for set in setlist %}
                                                                  <option value="{{ set[0] }}">{{ set[1] }}</option>
                                                              {% endfor %}</select></td>
-                                             <td style="text-align: center"><input type="checkbox" id="doublechk" name="doublechk"><label for="doublechk">자금투입(더블)</label> </td>
+                                             <td style="text-align: center"><input type="checkbox" id="doublechk" name="doublechk" disabled><label for="doublechk">자금투입(더블)</label> </td>
                                          </tr>
                                          <tr style="text-align: center">
                                              <td></td>
@@ -116,36 +129,6 @@
                                              <td style="text-align: right" class = "trsum"></td>
                                              <td style="text-align: center"><input type="radio" name="holdno" value="4"><label for="holdno">  5 단계 hold 설정</label> </td>
                                          </tr>
-                                         <tr>
-                                             <td style="text-align: center"> <h5>6차 매수 </h5></td>
-                                             <td class="trval" style="text-align: right"></td>
-                                             <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="5"><label for="holdno">  6 단계 hold 설정</label></td>
-                                         </tr>
-                                         <tr>
-                                             <td style="text-align: center"> <h5>7차 매수 </h5></td>
-                                             <td class="trval" style="text-align: right"></td>
-                                             <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="6"><label for="holdno">  7 단계 hold 설정</label></td>
-                                         </tr>
-                                         <tr>
-                                             <td style="text-align: center"> <h5>8차 매수 </h5></td>
-                                             <td class="trval" style="text-align: right"></td>
-                                             <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="7"><label for="holdno">  8 단계 hold 설정</label></td>
-                                         </tr>
-                                         <tr>
-                                             <td style="text-align: center"> <h5>9차 매수 </h5></td>
-                                             <td class="trval" style="text-align: right"></td>
-                                             <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="8"><label for="holdno">  9 단계 hold 설정</label></td>
-                                         </tr>
-                                         <tr>
-                                             <td style="text-align: center"> <h5>10차 매수 </h5></td>
-                                             <td class="trval" style="text-align: right"></td>
-                                             <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="9"><label for="holdno">  10 단계 hold 설정</label></td>
-                                         </tr>
                                     </table>
                                 </form>
                             </div>
@@ -178,6 +161,7 @@
 </body>
 <script>
     $(document).ready(function () {
+        setbid();
     });
 
     $('#initprice').change(function(){
@@ -192,8 +176,13 @@
 
     $('#steprate').change(function(){
         var grate = $('#steprate').val();
+    });
 
-
+    $('#trasset').change(function(){
+       var trasser = $('#trasset').val();
+       var iniasset = trasser * 0.03225;
+       $('#initprice').val(iniasset);
+       setbid();
     });
 
     $('#profitrate').change(function(){

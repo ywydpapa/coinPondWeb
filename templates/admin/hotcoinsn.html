@@ -24,6 +24,7 @@
                          <th>현재가</th>
                          <th>매수 거래량</th>
                          <th>매도 거래량</th>
+                         <th>거래금액</th>
                          <th>추천여부</th>
                          </thead>
                              {% for coin in coindtls %}
@@ -32,6 +33,11 @@
                              <td style="text-align:right" class="askprice"> {{ coin["orderbook_units"][0]['ask_price'] }}</td>
                              <td style="text-align:right" class="bidsize"> {{ coin["total_bid_size"] }}</td>
                              <td style="text-align:right" class="asksize">{{ coin["total_ask_size"] }}</td>
+                                 <td style="text-align:right" class="trsize">
+                                     {% for trs in trval %}
+                                         {% if coin["market"] == trs[0] %}{{ trs[1] }}{% endif %}
+                                         {% endfor %}
+                                 </td>
                              <td style="text-align: center"><input type="checkbox" class="chkhot" name="hotchk"></td>
                              </tr>
                             {% endfor %}
@@ -74,15 +80,19 @@
         var $Aarr = $(".askprice");
         var $Barr = $(".bidsize");
         var $Carr = $(".asksize");
+        var $Darr = $(".trsize");
         for (var i = 0; i < $Aarr.length; i++){
             var price = $Aarr[i].innerText;
             var bidsz = $Barr[i].innerText;
             bidsz = Math.round(bidsz);
             var asksz = $Carr[i].innerText;
             asksz = Math.round(asksz);
+            var trsz = $Darr[i].innerText;
+            trsz = Math.round(trsz);
             $Aarr[i].innerText = numberWithCommas(price);
             $Barr[i].innerText = numberWithCommas(bidsz);
             $Carr[i].innerText = numberWithCommas(asksz);
+            $Darr[i].innerText = numberWithCommas(trsz);
         }
     }
 

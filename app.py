@@ -4,7 +4,7 @@ from comm.dbconn import (selectUsers, check_srv, setKeys, checkwallet, tradehist
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
     setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
     boardupdate, boardnewwrite, setholdreset, getmessage, readmsg)
-from comm.upbitdata import dashcandle548
+from comm.upbitdata import dashcandle548, get_ticker_tradevalue
 import pyupbit
 import os
 import time
@@ -56,6 +56,14 @@ def tradeSet():
     coinn = request.args.get('coinn')
     setlist = selectsetlist(9)
     return render_template('./trade/setmytrade.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
+
+
+@app.route('/tradeSet2', methods=['GET', 'POST'])
+def tradeSet2():
+    coinlist = hotcoinlist()
+    coinn = request.args.get('coinn')
+    setlist = selectsetlist(9)
+    return render_template('./trade/setmytrade2.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
 
 
 @app.route('/adminSet', methods=['GET', 'POST'])
@@ -321,8 +329,8 @@ def sellcoin():
 def hotcoins():
     tickers = pyupbit.get_tickers(fiat="KRW")
     coindtl = pyupbit.get_orderbook(ticker=tickers)
-    print(coindtl)
-    return render_template('./admin/hotcoinsn.html', coinlist=tickers, coindtls = coindtl)
+    trval = get_ticker_tradevalue()
+    return render_template('./admin/hotcoinsn.html', coinlist=tickers, coindtls = coindtl, trval = trval)
 
 
 @app.route('/updateset', methods=['POST'] )
