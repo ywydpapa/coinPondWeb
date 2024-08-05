@@ -8,33 +8,13 @@ import dotenv
 from pandas import DataFrame
 import os
 
+
 dotenv.load_dotenv()
 hostenv = os.getenv("host")
 userenv = os.getenv("user")
 passwordenv = os.getenv("password")
 dbenv = os.getenv("db")
 charsetenv = os.getenv("charset")
-
-
-def dashcandle548(coinn):
-    candles: DataFrame | None = pyupbit.get_ohlcv(coinn, interval="minute5", count=48)
-    return candles
-
-
-def dashcandle160(coinn):
-    candles: DataFrame | None = pyupbit.get_ohlcv(coinn, interval="minute1", count=60)
-    return candles
-
-
-def get_ticker_tradevalue():
-    db31 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
-    cur31 = db31.cursor()
-    sql = "select coinName,tradeAmt from coinTradeAmt where attrib not like %s"
-    cur31.execute(sql, ("XXX%%",))
-    tradevalues = cur31.fetchall()
-    cur31.close()
-    db31.close()
-    return tradevalues
 
 
 def get_ticker_tradevalueDaemon():  # 핫코인 추가
