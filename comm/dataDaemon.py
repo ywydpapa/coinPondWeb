@@ -47,3 +47,5 @@ def get_ticker_tradevalueDaemon():  # 핫코인 추가
             pass
     cur31.close()
     db31.close()
+
+get_ticker_tradevalueDaemon()
