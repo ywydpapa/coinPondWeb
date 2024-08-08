@@ -263,6 +263,8 @@ def sethr():
     pla = request.get_data().decode('utf-8').split(',')
     uno = pla[0]
     hldrst = pla[1]
+    print(uno)
+    print(hldrst)
     setholdreset(uno,hldrst)
     return "YES"
 
