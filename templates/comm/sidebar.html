@@ -79,6 +79,24 @@
                 </div>
             </li>
             {% endif %}
+        {% if session["userName"] == '김동진' %}
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDjkim"
+                    aria-expanded="true" aria-controls="collapseDjkim">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>개발자용 설정변경</span>
+                </a>
+                <div id="collapseDjkim" class="collapse" aria-labelledby="headingAdmin"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">설정 가능 목록</h6>
+                        <a class="collapse-item" href="/hotcoinsm">다중투자 추천코인</a>
+                        <a class="collapse-item" href="/multisetup">다중투자 설정</a>
+                    </div>
+                </div>
+            </li>
+            {% endif %}
 
             <!-- Divider -->
             <hr class="sidebar-divider">

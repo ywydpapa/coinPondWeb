@@ -653,3 +653,17 @@ def readmsg(errno):
     finally:
         cur33.close()
         db33.close()
+
+
+def savemultisetup(coinn, iniAsset, intRate, holdNo, userNo):
+    db34 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur34 = db34.cursor()
+    try:
+        sql = "insert into assetCoins (userNo, coinName, initAsset, holdYN, intRate) values (%s,%s,%s,%s,%s)"
+        cur34.execute(sql, (userNo, coinn, iniAsset, holdNo, intRate))
+        db34.commit()
+    except Exception as e:
+        print('멀티트레이딩 설정오류', e)
+    finally:
+        cur34.close()
+        db34.close()
