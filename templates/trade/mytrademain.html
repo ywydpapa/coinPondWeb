@@ -17,7 +17,7 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="row">
-                        <div class="col-lg-8">
+                        <div class="col-lg-4">
                             <div class="card ">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">설정내용</h6>
@@ -96,6 +96,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">코인트렌드</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-body">
+                            <div class="chart-area">
+                                <canvas id="myChart"></canvas>
+                            </div>
+                        </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -161,6 +175,7 @@
      <!-- Bootstrap core JavaScript-->
 
 {% include '/comm/adscript.html' %}
+{% include './comm/adscriptchart.html' %}
 </body>
 <script>
     $(document).ready(function () {
@@ -258,5 +273,63 @@
     function refresh() {
         window .location.reload();
     }
+</script>
+<script>
+    let dataArr1 = [];
+    let dataArr2 = [];
+    let indexArr = [0,'','','','',5,'','','','',10,'','','','',5,'','','','',20,'','','','',5,'','','','',30,'','','','',5,'','','','',40,'','','','',5,'','','','',50,'','','','',5,'','','','',60];
+    dataArr1 = {{ coinopen }};
+    dataArr2 = {{ coinclose }};
+    indexArr.reverse();
+    new Chart(document.getElementById("myChart"), {
+    type: 'line',
+    data: {
+        labels: indexArr ,
+        datasets: [{
+            label: 'open',
+            data: dataArr1,
+            borderColor: "rgb(247,85,16)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: 'close',
+            data: dataArr2,
+            borderColor: "rgb(16,247,58)",
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: "{{ result[0] }}"
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                },
+                scaleLabel: {
+                    display: true,
+                }
+            }]
+        }
+    }
+});
 </script>
 </html>

@@ -4,7 +4,7 @@ from comm.dbconn import (selectUsers, check_srv, setKeys, checkwallet, tradehist
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
     setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
     boardupdate, boardnewwrite, setholdreset, getmessage, readmsg, savemultisetup)
-from comm.upbitdata import dashcandle548, get_ticker_tradevalue
+from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
 import time
@@ -46,8 +46,12 @@ def trade():
     setno = data[6]
     trset = setdetail(setno)
     print(data)
+    coinn = data[0]
+    coincand = [dashcandle160(coinn)]
+    listcoino = coincand[0]['open'].tolist()
+    listcoinc = coincand[0]['close'].tolist()
     print(orderlist)
-    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset)
+    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset, coinopen = listcoino, coinclose = listcoinc)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
