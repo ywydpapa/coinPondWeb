@@ -7,9 +7,6 @@ from comm.dbconn import (selectUsers, check_srv, setKeys, checkwallet, tradehist
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
-import time
-import json
-import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
