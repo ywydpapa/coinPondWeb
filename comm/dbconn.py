@@ -1,12 +1,9 @@
-import pyupbit
-import time
-from datetime import datetime, timedelta
-import pymysql
-import random
-import pandas as pd
-import dotenv
 import os
-
+import random
+from datetime import datetime, timedelta
+import dotenv
+import pymysql
+import pyupbit
 
 dotenv.load_dotenv()
 hostenv = os.getenv("host")
@@ -225,7 +222,7 @@ def erasebid(uno, setkey):
 def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
     global cur0, db
     chkkey = checkkey(uno, setkey)
-    nowt = datetime.now()+ datetime.timedelta(minutes=15)
+    nowt = datetime.now()+ timedelta(minutes=15)
     if chkkey == True:
         try:
             erasebid(uno, setkey)
