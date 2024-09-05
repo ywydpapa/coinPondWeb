@@ -686,3 +686,21 @@ def tradelog(uno,type,coinn,tstamp):
     finally:
         cur35.close()
         db35.close()
+
+
+def cancelorder(uno,uuid):
+    global rows
+    db36 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur36 = db36.cursor()
+    try:
+        sql = "select apiKey1, apiKey2 from pondUser where userNo=%s"
+        cur36.execute(sql, (uno))
+        keys = cur36.fetchone()
+        print(keys)
+        upbit = pyupbit.Upbit(keys[0], keys[1])
+        upbit.cancel_order(uuid)
+    except Exception as e:
+        print("거래 취소 에러 ", e)
+    finally:
+        cur36.close()
+        db36.close()

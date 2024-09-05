@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from comm.dbconn import (selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
     setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
-    boardupdate, boardnewwrite, setholdreset, getmessage, readmsg, savemultisetup)
+    boardupdate, boardnewwrite, setholdreset, getmessage, readmsg, savemultisetup, cancelorder)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -337,6 +337,15 @@ def sellcoin():
     uno = pla[0]
     coinn = pla[1]
     sellmycoin(uno, coinn)
+    return "YES"
+
+
+@app.route('/cancelOrder', methods=['POST'])
+def cancorder():
+    pla = request.get_data().decode('utf-8').split(',')
+    uuid = pla[0]
+    uno = pla[1]
+    cancelorder(uuid, uno)
     return "YES"
 
 

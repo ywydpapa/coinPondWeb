@@ -128,6 +128,7 @@
                                         <th>주문금액</th>
                                         <th>미체결량</th>
                                         <th>예상수수료</th>
+                                        <th>코인 관리</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -142,6 +143,9 @@
                                             <td style="text-align: right" class="ovalue"></td>
                                             <td style="text-align: right">{{ items['remaining_volume'] }}</td>
                                             <td style="text-align: right">{{ items['reserved_fee'] }}</td>
+                                        <td>
+                                            <button class = "btn form-control btn-primary" onclick="cancelorder({{ session["userNo"] }},'{{ items["uuid"] }}')">거래 취소</button>
+                                        </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -257,6 +261,23 @@
                 }
         });
     }
+
+    function cancelorder(uno,uuid){
+        if (confirm("본 거래를 취소 하시겠습니까?")){
+        data = [uno,uuid]
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: '/cancelOrder',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                location.reload();
+                }
+        });
+        }else{}}
 
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
