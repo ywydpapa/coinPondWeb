@@ -1,6 +1,6 @@
 import pyupbit
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import pymysql
 import random
 import pandas as pd
@@ -225,7 +225,7 @@ def erasebid(uno, setkey):
 def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
     global cur0, db
     chkkey = checkkey(uno, setkey)
-    nowt = datetime.now()
+    nowt = datetime.now()+ datetime.timedelta(minutes=15)
     if chkkey == True:
         try:
             erasebid(uno, setkey)
