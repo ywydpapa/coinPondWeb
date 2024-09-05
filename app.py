@@ -9,6 +9,7 @@ import pyupbit
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -32,6 +33,7 @@ def dashboard():
     listbtcc = btccand[0]['close'].tolist()
     listethc = ethcand[0]['close'].tolist()
     return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth, btccandsc=listbtcc, ethcandsc=listethc, indexv=indexv, noticelist=noticelist, boarditem=boarditems)
+
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
@@ -328,6 +330,7 @@ def updatemyuser():
     users = listUsers()
     return render_template('./trade/dashboard.html', users=users)
 
+
 @app.route('/sellcoin', methods=['POST'])
 def sellcoin():
     pla = request.get_data().decode('utf-8').split(',')
@@ -335,6 +338,7 @@ def sellcoin():
     coinn = pla[1]
     sellmycoin(uno, coinn)
     return "YES"
+
 
 @app.route('/hotcoins')
 def hotcoins():
@@ -454,9 +458,11 @@ def msglist():
     print(items)
     return render_template('./board/msglist.html', items = items)
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('./error/404err.html'), 404
+
 
 @app.errorhandler(500)
 def internal_server_error(e):

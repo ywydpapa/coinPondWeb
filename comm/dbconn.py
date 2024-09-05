@@ -225,6 +225,7 @@ def erasebid(uno, setkey):
 def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
     global cur0, db
     chkkey = checkkey(uno, setkey)
+    nowt = datetime.now()
     if chkkey == True:
         try:
             erasebid(uno, setkey)
@@ -238,6 +239,8 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         finally:
             cur0.close()
             db.close()
+            tradelog(uno,'HOLD',coinn,nowt)
+            tradelog(uno, 'BID', coinn, nowt)
             return True
     else:
         return False
@@ -667,3 +670,22 @@ def savemultisetup(coinn, iniAsset, intRate, holdNo, userNo):
     finally:
         cur34.close()
         db34.close()
+
+
+def tradelog(uno,type,coinn,tstamp):
+    global rows
+    db35 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur35 = db35.cursor()
+    try:
+        if tstamp == "":
+            tstamp = datetime.now()
+        sql = "update tradeLog set attrib = %s where userNo = %s and tradeType = %s and coinName = %s"
+        cur35.execute(sql, ("UPD00UPD00UPD00", uno, type, coinn))
+        sql = "INSERT INTO tradeLog (userNo, tradeType, coinName, regDate) VALUES (%s, %s, %s, %s)"
+        cur35.execute(sql,(uno, type, coinn, tstamp))
+        db35.commit()
+    except Exception as e:
+        print('접속오류 트레이드 로그', e)
+    finally:
+        cur35.close()
+        db35.close()
