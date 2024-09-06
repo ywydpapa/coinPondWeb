@@ -104,7 +104,9 @@ def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     orderlist = tradehistory(uno, skey)
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist)
+    mysetrate = getsetup(uno)[4]
+    print(mysetrate)
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])

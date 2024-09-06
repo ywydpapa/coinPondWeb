@@ -29,6 +29,7 @@
                                            <th>일자</th>
                                            <th>매도횟수</th>
                                            <th>매도금액합계</th>
+                                           <th>수익율(%)</th>
                                            <th>매도원가</th>
                                            <th>수익금액</th>
                                        </tr>
@@ -38,6 +39,7 @@
                                            <td id = "profdate" style="text-align: center"></td>
                                            <td id = "askcnt" style="text-align: right"></td>
                                            <td id = "asksum" style="text-align: right"></td>
+                                           <td id = "appliedrate" style="text-align: right"></td>
                                            <td id = "askorig" style="text-align: right"></td>
                                            <td id = "askprofit" style="text-align: right"></td>
                                        </tr>
@@ -157,13 +159,15 @@
             sett = Math.round(sett);
             $Carr[i].innerText = numberWithCommas(sett);
         }
-        var profit = asksum* 0.005;
-        var askorig = asksum* 0.995;
+        var apprate = {{ myset }}/100;
+        var profit = asksum* apprate;
+        var askorig = asksum* (1-apprate);
         $("#askcnt").html(numberWithCommas(Math.round(askcnt)));
         $("#asksum").html(numberWithCommas(Math.round(asksum)));
         $("#askprofit").html(numberWithCommas(Math.round(profit)));
         $("#askorig").html(numberWithCommas(Math.round(askorig)));
         $("#profdate").html(caldate);
+        $("#appliedrate").html({{ myset }});
     }
 
 
