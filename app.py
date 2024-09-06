@@ -37,6 +37,7 @@ def dashboard():
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
+    global aprice
     uno = request.args.get('uno')
     setkey = request.args.get('skey')
     data = getsetup(uno)
@@ -46,11 +47,19 @@ def trade():
     trset = setdetail(setno)
     print(data)
     coinn = data[0]
+    crprice = pyupbit.get_current_price(coinn)
+    wallets = checkwallet(uno, setkey)
+    for wallet in wallets:
+        if "KRW-"+wallet["currency"] == coinn:
+            aprice = wallet["avg_buy_price"]
+    print("구매 평균가 :" , aprice)
+    srate = round(float(crprice)/float(aprice)*100,4)
+    print("구매가 비율:", srate)
     coincand = [dashcandle160(coinn)]
     listcoino = coincand[0]['open'].tolist()
     listcoinc = coincand[0]['close'].tolist()
     print(orderlist)
-    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset, coinopen = listcoino, coinclose = listcoinc)
+    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset, coinopen = listcoino, coinclose = listcoinc, cprice = crprice, bsrate = srate)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
