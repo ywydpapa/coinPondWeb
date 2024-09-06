@@ -49,9 +49,9 @@ def trade():
     coinn = data[0]
     crprice = pyupbit.get_current_price(coinn)
     wallets = checkwallet(uno, setkey)
-    for wallet in wallets:
-        if "KRW-"+wallet["currency"] == coinn:
-            aprice = wallet["avg_buy_price"]
+    for wallett in wallets:
+        if "KRW-"+wallett["currency"] == coinn:
+            aprice = wallett["avg_buy_price"]
     print("구매 평균가 :" , aprice)
     srate = round(float(crprice)/float(aprice)*100,4)
     print("구매가 비율:", srate)

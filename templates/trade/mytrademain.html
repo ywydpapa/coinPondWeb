@@ -88,6 +88,12 @@
                                             <input type="checkbox" id="doublechk" name="doublechk" {% if result[9] == 'Y' %}checked{% endif %} disabled>
                                         </td>
                                     </tr>
+                                    <tr>
+                                         <td style="text-align: center">현재가/구매평균가 비율</td>
+                                        <td style="text-align: center" >
+                                            {{ bsrate }} %
+                                        </td>
+                                    </tr>
                                     </tbody>
                                      </table>
                                   </div>
@@ -105,6 +111,9 @@
                                 <canvas id="myChart" width="100%"></canvas>
                             </div>
                         </div>
+                                </div>
+                                <div class="card-footer">
+                                    현재 가격 {{ cprice }}
                                 </div>
                             </div>
                         </div>
@@ -218,8 +227,8 @@
             sumval = parseInt(sumval) + parseInt(setval);
         }
         $('#needmon').html(numberWithCommas(sumval));
-        $('#mywon').html(numberWithCommas({{ wallet }}));
-        $('#initamount').html(numberWithCommas({{ result[1] }}));
+        $('#mywon').html(numberWithCommas( {{wallet}} ) );
+        $('#initamount').html(numberWithCommas(stm));
     }
 
     function calorder(){
