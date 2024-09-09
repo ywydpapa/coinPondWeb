@@ -59,7 +59,7 @@ def trade():
     listcoino = coincand[0]['open'].tolist()
     listcoinc = coincand[0]['close'].tolist()
     print(orderlist)
-    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset, coinopen = listcoino, coinclose = listcoinc, cprice = crprice, bsrate = srate)
+    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset, coinopen = listcoino, coinclose = listcoinc, cprice = crprice, bsrate = srate, avprice = aprice)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])

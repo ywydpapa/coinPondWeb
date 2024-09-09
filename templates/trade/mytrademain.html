@@ -307,8 +307,10 @@
     dataArr1 = {{ coinopen }};
     dataArr2 = {{ coinclose }};
     dataArr3 = [];
+    dataArr4 = [];
     for (let i = 0; i<60; i++){
         dataArr3.push({{ cprice }});
+        dataArr4.push({{ avprice }});
     }
     indexArr.reverse();
     new Chart(document.getElementById("myChart"), {
@@ -328,9 +330,15 @@
             fill: false,
             lineTension: 0
         },{
-            label: 'Current Price',
+            label: '현재가',
             data: dataArr3,
             borderColor: "rgb(0,73,253)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: '매수평균가',
+            data: dataArr3,
+            borderColor: "rgb(0,253,240)",
             fill: false,
             lineTension: 0
         }]
