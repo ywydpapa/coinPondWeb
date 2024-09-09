@@ -306,6 +306,10 @@
     let indexArr = [0,'','','','',5,'','','','',10,'','','','',5,'','','','',20,'','','','',5,'','','','',30,'','','','',5,'','','','',40,'','','','',5,'','','','',50,'','','','',5,'','','','',60];
     dataArr1 = {{ coinopen }};
     dataArr2 = {{ coinclose }};
+    dataArr3 = [];
+    for (let i = 0; i<60; i++){
+        dataArr3.push({{ cprice }});
+    }
     indexArr.reverse();
     new Chart(document.getElementById("myChart"), {
     type: 'line',
@@ -321,6 +325,12 @@
             label: 'close',
             data: dataArr2,
             borderColor: "rgb(16,247,58)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: 'Current Price',
+            data: dataArr3,
+            borderColor: "rgb(0,73,253)",
             fill: false,
             lineTension: 0
         }]
