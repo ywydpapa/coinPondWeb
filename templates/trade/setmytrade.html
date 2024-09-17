@@ -75,7 +75,7 @@
                                              <td style="text-align: center"> <h5>투자 성향 </h5></td>
                                              <td colspan="2"><select id="tradeset" name="tradeset" class="form-control" style="text-align: right">
                                                              {% for set in setlist %}
-                                                                 <option value="{{ set[0] }}">{{ set[1] }}</option>
+                                                                 <option value="{{ set[0] }}">{{ set[1] }} Delay - {{ set[24] }} 단계</option>
                                                              {% endfor %}</select></td>
                                              <td style="text-align: center"><input type="checkbox" id="doublechk" name="doublechk"><label for="doublechk">자금투입(더블)</label> </td>
                                          </tr>
@@ -83,7 +83,7 @@
                                              <td></td>
                                              <td>매수금액</td>
                                              <td>필요금액</td>
-                                             <td>hold 설정</td>
+                                             <td>Delay 설정</td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center; vertical-align: center"> <h5>1차 매수 </h5></td>
@@ -95,55 +95,55 @@
                                              <td style="text-align: center"> <h5>2차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="0" checked><label for="holdno" >  hold 설정 없음</label></td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>3차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="2"><label for="holdno">  3 단계 hold 설정</label> </td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>4차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="3"><label for="holdno">  4 단계 hold 설정</label> </td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>5차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="4"><label for="holdno">  5 단계 hold 설정</label> </td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>6차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="5"><label for="holdno">  6 단계 hold 설정</label></td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>7차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="6"><label for="holdno">  7 단계 hold 설정</label></td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>8차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="7"><label for="holdno">  8 단계 hold 설정</label></td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>9차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="8"><label for="holdno">  9 단계 hold 설정</label></td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                          <tr>
                                              <td style="text-align: center"> <h5>10차 매수 </h5></td>
                                              <td class="trval" style="text-align: right"></td>
                                              <td style="text-align: right" class = "trsum"></td>
-                                             <td style="text-align: center"><input type="radio" name="holdno" value="9"><label for="holdno">  10 단계 hold 설정</label></td>
+                                             <td style="text-align: center"></td>
                                          </tr>
                                     </table>
                                 </form>

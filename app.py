@@ -67,6 +67,7 @@ def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
     setlist = selectsetlist(9)
+    print(setlist)
     return render_template('./trade/setmytrade.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
 
 
