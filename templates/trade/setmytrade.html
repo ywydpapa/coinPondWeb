@@ -75,8 +75,9 @@
                                              <td style="text-align: center"> <h5>투자 성향 </h5></td>
                                              <td colspan="2"><select id="tradeset" name="tradeset" class="form-control" style="text-align: right">
                                                              {% for set in setlist %}
-                                                                 <option value="{{ set[0] }}">{{ set[1] }} Delay - {{ set[24] }} 단계</option>
-                                                             {% endfor %}</select></td>
+                                                                 <option value="{{ set[0] }},{{ set[24] }}">{{ set[1] }} Delay - {{ set[24] }} 단계</option>
+                                                             {% endfor %}</select>
+                                             </td>
                                              <td style="text-align: center"><input type="checkbox" id="doublechk" name="doublechk"><label for="doublechk">자금투입(더블)</label> </td>
                                          </tr>
                                          <tr style="text-align: center">
@@ -191,8 +192,11 @@
 
     $('#steprate').change(function(){
         var grate = $('#steprate').val();
+    });
 
-
+    $('#tradeset').change(function(){
+        var trholdno = $('#tradeset').val();
+       $('#holdno').val(trholdno);
     });
 
     $('#profitrate').change(function(){
