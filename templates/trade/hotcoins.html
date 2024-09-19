@@ -41,7 +41,7 @@
                                     {% for trendcoin in trendcoins %}
                                         <tr>
                                             <td style="text-align: center" class="coinn"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ trendcoin[0]}}">{{ trendcoin[0] }}</a></td>
-                                            <td style="text-align: center">{{ trendcoin[1] }} - {{ trendcoin[2] }}</td>
+                                            <td style="text-align: center" class="setdatetime">{{ trendcoin[1] }}{{ trendcoin[2] }}</td>
                                             <td style="text-align: right" class="setnumb">{{ trendcoin[3] }}</td>
                                             <td style="text-align: right" class="setnumb">{{ trendcoin[4] }}</td>
                                             <td style="text-align: right" class="setnumb">{{ trendcoin[5] }}</td>
@@ -85,6 +85,7 @@
     <script>
     $(document).ready(function () {
         calcvalue();
+        setdatetimerow();
         $('#dataTable').dataTable();
     });
 
@@ -102,6 +103,21 @@
         for (var i = 0; i < $Aarr.length; i++) {
             var aval = parseFloat($Aarr[i].innerText).toFixed(2);
             $Aarr[i].innerText = numberWithCommas(aval);
+        }
+    }
+    function setdatetimerow(){
+        $Barr = $(".setdatetime");
+        for (var i = 0; i < $Barr.length; i++){
+            var inntxt = $Barr[i].innerText;
+            var year = inntxt.substr(0,4);
+            var mon = inntxt.substr(4,2);
+            var day = inntxt.substr(6,2);
+            var hour = inntxt.substr(8,2);
+            var minute = inntxt.substr(10,2);
+            var second = inntxt.substr(12,2);
+            var setdate = year + '/' + mon + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+            $Barr[i].innerText = setdate;
+            setdate = "";
         }
     }
 </script>
