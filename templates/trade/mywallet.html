@@ -30,7 +30,10 @@
                                             <th>잔고</th>
                                             <th>거래중</th>
                                             <th>평균매입가</th>
-                                            <th>평가액</th>
+                                            <th>현재가</th>
+                                            <th>구매금액</th>
+                                            <th>평가금액</th>
+                                            <th>평가액/구매액 비율</th>
                                             <th>추가기능</th>
                                         </tr>
                                     </thead>
@@ -41,7 +44,10 @@
                                          <td class="vola">{{ item["balance"] }}</td>
                                          <td class="volb">{{ item["locked"] }}</td>
                                          <td class = "coins aprice">{{ item["avg_buy_price"] }}</td>
+                                         <td class = "cprice"></td>
                                          <td style="text-align: right" class="cvalue" ></td>
+                                         <td class = "balanceprice"></td>
+                                         <td class = "balancerate"></td>
                                          <td style="text-align: center">
                                         {% if item["currency"]!="KRW" %}
                                          <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">매도</button>
@@ -50,7 +56,7 @@
                                          </tr>
                                         {% endfor %}
                                          <tr>
-                                         <td style="text-align: center" colspan="4">현재 원화 가치 합계</td>
+                                         <td style="text-align: center" colspan="5">현재 원화 가치 합계</td>
                                          <td id="wonsum" style="text-align: right"></td>
                                          <td></td>
                                       </tr>

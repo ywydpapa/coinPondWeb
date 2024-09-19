@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import (selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
+from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
     setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
-    boardupdate, boardnewwrite, setholdreset, getmessage, readmsg, savemultisetup, cancelorder, gettop20)
+    boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
