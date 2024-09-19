@@ -89,23 +89,6 @@
     });
 
 
-    function sellcoin(uno,coinn){
-        if (confirm("본 코인을 시장가로 매도하시겠습니까? 자산이 5,000원 미만인 경우 5,000원을 추가로 매입하여 일괄 매도합니다.")){
-        data = [uno,coinn]
-        console.log(data);
-        $.ajax({
-            type: "POST",
-            url: '/sellcoin',
-            data: data,
-            processData: false,
-            contentType: false,
-            success: (res) => {
-                console.log(res);
-                location.reload();
-                }
-        });
-        }else{}}
-
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
@@ -115,24 +98,11 @@
 	}
 
     function calcvalue(){
-        $Aarr = $(".vola");
-        $Barr = $(".volb");
-        $Carr = $(".aprice");
-        $Darr = $(".cvalue");
-        var nprice = 0;
-        var wonsum = 0;
-        for (var i = 0; i < $Darr.length; i++) {
-            var aval = parseFloat($Aarr[i].innerText);
-            var bval = parseFloat($Barr[i].innerText);
-            var cval = parseFloat($Carr[i].innerText);
-            if (cval == 0) {
-                cval = 1;
-            }
-            nprice = parseInt(Math.round((aval+bval)*cval));
-            wonsum = wonsum + nprice;
-            $Darr[i].innerText = numberWithCommas(nprice);
+        $Aarr = $(".setnumb");
+        for (var i = 0; i < $Aarr.length; i++) {
+            var aval = parseFloat($Aarr[i].innerText).toFixed(2);
+            $Aarr[i].innerText = numberWithCommas(aval);
         }
-        $("#wonsum").html(numberWithCommas(wonsum));
     }
 </script>
     {% include '/comm/adscripttable.html' %}
