@@ -704,3 +704,19 @@ def cancelorder(uno,uuid):
     finally:
         cur36.close()
         db36.close()
+
+
+def gettop20():
+    global rows
+    db37 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur37 = db37.cursor()
+    try:
+        sql = "select * from trendcoins order by acc_trade_price desc limit 20"
+        cur37.execute(sql)
+        rows = cur37.fetchall()
+    except Exception as e:
+        print("추천코인 조회 에러 ", e)
+    finally:
+        cur37.close()
+        db37.close()
+        return rows

@@ -26,13 +26,31 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead style="text-align: center">
                                     <th>코인명</th>
-                                    <th>설정변경링크</th>
+                                    <th>정보수집일자</th>
+                                    <th>현재가</th>
+                                    <th>현재 거래량</th>
+                                    <th>기준 거래금액(09시~)</th>
+                                    <th>24시간 거래금액</th>
+                                    <th>기준 거래량(09시~)</th>
+                                    <th>24시간 거래량</th>
+                                    <th>거래추세</th>
+                                    <th>변화율</th>
+                                    <th>설정화면</th>
                                 </thead>
                                     <tbody>
-                                    {% for coin in coinlist %}
+                                    {% for trendcoin in trendcoins %}
                                         <tr>
-                                            <td style="text-align: center" class="coinn"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ coin[1]}}">{{ coin[1] }}</a></td>
-                                            <td style="text-align: center"><button class="btn-primary" onclick="location.href='/tradeSet?coinn={{ coin[1] }}'">투자 설정 변경</button></td>
+                                            <td style="text-align: center" class="coinn"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ trendcoin[0]}}">{{ trendcoin[0] }}</a></td>
+                                            <td style="text-align: center">{{ trendcoin[1] }} - {{ trendcoin[2] }}</td>
+                                            <td style="text-align: right">{{ trendcoin[3] }}</td>
+                                            <td style="text-align: right">{{ trendcoin[4] }}</td>
+                                            <td style="text-align: right">{{ trendcoin[5] }}</td>
+                                            <td style="text-align: right">{{ trendcoin[6] }}</td>
+                                            <td style="text-align: right">{{ trendcoin[7] }}</td>
+                                            <td style="text-align: right">{{ trendcoin[8] }}</td>
+                                            <td style="text-align: center">{{ trendcoin[9] }}</td>
+                                            <td style="text-align: right">{{ trendcoin[10] }}</td>
+                                            <td style="text-align: center"><button class="btn-primary" onclick="location.href='/tradeSet?coinn={{ trendcoin[0] }}'">투자 설정 변경</button></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -67,6 +85,7 @@
     <script>
     $(document).ready(function () {
         calcvalue();
+        $('#dataTable').dataTable();
     });
 
 
@@ -116,5 +135,6 @@
         $("#wonsum").html(numberWithCommas(wonsum));
     }
 </script>
+    {% include '/comm/adscripttable.html' %}
 </body>
 </html>

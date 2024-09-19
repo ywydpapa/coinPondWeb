@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from comm.dbconn import (selectUsers, check_srv, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
     setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
-    boardupdate, boardnewwrite, setholdreset, getmessage, readmsg, savemultisetup, cancelorder)
+    boardupdate, boardnewwrite, setholdreset, getmessage, readmsg, savemultisetup, cancelorder, gettop20)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -100,8 +100,8 @@ def adminSet():
 
 @app.route('/peakcoin', methods=['GET', 'POST'])
 def peakcoin():
-    coins = hotcoinlist()
-    return render_template('./trade/hotcoins.html', coinlist=coins)
+    trendcoins = gettop20()
+    return render_template('./trade/hotcoins.html', trendcoins=trendcoins)
 
 
 @app.route('/coindetail', methods=['GET', 'POST'])
