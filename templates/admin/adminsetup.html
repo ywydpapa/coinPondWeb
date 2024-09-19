@@ -50,6 +50,7 @@
                             <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
                             <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none">
                             <input type="checkbox" id="chkyn" name="chkyn" style="display: none" >
+                            <h6 style="color: #ff0000">금액은 시뮬레이션용으로 설정값으로 저장되지 않습니다.</h6>
                         </td>
                     </tr>
                     <tr>
@@ -78,7 +79,7 @@
                         <td colspan="2">
                             <div style="text-align: right">
                             <div>
-                            <input id="steprate" name="steprate" style="text-align: right" class="form-control" type="number" min="0" max="10" step="0.01" value="">
+                            <input id="steprate" name="steprate" style="text-align: right" class="form-control" type="number" min="0" max="10" step="0.01" value="1.0">
                             </div>
                             </div>
                         </td>
@@ -90,6 +91,7 @@
                             <label for ="doublechk">더블 투자 적용</label>
                             <br>
                             <input type="checkbox" id="doublechk" name="doublechk" >
+                            <h6 style="color: #ff0000">더블투자적용은 시뮬레이션용입니다.</h6>
                         </td>
                     </tr>
                     <tr>
@@ -322,8 +324,8 @@
 
     $('#initprice').change(function(){
         var valu = $('#initprice').val();
-        if (valu < 5000){
-            valu = 5000
+        if (valu < 10000){
+            valu = 10000
         }
         $('#initprice').val(numberWithCommas(valu));
         document.getElementById('trvalst').innerText = "-";
