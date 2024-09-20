@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
     setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
-    boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20)
+    boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -108,10 +108,23 @@ def peakcoin():
 def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
-    orderlist = tradehistory(uno, skey)
+    coinn = request.args.get('coin')
+    coinlist = pyupbit.get_tickers(fiat="KRW")
+    orderlist = tradehistorys(uno, skey, coinn)
     mysetrate = getsetup(uno)[4]
     print(mysetrate)
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate)
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist)
+
+
+@app.route('/coindetails', methods=['GET', 'POST'])
+def coindetails():
+    uno = request.args.get('uno')
+    skey = request.args.get('skey')
+    coinlist = pyupbit.get_tickers(fiat="KRW")
+    orderlist = tradehistorys(uno, skey)
+    mysetrate = getsetup(uno)[4]
+    print(mysetrate)
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])

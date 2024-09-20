@@ -183,6 +183,25 @@ def tradehistory(uno, setkey):
     return tradelist
 
 
+def tradehistorys(uno, setkey, coinn):
+    tradelist = []
+    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur7 = db.cursor()
+    sql2 = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
+    cur7.execute(sql2,(setkey, uno, '%XXX'))
+    keys = cur7.fetchone()
+    if len(keys) == 0:
+        print("No available Keys !!")
+    else:
+        key1 = keys[0]
+        key2 = keys[1]
+        upbit = pyupbit.Upbit(key1,key2)
+        tradelist = upbit.get_order(coinn,state='done')
+    cur7.close()
+    db.close()
+    return tradelist
+
+
 def checkkey(uno, setkey):
     db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur8 = db.cursor()
