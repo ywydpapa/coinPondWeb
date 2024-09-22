@@ -148,7 +148,7 @@ def tradestat():
                 try:
                     cpr = pyupbit.get_current_price(ccoin)
                 except Exception as e:
-                    cpr = 0
+                    cpr = 1
                 curr = [wallet['currency'], cpr]
                 mycoins.append(curr)
         return render_template('./trade/mywallet.html', witems=walletitems, mycoins=mycoins)
