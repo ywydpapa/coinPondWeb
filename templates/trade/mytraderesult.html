@@ -23,6 +23,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                            <h6 class="m-0 font-weight-bold text-primary">코인별 내역 조회 (현재 설정중이 아닌 코인의 거래 이력을 조회 할 수 있습니다.)</h6>
                                 <table class="table table-bordered" id="searchtable">
                                     <tr style="text-align: center">
                                         <td>
@@ -43,14 +44,19 @@
                                                         {% endfor %}
                                             </select>
                                         </td>
-                                        <td>
-                                            <input class="form-control" type="date" id="searchdate">
+                                        <td><div class = "row" style="display: inline-block">
+                                            <div style="float: left">
+                                            <label for="searchdatefrom">From : </label> <input class="form-control" type="date" id="searchdatefrom" value=""></div>
+                                            <div style="float: right">
+                                            <label for="searchdateto">To : </label> <input class="form-control" type="date" id="searchdateto" value=""></div>
+                                        </div>
                                         </td>
-                                        <td>
-                                            <button class="btn-google">조회시작</button>
+                                        <td style="text-align: center">
+                                            <button class="btn btn-facebook" onclick="gethistory();">조회시작</button>
                                         </td>
                                     </tr>
                                 </table>
+                                <h6 class="m-0 font-weight-bold text-primary">코인별 내역 집계</h6>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                        <tr style="text-align: center">
@@ -74,6 +80,7 @@
                                     </tbody>
                                 </table>
                                 <br>
+                                <h6 class="m-0 font-weight-bold text-primary">코인별 내역</h6>
                                 <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
                                    <thead>
                                        <tr style="text-align: center">
@@ -141,11 +148,18 @@
 </body>
 <script>
     $('.selectpicker').selectpicker({
-      style: 'btn-primary',
-      size: 20
+      size: 10
      });
     $(document).ready(function () {
     });
+
+    document.getElementById('searchdateto').value = new Date().toISOString().substring(0, 10);
+    const today = new Date();
+    const fromDate = new Date(
+    today.getFullYear()-1,
+    today.getMonth(),
+    today.getDate());
+    document.getElementById('searchdatefrom').value = fromDate.toISOString().substring(0,10);
 
     $(document).ready(function () {
         cutfee();
@@ -215,6 +229,13 @@
             valu = Math.ceil(valu);
             $Darr[c].innerText = valu;
         }
+    }
+
+    function gethistory(){
+        var target = "/coindetails?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&coinn=";
+        var selcoin = $("#coinselector").val();
+        target = target+selcoin;
+        location.href = target;
     }
 
 </script>

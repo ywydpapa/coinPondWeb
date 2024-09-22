@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
-from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, setupbid, getsetup, setonoff, \
+from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoinlist, setupbid, getsetup, setonoff, \
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
-    setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, \
+    setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, resethotcoins, \
     boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
@@ -100,17 +100,22 @@ def adminSet():
 
 @app.route('/peakcoin', methods=['GET', 'POST'])
 def peakcoin():
+    hotcoins = hotcoinlist()
+    return render_template('./trade/hotcoins.html', hotcoins=hotcoins)
+
+
+@app.route('/volumetop20', methods=['GET', 'POST'])
+def volumetop20():
     trendcoins = gettop20()
-    return render_template('./trade/hotcoins.html', trendcoins=trendcoins)
+    return render_template('./trade/top20.html', trendcoins=trendcoins)
 
 
 @app.route('/coindetail', methods=['GET', 'POST'])
 def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
-    coinn = request.args.get('coin')
     coinlist = pyupbit.get_tickers(fiat="KRW")
-    orderlist = tradehistorys(uno, skey, coinn)
+    orderlist = tradehistory(uno, skey)
     mysetrate = getsetup(uno)[4]
     print(mysetrate)
     return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist)
@@ -120,8 +125,9 @@ def coindetail():
 def coindetails():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
+    coinn = request.args.get('coinn')
     coinlist = pyupbit.get_tickers(fiat="KRW")
-    orderlist = tradehistorys(uno, skey)
+    orderlist = tradehistorys(uno, skey, coinn)
     mysetrate = getsetup(uno)[4]
     print(mysetrate)
     return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist)
@@ -318,6 +324,12 @@ def hotyn():
     print(coinn)
     print(yesno)
     sethotcoin(coinn, yesno)
+    return "YES"
+
+
+@app.route('/resethotyn', methods=['POST'])
+def resethotyn():
+    resethotcoins()
     return "YES"
 
 

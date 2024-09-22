@@ -117,18 +117,29 @@
         });
     }
 
+
+    function resethotyn(){
+        $.ajax({
+            type: "POST",
+            url: '/resethotyn',
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                }
+        });
+    }
+
     function savelist(){
           var $Aarr = $(".coinn");
           var $Barr = $(".chkhot");
+          resethotyn();
           for (var i = 0; i < $Aarr.length; i++){
               if ($Barr[i].checked === true){
                   var coin = $Aarr[i].innerText;
                   var yn = 'Y';
                   hotyn(coin, yn);
               } else {
-                  var coin = $Aarr[i].innerText;
-                  var yn = 'N';
-                  hotyn(coin, yn);
               }
           }
           alert("추천 코인 저장이 완료 되었습니다.")

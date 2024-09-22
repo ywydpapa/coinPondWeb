@@ -549,7 +549,7 @@ def hotcoinlist():
     cur26 = db26.cursor()
     row = None
     try:
-        sql = "SELECT * FROM hotCoins WHERE attrib NOT LIKE %s"
+        sql = "SELECT * from trendcoins where market in (SELECT coinName FROM hotCoins WHERE attrib NOT LIKE %s)"
         cur26.execute(sql, "XXX%")
         rows = cur26.fetchall()
     except Exception as e:
@@ -739,3 +739,18 @@ def gettop20():
         cur37.close()
         db37.close()
         return rows
+
+
+def resethotcoins():
+    db38 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur38 = db38.cursor()
+    try:
+        sql = "update hotCoins set attrib = %s where attrib like %s"
+        cur38.execute(sql, ("XXX00XXX00XXX00", "10000%"))
+        db38.commit()
+    except Exception as e:
+        print("추천코인 리셋 에러",e)
+    finally:
+        cur38.close()
+        db38.close()
+

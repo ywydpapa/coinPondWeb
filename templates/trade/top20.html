@@ -38,7 +38,7 @@
                                     <th>설정화면</th>
                                 </thead>
                                     <tbody>
-                                    {% for trendcoin in hotcoins %}
+                                    {% for trendcoin in trendcoins %}
                                         <tr>
                                             <td style="text-align: center" class="coinn"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ trendcoin[0]}}">{{ trendcoin[0] }}</a></td>
                                             <td style="text-align: center" class="setdatetime">{{ trendcoin[1] }}{{ trendcoin[2] }}</td>
