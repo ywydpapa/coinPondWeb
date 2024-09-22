@@ -44,7 +44,14 @@
                                          <td class="vola">{{ item["balance"] }}</td>
                                          <td class="volb">{{ item["locked"] }}</td>
                                          <td class = "coins aprice">{{ item["avg_buy_price"] }}</td>
-                                         <td class = "cprice"></td>
+                                         <td class = "cprice">{% for coin in mycoins %}
+                                             {% if item["currency"] != "KRW" %}
+                                             {% if item["currency"] == coin[0] %}{{ coin[1] }}{% endif %}
+                                             {% endif %}
+                                             {% if item["currency"] == "KRW" %}
+                                             1
+                                             {% endif %}
+                                         {% endfor %}</td>
                                          <td style="text-align: right" class="cvalue" ></td>
                                          <td class = "balanceprice"></td>
                                          <td class = "balancerate"></td>
@@ -58,7 +65,7 @@
                                          <tr>
                                          <td style="text-align: center" colspan="5">현재 원화 가치 합계</td>
                                          <td id="wonsum" style="text-align: right"></td>
-                                         <td></td>
+                                         <td id="estsum" style="text-align: right"></td>
                                       </tr>
                                     </tbody>
                                 </table>
@@ -121,24 +128,44 @@
 	}
 
     function calcvalue(){
+        $Xarr = $(".coins");
         $Aarr = $(".vola");
         $Barr = $(".volb");
         $Carr = $(".aprice");
-        $Darr = $(".cvalue");
-        var nprice = 0;
+        $Darr = $(".cprice");
+        $Earr = $(".cvalue");
+        $Farr = $(".balanceprice");
+        $Garr = $(".balancerate");
         var wonsum = 0;
+        var estsum = 0;
         for (var i = 0; i < $Darr.length; i++) {
-            var aval = parseFloat($Aarr[i].innerText);
-            var bval = parseFloat($Barr[i].innerText);
-            var cval = parseFloat($Carr[i].innerText);
-            if (cval == 0) {
+            var nprice = 0;
+            var estrate = 0;
+            var estpr = 0;
+            var aval = parseFloat($Aarr[i].innerText); //잔고
+            var bval = parseFloat($Barr[i].innerText); //거래중
+            var cval = parseFloat($Carr[i].innerText); //평균매입가
+            var dval = parseFloat($Darr[i].innerText); //현재가
+            if (cval === 0) {
                 cval = 1;
             }
-            nprice = parseInt(Math.round((aval+bval)*cval));
-            wonsum = wonsum + nprice;
-            $Darr[i].innerText = numberWithCommas(nprice);
+            if (dval === 0) {
+                dval = 1;
+            }
+            if (dval === "") {
+                dval = 1;
+            }
+            nprice = parseInt(Math.round((aval+bval)*cval)); //구매 가치
+            estpr = parseInt(Math.round((aval+bval)*dval)); //평가 가치
+            estrate = 100 - ((nprice - estpr)/nprice*100);
+            wonsum = wonsum + nprice; //원하 가치
+            estsum = estsum + estpr; //평가 가치
+            $Earr[i].innerText = numberWithCommas(nprice);
+            $Farr[i].innerText = numberWithCommas(estpr);
+            $Garr[i].innerText = estrate;
         }
         $("#wonsum").html(numberWithCommas(wonsum));
+        $("#estsum").html(numberWithCommas(estsum));
     }
 </script>
 </body>

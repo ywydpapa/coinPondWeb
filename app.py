@@ -138,10 +138,17 @@ def tradestat():
     if request.method == "POST":
         return render_template('trade/tradestat.html')
     else:
+        mycoins = []
         uno = request.args.get('uno')
         skey = request.args.get('skey')
         walletitems = checkwallet(uno, skey)
-        return render_template('./trade/mywallet.html', witems=walletitems)
+        for wallet in walletitems:
+            if wallet['currency'] != "KRW":
+                ccoin = "KRW-" + wallet['currency']
+                cpr = pyupbit.get_current_price(ccoin)
+                curr = [wallet['currency'], cpr]
+                mycoins.append(curr)
+        return render_template('./trade/mywallet.html', witems=walletitems, mycoins=mycoins)
 
 
 @app.route('/login', methods=['GET', 'POST'])
