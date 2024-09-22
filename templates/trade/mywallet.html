@@ -47,9 +47,10 @@
                                          <td class = "cprice">{% for coin in mycoins %}
                                              {% if item["currency"] != "KRW" %}
                                              {% if item["currency"] == coin[0] %}{{ coin[1] }}{% endif %}
-                                                 {% else %}1
                                              {% endif %}
-                                         {% endfor %}</td>
+                                         {% endfor %}
+                                         {% if item["currency"] == "KRW" %}1{% endif %}
+                                         </td>
                                          <td style="text-align: right" class="cvalue" ></td>
                                          <td class = "balanceprice"></td>
                                          <td class = "balancerate"></td>
