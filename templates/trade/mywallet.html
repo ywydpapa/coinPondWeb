@@ -47,9 +47,7 @@
                                          <td class = "cprice">{% for coin in mycoins %}
                                              {% if item["currency"] != "KRW" %}
                                              {% if item["currency"] == coin[0] %}{{ coin[1] }}{% endif %}
-                                             {% endif %}
-                                             {% if item["currency"] == "KRW" %}
-                                             1
+                                                 {% else %}1
                                              {% endif %}
                                          {% endfor %}</td>
                                          <td style="text-align: right" class="cvalue" ></td>
