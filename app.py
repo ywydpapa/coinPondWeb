@@ -145,7 +145,10 @@ def tradestat():
         for wallet in walletitems:
             if wallet['currency'] != "KRW":
                 ccoin = "KRW-" + wallet['currency']
-                cpr = pyupbit.get_current_price(ccoin)
+                try:
+                    cpr = pyupbit.get_current_price(ccoin)
+                except Exception as e:
+                    cpr = 0
                 curr = [wallet['currency'], cpr]
                 mycoins.append(curr)
         return render_template('./trade/mywallet.html', witems=walletitems, mycoins=mycoins)
