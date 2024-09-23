@@ -45,10 +45,10 @@
                                             </select>
                                         </td>
                                         <td><div class = "row" style="display: inline-block">
-                                            <div style="float: left">
+                                            <div style="float: left;display: none" >
                                             <label for="searchdatefrom">From : </label> <input class="form-control" type="date" id="searchdatefrom" value=""></div>
                                             <div style="float: right">
-                                            <label for="searchdateto">To : </label> <input class="form-control" type="date" id="searchdateto" value=""></div>
+                                            <input class="form-control" type="date" id="searchdateto" value=""></div>
                                         </div>
                                         </td>
                                         <td style="text-align: center">
@@ -99,6 +99,7 @@
                                    </thead>
                                    <tbody>
                                    {% for item in orderlist %}
+                                       {% if item["side"] != 'bid' %}
                                        <tr>
                                            <td style = text-align:center class="coinn">{{ item["market"] }}<br></td>
                                            <td style = text-align:center class="buysell">{% if item["side"] == 'ask' %}<span style="color: blue; ">매도</span>{% else %}<span style="color: red; ">매수</span>{% endif %}</td>
@@ -112,6 +113,7 @@
                                            <td style = text-align:right class="exevol">{{ item["executed_volume"] }}<br></td>
                                            <td style = text-align:right class = "settle" ></td>
                                        </tr>
+                                       {% endif %}
                                    {%  endfor %}
                                    </tbody>
                                 </table>

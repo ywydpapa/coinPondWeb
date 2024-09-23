@@ -119,9 +119,10 @@ def coindetail():
     skey = request.args.get('skey')
     coinlist = pyupbit.get_tickers(fiat="KRW")
     orderlist = tradehistory(uno, skey)
+    print(orderlist)
     mysetrate = getsetup(uno)[4]
-    print(mysetrate)
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist)
+    setcoin = getsetup(uno)[0]
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin)
 
 
 @app.route('/coindetails', methods=['GET', 'POST'])
@@ -132,8 +133,8 @@ def coindetails():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     orderlist = tradehistorys(uno, skey, coinn)
     mysetrate = getsetup(uno)[4]
-    print(mysetrate)
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist)
+    setcoin = getsetup(uno)[0]
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])
