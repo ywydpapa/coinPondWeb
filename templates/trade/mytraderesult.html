@@ -40,7 +40,7 @@
                                         <td>
                                             <select class="form-control selectpicker" id="coinselector" data-live-search="true">
                                                 {%for coin in coinlist %}
-                                                <option value="{{ coin }} ">{{ coin }}</option>
+                                                <option value="{{ coin }}" {% if coin == setcoin0 %}selected{% endif %}>{{ coin }}</option>
                                                         {% endfor %}
                                             </select>
                                         </td>
@@ -155,15 +155,15 @@
     $(document).ready(function () {
     });
 
-    document.getElementById('searchdateto').value = new Date().toISOString().substring(0, 10);
-    const today = new Date();
-    const fromDate = new Date(
-    today.getFullYear()-1,
-    today.getMonth(),
-    today.getDate());
-    document.getElementById('searchdatefrom').value = fromDate.toISOString().substring(0,10);
+    function setdate(){
+    var sdate = "{{ sdate }}";
+    if (sdate === null){document.getElementById('searchdateto').value = new Date().toISOString().substring(0, 10);}
+    else{document.getElementById('searchdateto').value = sdate;}
+    }
+
 
     $(document).ready(function () {
+        setdate();
         cutfee();
         calprofit();
         $('#dataTable2').DataTable();
@@ -236,7 +236,8 @@
     function gethistory(){
         var target = "/coindetails?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&coinn=";
         var selcoin = $("#coinselector").val();
-        target = target+selcoin;
+        var adddate = "&sdate=" + $("#searchdateto").val();
+        target = target+selcoin+adddate;
         location.href = target;
     }
 

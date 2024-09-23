@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoinlist, setupbid, getsetup, setonoff, \
@@ -119,10 +121,10 @@ def coindetail():
     skey = request.args.get('skey')
     coinlist = pyupbit.get_tickers(fiat="KRW")
     orderlist = tradehistory(uno, skey)
-    print(orderlist)
+    sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
     mysetrate = getsetup(uno)[4]
     setcoin = getsetup(uno)[0]
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin)
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate)
 
 
 @app.route('/coindetails', methods=['GET', 'POST'])
@@ -130,11 +132,17 @@ def coindetails():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     coinn = request.args.get('coinn')
+    sdate = request.args.get('sdate')
     coinlist = pyupbit.get_tickers(fiat="KRW")
-    orderlist = tradehistorys(uno, skey, coinn)
+    try:
+        orderlist = tradehistorys(uno, skey, coinn)
+        if orderlist is None:
+            orderlist = []
+    except Exception as e:
+        orderlist = []
     mysetrate = getsetup(uno)[4]
-    setcoin = getsetup(uno)[0]
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin)
+    setcoin = coinn
+    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])

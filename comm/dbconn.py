@@ -184,7 +184,7 @@ def tradehistory(uno, setkey):
 
 
 def tradehistorys(uno, setkey, coinn):
-    tradelist = []
+    tradelist2 = []
     db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur7 = db.cursor()
     sql2 = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
@@ -196,10 +196,10 @@ def tradehistorys(uno, setkey, coinn):
         key1 = keys[0]
         key2 = keys[1]
         upbit = pyupbit.Upbit(key1,key2)
-        tradelist = upbit.get_order(coinn,state='done')
+        tradelist2 = upbit.get_order(coinn,state='done')
     cur7.close()
     db.close()
-    return tradelist
+    return tradelist2
 
 
 def checkkey(uno, setkey):
