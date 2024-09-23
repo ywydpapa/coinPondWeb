@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include '/comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include '/comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include '/comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <h3 class="h3 mb-4 text-gray-800">회원 투자 현황</h3>
+                    <div class="table-responsive">
+                         <table class="table" id="coinTables">
+                         <thead style="text-align: center">
+                         <th>사용자명</th>
+                         <th>코인명</th>
+                         <th>시작가</th>
+                         <th>투자패턴</th>
+                         <th>서버번호</th>
+                         <th>더블투자</th>
+                         <th>작동여부</th>
+                         </thead>
+                             {% for item in items %}
+                             <tr>
+                             <td style="text-align: center">{{ item[0] }}</td>
+                             <td style="text-align: center">{{ item[7] }}</td>
+                             <td style="text-align: right" class="money">{{ item[3] }}</td>
+                             <td style="text-align: center">{{ item[9] }}</td>
+                             <td style="text-align: center">{{ item[10] }}</td>
+                             <td style="text-align: center">{{ item[13] }}</td>
+                             <td style="text-align: center">{{ item[8] }}</td>
+                             </tr>
+                            {% endfor %}
+                        </table>
+                        </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+{% include './comm/adscript.html' %}
+{% include './comm/adscripttable.html' %}
+</body>
+<script src="{{ url_for('static', filename ='vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename ='vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        makecurrency();
+        $('#coinTables').DataTable();
+    });
+
+    function makecurrency(){
+        var $Aarr = $(".money");
+        for (var i = 0; i < $Aarr.length; i++){
+            var don = $Aarr[i].innerText;
+            $Aarr[i].innerText = numberWithCommas(don);
+        }
+    }
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
+
+
+</script>
+</html>

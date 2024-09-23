@@ -754,3 +754,17 @@ def resethotcoins():
         cur38.close()
         db38.close()
 
+def tradelist():
+    global rows
+    db39 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur39 = db39.cursor()
+    try:
+        sql = "select b.userName, a.* from tradingSetup a join pondUser b on a.userNo = b.userNo where a.attrib =  %s"
+        cur39.execute(sql, "100001000010000")
+        rows = cur39.fetchall()
+    except Exception as e:
+        print("투자 현황 조회 에러",e)
+    finally:
+        cur39.close()
+        db39.close()
+        return rows

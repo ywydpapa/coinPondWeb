@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoinlist, setupbid, getsetup, setonoff, \
     checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
     setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, resethotcoins, \
-    boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys)
+    boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys, tradelist)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -518,6 +518,12 @@ def msglist():
     print(uno)
     print(items)
     return render_template('./board/msglist.html', items = items)
+
+
+@app.route('/tradestatus')
+def tradestatus():
+    items = tradelist()
+    return render_template('./admin/tradeStat.html', items = items)
 
 
 @app.errorhandler(404)
