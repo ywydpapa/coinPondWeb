@@ -27,6 +27,9 @@
                         <th>
                             일자
                         </th>
+                        <th>
+                            확인
+                        </th>
                         </thead>
                         <tbody>
                         {% for item in items %}
@@ -34,6 +37,7 @@
                             <td style="text-align: center">{{ item[0] }}</td>
                             <td>{{ item[1] }}</td>
                             <td style="text-align: center">{{ item[3] }}</td>
+                            <td><button type="button" onclick="readmsg({{ item[0] }})">읽음</button></td>
                         </tr>
                         {% endfor %}
                         </tbody>
@@ -63,5 +67,23 @@
     </a>
      <!-- Bootstrap core JavaScript-->
 {% include './comm/adscript.html' %}
+<script>
+    function readmsg(msgno){
+        if (confirm("메세지를 읽음 처리 하시겠습니까?")){
+        data = [msgno]
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: '/msgread',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                console.log(res);
+                location.reload();
+                }
+        });
+        }}
+</script>
 </body>
 </html>

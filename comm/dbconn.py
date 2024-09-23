@@ -664,7 +664,7 @@ def readmsg(errno):
     db33 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur33 = db33.cursor()
     try:
-        sql = "UPDATE error_log SET attrib = %s where errorNo=%s"
+        sql = "UPDATE error_Log SET attrib = %s where errorNo=%s"
         cur33.execute(sql, ("RRR00RRR00RRR00", errno))
         db33.commit()
     except Exception as e:

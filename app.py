@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoinlist, setupbid, getsetup, setonoff, \
-    checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets, setdetail, selectsetlist, \
-    setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin, selectboardlist, boarddetail, resethotcoins, \
-    boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys, tradelist)
+                         checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets,
+                         setdetail, selectsetlist, \
+                         setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
+                         selectboardlist, boarddetail, resethotcoins, \
+                         boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
+                         tradelist, readmsg)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -524,6 +527,14 @@ def msglist():
 def tradestatus():
     items = tradelist()
     return render_template('./admin/tradeStat.html', items = items)
+
+
+@app.route('/msgread', methods=['POST'])
+def msgread():
+    pla = request.get_data().decode('utf-8').split(',')
+    msgno = pla[0]
+    readmsg(msgno)
+    return "CHECK"
 
 
 @app.errorhandler(404)
