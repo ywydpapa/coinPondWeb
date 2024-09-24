@@ -8,7 +8,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
-                         tradelist, readmsg)
+                         tradelist, readmsg, gettradelog)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -124,6 +124,8 @@ def coindetail():
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
     mysetrate = getsetup(uno)[4]
     setcoin = getsetup(uno)[0]
+    orderlist2 = gettradelog(setcoin, sdate,sdate,uno)
+    print(orderlist2)
     return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate)
 
 
