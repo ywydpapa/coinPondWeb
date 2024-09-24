@@ -124,7 +124,7 @@ def coindetail():
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
     mysetrate = getsetup(uno)[4]
     setcoin = getsetup(uno)[0]
-    orderlist2 = gettradelog(setcoin, sdate,sdate,uno)
+    orderlist2 = gettradelog(setcoin,sdate,uno)
     print(orderlist2)
     return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate)
 
