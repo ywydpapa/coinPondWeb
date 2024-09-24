@@ -144,6 +144,8 @@ def coindetails():
         orderlist = []
     mysetrate = getsetup(uno)[4]
     setcoin = coinn
+    orderlist2 = gettradelog(setcoin, sdate, uno)
+    print(orderlist2)
     return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate)
 
 

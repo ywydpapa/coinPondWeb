@@ -1,6 +1,8 @@
 import os
 import random
 from datetime import datetime, timedelta
+from typing import List, Any
+
 import dotenv
 import pymysql
 import pyupbit
@@ -779,12 +781,13 @@ def tradelist():
 
 
 def gettradelog(coinn, sdate, uno):
-    global result
+    global rows
     try:
         keys = getupbitkey(uno)
         access_key = keys[0]
         secret_key = keys[1]
         server_url = "https://api.upbit.com/"
+        rows = []
         for tgap in ['T00:00:00+09:00','T01:00:00+09:00','T02:00:00+09:00','T03:00:00+09:00','T04:00:00+09:00','T05:00:00+09:00','T06:00:00+09:00','T07:00:00+09:00','T08:00:00+09:00','T09:00:00+09:00','T10:00:00+09:00','T11:00:00+09:00','T12:00:00+09:00','T13:00:00+09:00','T14:00:00+09:00','T15:00:00+09:00','T16:00:00+09:00','T17:00:00+09:00','T18:00:00+09:00','T19:00:00+09:00','T20:00:00+09:00','T21:00:00+09:00','T22:00:00+09:00','T23:00:00+09:00']:
             frt = sdate + tgap
             print(frt)
@@ -797,10 +800,11 @@ def gettradelog(coinn, sdate, uno):
             jwt_token = jwt.encode(payload, secret_key)
             authorization = 'Bearer {}'.format(jwt_token)
             headers = {'Authorization': authorization,}
-            rows = requests.get(server_url + '/v1/orders/closed', params=params, headers=headers)
-            result = result + rows
-            print(result)
+            row = requests.get(server_url + '/v1/orders/closed', params=params, headers=headers)
+            if row != None:
+                rows.append(row.json())
+            print(rows)
     except Exception as e:
         print(e)
     finally:
-        return result
+        return rows
