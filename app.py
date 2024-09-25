@@ -125,7 +125,7 @@ def coindetail():
     for order in orderlist:
         trdate.append(order["created_at"][0:10])
     trdate = set(trdate)
-    trdate = list(trdate).reverse()
+    trdate = list(trdate)
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
     mysetrate = getsetup(uno)[4]
     setcoin = getsetup(uno)[0]
@@ -152,7 +152,7 @@ def coindetails():
         for order in orderlist:
             trdate.append(order["created_at"][0:10])
         trdate = set(trdate)
-        trdate = list(trdate).reverse()
+        trdate = list(trdate)
         if orderlist is None:
             orderlist = []
     except Exception as e:
