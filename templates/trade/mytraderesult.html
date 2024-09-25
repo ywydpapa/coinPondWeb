@@ -51,7 +51,12 @@
                                             </select>
                                         </td>
                                     <td>
-
+                                            <select class="form-control" id="trcoinselector">
+                                                <option value="">기존 거래 코인 선택</option>
+                                                {%for trcoin in trcoinlist %}
+                                                <option value="{{ trcoin[0] }}">{{ trcoin[0] }}</option>
+                                                {% endfor %}
+                                            </select>
                                     </td>
                                         <td><div class = "row" style="display: inline-block">
                                             <div style="float: left;display: none" >
@@ -62,6 +67,7 @@
                                         </td>
                                         <td>
                                             <select class="form-control" id="tradedate">
+                                                <option value="">거래이력 일자 선택</option>
                                                 {% for dat in orderlist %}
                                                 <option value="{{ dat }}">{{ dat }}</option>
                                                 {% endfor %}
@@ -114,12 +120,11 @@
                                    </thead>
                                 <tbody>
                                 {% for reqitem in reqitems %}
-                                    {% if reqitem["side"] != 'bid' %}
                                     <tr>
                                         <td style = text-align:center class="coinn">{{ reqitem["market"] }}<br></td>
                                         <td style = text-align:center class="buysell">{% if reqitem["side"] == 'ask' %}<span style="color: blue; ">매도</span>{% else %}<span style="color: red; ">매수</span>{% endif %}</td>
                                         <td style = text-align:center class="ordtyp">{{ reqitem["ord_type"]}}<br></td>
-                                        <td style = text-align:right class="mprice">{{ reqitem["price"] }}<br></td>
+                                        <td style = text-align:right class="mprice">{% if reqitem["ord_type"] == 'limit' %}{{ reqitem["price"] }}{% else %}0{% endif %}<br></td>
                                         <td style = text-align:right>{{ reqitem["volume"] }}<br></td>
                                         <td style = text-align:right class="remaincoin">{{ reqitem["remaining_volume"] }}<br></td>
                                         <td style = text-align:right class="trdate">{{ reqitem["created_at"][0:10] }} {{ reqitem["created_at"][11:19] }}<br></td>
@@ -128,7 +133,6 @@
                                         <td style = text-align:right class="exevol">{{ reqitem["executed_volume"] }}<br></td>
                                         <td style = text-align:right class = "settle" ></td>
                                     </tr>
-                                    {% endif %}
                                 {% endfor %}
                                 </tbody>
                                 </table>
@@ -210,6 +214,9 @@
             var buysel = $Darr[i].innerText;
             var fee = $Earr[i].innerText;
             var tdate = $Farr[i].innerText.substring(0,10);
+            if (mpr === null){
+                mpr = 0;
+            }
             if (caldate === tdate) {
                 if (buysel === "매수") {
                     var sett = parseFloat(mpr) * parseFloat(exvol) + parseFloat(fee);
@@ -242,6 +249,14 @@
 
     $("#tradedate").change(function (){
         $("#searchdateto").val($("#tradedate").val());
+    });
+
+    $("#trcoinselector").change(function(){
+        var selctcoin = $("#trcoinselector").val();
+        $("#coinselector").val(selctcoin).prop("selected", true);
+        $('.selectpicker').selectpicker('refresh');
+        document.getElementById('searchdateto').value = new Date().toISOString().substring(0, 10);
+        gethistory();
     });
 
     function cutfee(){

@@ -812,3 +812,21 @@ def gettradelog(coinn, sdate, uno):
             result.extend(row)
         print(result)
         return result
+
+
+def tradedcoins(uno):
+    global rows
+    db40 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur40 = db40.cursor()
+    try:
+        sql = "select distinct bidCoin from tradingSetup where userNo=%s"
+        cur40.execute(sql, (uno))
+        coins = cur40.fetchall()
+        coins = [list(coins[x]) for x in range(len(coins))]
+        print(coins)
+    except Exception as e:
+        print("거래 코인 목록 조회 에러 ", e)
+    finally:
+        cur40.close()
+        db40.close()
+        return coins

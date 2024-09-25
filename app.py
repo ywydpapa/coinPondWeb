@@ -8,7 +8,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
-                         tradelist, readmsg, gettradelog)
+                         tradelist, readmsg, gettradelog, tradedcoins)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -120,6 +120,7 @@ def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     coinlist = pyupbit.get_tickers(fiat="KRW")
+    trcoinlist = tradedcoins(uno)
     orderlist = tradehistory(uno, skey) #거래 일자만 검색
     trdate = []
     for order in orderlist:
@@ -135,7 +136,7 @@ def coindetail():
             orderlist2 = []
     except Exception as e:
         orderlist2 = []
-    return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist =coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2)
+    return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist =coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2, trcoinlist = trcoinlist)
 
 
 @app.route('/coindetails', methods=['GET', 'POST'])
@@ -145,6 +146,7 @@ def coindetails():
     skey = request.args.get('skey')
     coinn = request.args.get('coinn')
     sdate = request.args.get('sdate')
+    trcoinlist = tradedcoins(uno)
     coinlist = pyupbit.get_tickers(fiat="KRW")
     try:
         orderlist = tradehistorys(uno, skey, coinn)
@@ -165,7 +167,7 @@ def coindetails():
             orderlist2 = []
     except Exception as e:
         orderlist2 = []
-    return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2)
+    return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2, trcoinlist = trcoinlist)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])
