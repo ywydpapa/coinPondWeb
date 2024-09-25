@@ -30,6 +30,9 @@
                                             코인명
                                         </td>
                                         <td>
+                                            거래이력 코인
+                                        </td>
+                                        <td>
                                             검색일자
                                         </td>
                                         <td>
@@ -47,6 +50,9 @@
                                                         {% endfor %}
                                             </select>
                                         </td>
+                                    <td>
+
+                                    </td>
                                         <td><div class = "row" style="display: inline-block">
                                             <div style="float: left;display: none" >
                                             <label for="searchdatefrom">From : </label> <input class="form-control" type="date" id="searchdatefrom" value=""></div>
@@ -234,6 +240,9 @@
         $("#appliedrate").html({{ myset }});
     }
 
+    $("#tradedate").change(function (){
+        $("#searchdateto").val($("#tradedate").val());
+    });
 
     function cutfee(){
         var $Darr = $(".trfee");
