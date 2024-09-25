@@ -120,7 +120,12 @@ def coindetail():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     coinlist = pyupbit.get_tickers(fiat="KRW")
-    orderlist = tradehistory(uno, skey)
+    orderlist = tradehistory(uno, skey) #거래 일자만 검색
+    trdate = []
+    for order in orderlist:
+        trdate.append(order["created_at"][0:10])
+    trdate = set(trdate)
+    trdate = list(trdate).reverse()
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
     mysetrate = getsetup(uno)[4]
     setcoin = getsetup(uno)[0]
@@ -130,11 +135,12 @@ def coindetail():
             orderlist2 = []
     except Exception as e:
         orderlist2 = []
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist =coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2)
+    return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist =coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2)
 
 
 @app.route('/coindetails', methods=['GET', 'POST'])
 def coindetails():
+    global trdate
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     coinn = request.args.get('coinn')
@@ -142,6 +148,11 @@ def coindetails():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     try:
         orderlist = tradehistorys(uno, skey, coinn)
+        trdate = []
+        for order in orderlist:
+            trdate.append(order["created_at"][0:10])
+        trdate = set(trdate)
+        trdate = list(trdate).reverse()
         if orderlist is None:
             orderlist = []
     except Exception as e:
@@ -154,7 +165,7 @@ def coindetails():
             orderlist2 = []
     except Exception as e:
         orderlist2 = []
-    return render_template('./trade/mytraderesult.html', orderlist=orderlist, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2)
+    return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2)
 
 
 @app.route('/tradestat', methods=['GET', 'POST'])
