@@ -120,6 +120,7 @@
                                    </thead>
                                 <tbody>
                                 {% for reqitem in reqitems %}
+                                    {% if reqitem["executed_volume"] != "0" %}
                                     <tr>
                                         <td style = text-align:center class="coinn">{{ reqitem["market"] }}<br></td>
                                         <td style = text-align:center class="buysell">{% if reqitem["side"] == 'ask' %}<span style="color: blue; ">매도</span>{% else %}<span style="color: red; ">매수</span>{% endif %}</td>
@@ -133,6 +134,7 @@
                                         <td style = text-align:right class="exevol">{{ reqitem["executed_volume"] }}<br></td>
                                         <td style = text-align:right class = "settle" ></td>
                                     </tr>
+                                    {% endif %}
                                 {% endfor %}
                                 </tbody>
                                 </table>
