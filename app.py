@@ -86,6 +86,7 @@ def tradeSet():
 @app.route('/multisetup', methods=['GET', 'POST'])
 def multisetup():
     coinlist = hotcoinlist()
+    print(coinlist)
     coinn = request.args.get('coinn')
     setlist = selectsetlist(9)
     return render_template('./trade/setmultitrade.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
@@ -139,6 +140,7 @@ def coindetail():
             orderlist2 = []
     except Exception as e:
         orderlist2 = []
+    trdate = sorted(trdate, reverse=True)
     return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist =coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2, trcoinlist = trcoinlist)
 
 
