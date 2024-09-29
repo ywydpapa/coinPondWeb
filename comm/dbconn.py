@@ -814,7 +814,7 @@ def gettradelog(coinn, sdate, uno):
 
 
 def tradedcoins(uno):
-    global rows
+    global coins
     db40 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur40 = db40.cursor()
     try:
