@@ -810,7 +810,6 @@ def gettradelog(coinn, sdate, uno):
         result = []
         for row in rows:
             result.extend(row)
-        print(result)
         return result
 
 
@@ -823,7 +822,6 @@ def tradedcoins(uno):
         cur40.execute(sql, (uno))
         coins = cur40.fetchall()
         coins = [list(coins[x]) for x in range(len(coins))]
-        print(coins)
     except Exception as e:
         print("거래 코인 목록 조회 에러 ", e)
     finally:
