@@ -172,6 +172,7 @@ def coindetails():
             orderlist2 = []
     except Exception as e:
         orderlist2 = []
+    trdate = sorted(trdate, reverse=True)
     return render_template('./trade/mytraderesult.html', orderlist=trdate, myset = mysetrate, coinlist = coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2, trcoinlist = trcoinlist)
 
 
