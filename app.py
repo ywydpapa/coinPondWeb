@@ -185,6 +185,7 @@ def tradestat():
         uno = request.args.get('uno')
         skey = request.args.get('skey')
         walletitems = checkwallet(uno, skey)
+        mysetcoin = getsetup(uno)[0]
         for wallet in walletitems:
             if wallet['currency'] != "KRW":
                 ccoin = "KRW-" + wallet['currency']
@@ -194,7 +195,7 @@ def tradestat():
                     cpr = 1
                 curr = [wallet['currency'], cpr]
                 mycoins.append(curr)
-        return render_template('./trade/mywallet.html', witems=walletitems, mycoins=mycoins)
+        return render_template('./trade/mywallet.html', witems=walletitems, mycoins=mycoins, mysetcoin =mysetcoin)
 
 
 @app.route('/login', methods=['GET', 'POST'])

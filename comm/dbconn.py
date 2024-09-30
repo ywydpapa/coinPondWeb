@@ -144,7 +144,6 @@ def checkwallet(uno, setkey):
         key2 = keys[0][1]
         upbit = pyupbit.Upbit(key1,key2)
         walletitems = upbit.get_balances()
-        print(walletitems)
     cur5.close()
     db.close()
     return walletitems
