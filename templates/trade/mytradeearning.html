@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include '/comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include '/comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include '/comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- Page Heading -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">나의 수익 현황</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                            <h6 class="m-0 font-weight-bold text-primary">일자별 내역 조회(1개월내 거래가 있는 날짜의 수익 내역을 조회합니다.)</h6>
+                                <table class="table table-bordered" id="searchtable">
+                                    <tr style="text-align: center">
+                                        <td>
+                                            거래날짜
+                                        </td>
+                                        <td>
+                                            매도횟수
+                                        </td>
+                                        <td>
+                                            투입금액
+                                        </td>
+                                        <td>
+                                            거래금액
+                                        </td>
+                                        <td>
+                                            수익금액
+                                        </td>
+                                    </tr>
+                                    <tr style="text-align: center">
+                                        <td>
+                                            <select class="form-control selectpicker" id="coinselector" data-live-search="true">
+                                                {%for coin in coinlist %}
+                                                <option value="{{ coin }}" {% if coin == setcoin0 %}selected{% endif %}>{{ coin }}</option>
+                                                        {% endfor %}
+                                            </select>
+                                        </td>
+                                    <td>
+                                            <select class="form-control" id="trcoinselector">
+                                                <option value="">기존 거래 코인 선택</option>
+                                                {%for trcoin in trcoinlist %}
+                                                <option value="{{ trcoin[0] }}">{{ trcoin[0] }}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </td>
+                                        <td><div class = "row" style="display: inline-block">
+                                            <div style="float: left;display: none" >
+                                            <label for="searchdatefrom">From : </label> <input class="form-control" type="date" id="searchdatefrom" value=""></div>
+                                            <div style="float: right">
+                                            <input class="form-control" type="date" id="searchdateto" value=""></div>
+                                        </div>
+                                        </td>
+                                        <td>
+                                            <select class="form-control custom-select" id="tradedate">
+                                                <option value="">거래이력 일자 선택</option>
+                                                {% for dat in orderlist %}
+                                                <option value="{{ dat }}">{{ dat }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td style="text-align: center">
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <h6 class="m-0 font-weight-bold text-primary">금일의 수입집계</h6>
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                       <tr style="text-align: center">
+                                           <th>일자</th>
+                                           <th>매도횟수</th>
+                                           <th>매도금액합계</th>
+                                           <th>수익율(%)</th>
+                                           <th>매도원가</th>
+                                           <th>수익금액</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                           <td id = "profdate" style="text-align: center"></td>
+                                           <td id = "askcnt" style="text-align: right"></td>
+                                           <td id = "asksum" style="text-align: right"></td>
+                                           <td id = "appliedrate" style="text-align: right"></td>
+                                           <td id = "askorig" style="text-align: right"></td>
+                                           <td id = "askprofit" style="text-align: right"></td>
+                                       </tr>
+                                    </tbody>
+                                </table>
+                                <h6 class="m-0 font-weight-bold text-primary">상세 일일 내역</h6>
+                                <table class="table table-bordered" id="reqdataTable" width="100%" cellspacing="0">
+                                <thead>
+                                       <tr style="text-align: center">
+                                           <td>코인명</td>
+                                           <td>거래종류</td>
+                                           <td>거래방법</td>
+                                           <td>시장가</td>
+                                           <td>보유량</td>
+                                           <td>남은량</td>
+                                           <td>거래시각</td>
+                                           <td>지급수수료</td>
+                                           <td>잠김</td>
+                                           <td>거래량</td>
+                                           <td>정산금액</td>
+                                       </tr>
+                                   </thead>
+                                <tbody>
+                                {% for reqitem in reqitems %}
+                                    {% if (reqitem["executed_volume"] != "0") and (reqitem["side"] == 'ask') %}
+                                    <tr>
+                                        <td style = text-align:center class="coinn">{{ reqitem["market"] }}<br></td>
+                                        <td style = text-align:center class="buysell">{% if reqitem["side"] == 'ask' %}<span style="color: blue; ">매도</span>{% else %}<span style="color: red; ">매수</span>{% endif %}</td>
+                                        <td style = text-align:center class="ordtyp">{% if reqitem["ord_type"] == 'limit' %}지정가{% elif reqitem["ord_type"]== 'price' %}시장가매수{% elif reqitem["ord_type"] == 'market' %}시장가 매도{% else %}{{ reqitem["ord_type"] }}{% endif %} <br></td>
+                                        <td style = text-align:right class="mprice">{% if reqitem["ord_type"] == 'limit' %}{{ reqitem["price"] }}{% elif reqitem["ord_type"] == 'price' %}{{ reqitem["paid_fee"] }}{% else %}0{% endif %}<br></td>
+                                        <td style = text-align:right>{{ reqitem["volume"] }}<br></td>
+                                        <td style = text-align:right class="remaincoin">{{ reqitem["remaining_volume"] }}<br></td>
+                                        <td style = text-align:right class="trdate">{{ reqitem["created_at"][0:10] }} {{ reqitem["created_at"][11:19] }}<br></td>
+                                        <td style = text-align:right class="trfee">{{ reqitem["paid_fee"] }}<br></td>
+                                        <td style = text-align:right>{{ reqitem["locked"] }}<br></td>
+                                        <td style = text-align:right class="exevol">{{ reqitem["executed_volume"] }}<br></td>
+                                        <td style = text-align:right class = "settle" ></td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+
+{% include './comm/adscript.html' %}
+{% include './comm/adscripttable.html' %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+</body>
+<script>
+    $('.selectpicker').selectpicker({
+      size: 10
+     });
+    $(document).ready(function () {
+    });
+
+    function setdate(){
+    var sdate = "{{ sdate }}";
+    if (sdate === null){document.getElementById('searchdateto').value = new Date().toISOString().substring(0, 10);}
+    else{document.getElementById('searchdateto').value = sdate;}
+    }
+
+
+    $(document).ready(function () {
+        setdate();
+        cutfee();
+        calprofit();
+        $('#reqdataTable').DataTable();
+    });
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+    function numberNoneCommas(x) {
+		return x.toString().replace(/,/g, "");
+	}
+
+    function calprofit(){
+        var $Aarr = $(".mprice");
+        var $Barr = $(".exevol");
+        var $Carr = $(".settle");
+        var $Darr = $(".buysell");
+        var $Earr = $(".trfee");
+        var $Farr = $(".trdate");
+        var caldate = $("#searchdateto").val();
+            caldate = caldate.substring(0,10);
+        var bidsum = 0;
+        var asksum = 0;
+        var askcnt = 0;
+        for (var i = 0; i < $Aarr.length; i++){
+            var mpr = $Aarr[i].innerText;
+            var exvol = $Barr[i].innerText;
+            var buysel = $Darr[i].innerText;
+            var fee = $Earr[i].innerText;
+            var tdate = $Farr[i].innerText.substring(0,10);
+            if (mpr === null){
+                mpr = 0;
+            }
+            if (caldate === tdate) {
+                if (buysel === "매수") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) + parseFloat(fee);
+                    bidsum = bidsum + sett;
+                } else if (buysel === "매도") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) - parseFloat(fee);
+                    asksum = asksum + sett;
+                    askcnt = askcnt +1;
+                }
+            } else {
+                 if (buysel === "매수") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) + parseFloat(fee);
+                } else if (buysel === "매도") {
+                    var sett = parseFloat(mpr) * parseFloat(exvol) - parseFloat(fee);
+                }
+            }
+            sett = Math.round(sett);
+            $Carr[i].innerText = numberWithCommas(sett);
+        }
+        var apprate = {{ myset }}/100;
+        var profit = asksum* apprate;
+        var askorig = asksum* (1-apprate);
+        $("#askcnt").html(numberWithCommas(Math.round(askcnt)));
+        $("#asksum").html(numberWithCommas(Math.round(asksum)));
+        $("#askprofit").html(numberWithCommas(Math.round(profit)));
+        $("#askorig").html(numberWithCommas(Math.round(askorig)));
+        $("#profdate").html(caldate);
+        $("#appliedrate").html({{ myset }});
+    }
+
+    $("#tradedate").change(function (){
+        $("#searchdateto").val($("#tradedate").val());
+    });
+
+    $("#trcoinselector").change(function(){
+        var selctcoin = $("#trcoinselector").val();
+        $("#coinselector").val(selctcoin).prop("selected", true);
+        $('.selectpicker').selectpicker('refresh');
+        document.getElementById('searchdateto').value = new Date().toISOString().substring(0, 10);
+        gethistory();
+    });
+
+    function cutfee(){
+        var $Darr = $(".trfee");
+        for (var c = 0; c < $Darr.length; c++){
+            var valu = $Darr[c].innerText;
+            valu = Math.ceil(valu);
+            $Darr[c].innerText = valu;
+        }
+    }
+
+
+</script>
+</html>

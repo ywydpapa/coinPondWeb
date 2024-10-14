@@ -724,7 +724,6 @@ def cancelorder(uno,uuid):
         sql = "select apiKey1, apiKey2 from pondUser where userNo=%s"
         cur36.execute(sql, (uno))
         keys = cur36.fetchone()
-        print(keys)
         upbit = pyupbit.Upbit(keys[0], keys[1])
         upbit.cancel_order(uuid)
     except Exception as e:
@@ -827,3 +826,56 @@ def tradedcoins(uno):
         cur40.close()
         db40.close()
         return coins
+
+
+def modifyLog(uuid,stat):
+    global rows
+    db41 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur41 = db41.cursor()
+    try:
+        sql = "UPDATE tradeLogDetail set attrib = %s, mod_date = now() where uuid = %s"
+        if stat == "canceled":
+            stat = "CANC0CANC0CANC0"
+        elif stat == "confirmed":
+            stat = "CONF0CONF0CONF0"
+        else:
+            stat = "UPD00UPD00UPD00"
+        cur41.execute(sql, (stat,uuid))
+        db41.commit()
+    except Exception as e:
+        print('거래 기록 업데이트 에러',e)
+    finally:
+        cur41.close()
+        db41.close()
+
+
+def insertLog(uno,ldata01,ldata02,ldata03,ldata04,ldata05,ldata06,ldata07,ldata08,ldata09,ldata10,ldata11,ldata12,ldata13,ldata14,ldata15,ldata16):
+    global rows
+    db42 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur42 = db42.cursor()
+    try:
+        sql = ("insert into tradeLogDetail (userNo,orderDate,uuid,side,ord_type,price,market,created_at,volume,remaining_volume,reserved_fee,paid_fee,locked,executed_volume,excuted_funds,trades_count,time_in_force)"
+               " values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+        cur42.execute(sql,(uno,ldata01,ldata02,ldata03,ldata04,ldata05,ldata06,ldata07,ldata08,ldata09,ldata10,ldata11,ldata12,ldata13,ldata14,ldata15,ldata16))
+        db42.commit()
+    except Exception as e:
+        print("거래 기록 인서트 에러", e)
+    finally:
+        cur42.close()
+        db42.close()
+
+
+def getmytrlog(uno):
+    global rows
+    db43 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur43 = db43.cursor()
+    try:
+        sql = "select * from tradeLogDetail where userNo=%s and attrib != 'CANC0CANC0CANC0'"
+        rows = cur43.execute(sql, (uno))
+    except Exception as e:
+        print("거래기록 조회 에러", e)
+    finally:
+        cur43.close()
+        db43.close()
+        return rows
+
