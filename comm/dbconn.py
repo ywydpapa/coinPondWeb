@@ -780,35 +780,19 @@ def tradelist():
 
 def gettradelog(coinn, sdate, uno):
     global rows
+    db39 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur39 = db39.cursor()
     try:
-        keys = getupbitkey(uno)
-        access_key = keys[0]
-        secret_key = keys[1]
-        server_url = "https://api.upbit.com/"
-        rows = []
-        for tgap in ['T00:00:00+09:00','T01:00:00+09:00','T02:00:00+09:00','T03:00:00+09:00','T04:00:00+09:00','T05:00:00+09:00','T06:00:00+09:00','T07:00:00+09:00','T08:00:00+09:00','T09:00:00+09:00','T10:00:00+09:00','T11:00:00+09:00','T12:00:00+09:00','T13:00:00+09:00','T14:00:00+09:00','T15:00:00+09:00','T16:00:00+09:00','T17:00:00+09:00','T18:00:00+09:00','T19:00:00+09:00','T20:00:00+09:00','T21:00:00+09:00','T22:00:00+09:00','T23:00:00+09:00']:
-            frt = sdate + tgap
-            params = {'market': coinn,'states[]': ['done'],'start_time': frt,'limit':200,}
-            query_string = unquote(urlencode(params, doseq=True)).encode("utf-8")
-            m = hashlib.sha512()
-            m.update(query_string)
-            query_hash = m.hexdigest()
-            payload = {'access_key': access_key,'nonce': str(uuid.uuid4()),'query_hash': query_hash,'query_hash_alg': 'SHA512',}
-            jwt_token = jwt.encode(payload, secret_key)
-            authorization = 'Bearer {}'.format(jwt_token)
-            headers = {'Authorization': authorization,}
-            row = requests.get(server_url + '/v1/orders/closed', params=params, headers=headers)
-            if row != None:
-                row = row.json()
-                rows.append(row)
+        sql = "select * from tradeLogDone where userNo = %s and market = %s and left(created_at,10) = %s"
+        cur39.execute(sql, (uno, coinn, sdate))
+        rows = cur39.fetchall()
     except Exception as e:
         print("거래이력 조회 에러 (request 방식) ",e)
     finally:
-        rows = [n for n in rows if n] # 빈 리스트 제거
-        result = []
-        for row in rows:
-            result.extend(row)
-        return result
+        cur39.close()
+        db39.close()
+        print(rows)
+        return rows
 
 
 def tradedcoins(uno):

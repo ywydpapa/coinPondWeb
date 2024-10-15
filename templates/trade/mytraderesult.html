@@ -110,28 +110,24 @@
                                            <td>거래방법</td>
                                            <td>시장가</td>
                                            <td>보유량</td>
-                                           <td>남은량</td>
                                            <td>거래시각</td>
                                            <td>지급수수료</td>
-                                           <td>잠김</td>
                                            <td>거래량</td>
                                            <td>정산금액</td>
                                        </tr>
                                    </thead>
                                 <tbody>
                                 {% for reqitem in reqitems %}
-                                    {% if (reqitem["executed_volume"] != "0") and (reqitem["side"] == 'ask') %}
+                                    {% if (reqitem[13] != "0") and (reqitem[3] == 'ask') %}
                                     <tr>
-                                        <td style = text-align:center class="coinn">{{ reqitem["market"] }}<br></td>
-                                        <td style = text-align:center class="buysell">{% if reqitem["side"] == 'ask' %}<span style="color: blue; ">매도</span>{% else %}<span style="color: red; ">매수</span>{% endif %}</td>
-                                        <td style = text-align:center class="ordtyp">{% if reqitem["ord_type"] == 'limit' %}지정가{% elif reqitem["ord_type"]== 'price' %}시장가매수{% elif reqitem["ord_type"] == 'market' %}시장가 매도{% else %}{{ reqitem["ord_type"] }}{% endif %} <br></td>
-                                        <td style = text-align:right class="mprice">{% if reqitem["ord_type"] == 'limit' %}{{ reqitem["price"] }}{% elif reqitem["ord_type"] == 'price' %}{{ reqitem["paid_fee"] }}{% else %}0{% endif %}<br></td>
-                                        <td style = text-align:right>{{ reqitem["volume"] }}<br></td>
-                                        <td style = text-align:right class="remaincoin">{{ reqitem["remaining_volume"] }}<br></td>
-                                        <td style = text-align:right class="trdate">{{ reqitem["created_at"][0:10] }} {{ reqitem["created_at"][11:19] }}<br></td>
-                                        <td style = text-align:right class="trfee">{{ reqitem["paid_fee"] }}<br></td>
-                                        <td style = text-align:right>{{ reqitem["locked"] }}<br></td>
-                                        <td style = text-align:right class="exevol">{{ reqitem["executed_volume"] }}<br></td>
+                                        <td style = text-align:center class="coinn">{{ reqitem[6] }}<br></td>
+                                        <td style = text-align:center class="buysell">{% if reqitem[3] == 'ask' %}<span style="color: blue; ">매도</span>{% else %}<span style="color: red; ">매수</span>{% endif %}</td>
+                                        <td style = text-align:center class="ordtyp">{% if reqitem[4] == 'limit' %}지정가{% elif reqitem[4]== 'price' %}시장가매수{% elif reqitem[4] == 'market' %}시장가 매도{% else %}{{ reqitem[4] }}{% endif %} <br></td>
+                                        <td style = text-align:right class="mprice">{% if reqitem[4] == 'limit' %}{{ reqitem[5] }}{% elif reqitem[4] == 'price' %}{{ reqitem[11] }}{% else %}0{% endif %}<br></td>
+                                        <td style = text-align:right>{{ reqitem[8] }}<br></td>
+                                        <td style = text-align:right class="trdate">{{ reqitem[7][0:10] }} {{ reqitem[7][11:19] }}<br></td>
+                                        <td style = text-align:right class="trfee">{{ reqitem[11] }}<br></td>
+                                        <td style = text-align:right class="exevol">{{ reqitem[13] }}<br></td>
                                         <td style = text-align:right class = "settle" ></td>
                                     </tr>
                                     {% endif %}

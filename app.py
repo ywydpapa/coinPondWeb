@@ -136,6 +136,7 @@ def coindetail():
     setcoin = getsetup(uno)[0]
     try:
         orderlist2 = gettradelog(setcoin, sdate, uno)
+        print(orderlist2)
         if orderlist2 is None:
             orderlist2 = []
     except Exception as e:
