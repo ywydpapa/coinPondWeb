@@ -788,7 +788,7 @@ def gettradelog(coinn, sdate, uno):
         rows = []
         for tgap in ['T00:00:00+09:00','T01:00:00+09:00','T02:00:00+09:00','T03:00:00+09:00','T04:00:00+09:00','T05:00:00+09:00','T06:00:00+09:00','T07:00:00+09:00','T08:00:00+09:00','T09:00:00+09:00','T10:00:00+09:00','T11:00:00+09:00','T12:00:00+09:00','T13:00:00+09:00','T14:00:00+09:00','T15:00:00+09:00','T16:00:00+09:00','T17:00:00+09:00','T18:00:00+09:00','T19:00:00+09:00','T20:00:00+09:00','T21:00:00+09:00','T22:00:00+09:00','T23:00:00+09:00']:
             frt = sdate + tgap
-            params = {'market': coinn,'states[]': ['done','cancel'],'start_time': frt,'limit':200,}
+            params = {'market': coinn,'states[]': ['done'],'start_time': frt,'limit':200,}
             query_string = unquote(urlencode(params, doseq=True)).encode("utf-8")
             m = hashlib.sha512()
             m.update(query_string)
@@ -877,5 +877,21 @@ def getmytrlog(uno):
     finally:
         cur43.close()
         db43.close()
+        return rows
+
+
+def getmyincomes(uno):
+    global rows
+    db44 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur44 = db44.cursor()
+    try:
+        sql = "select userNo,tradeDate,count(Settle) as count,sum(Settle) as incomes from trendIncomes where userNo = %s group by userNo, tradeDate "
+        cur44.execute(sql, (uno))
+        rows = cur44.fetchall()
+    except Exception as e:
+        print("수익 조회 에러",e)
+    finally:
+        cur44.close()
+        db44.close()
         return rows
 

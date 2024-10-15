@@ -8,7 +8,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
-                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog)
+                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -147,27 +147,15 @@ def coindetail():
 @app.route('/traderesult', methods=['GET', 'POST'])
 def traderesult():
     uno = request.args.get('uno')
-    skey = request.args.get('skey')
-    coinlist = pyupbit.get_tickers(fiat="KRW")
-    trcoinlist = tradedcoins(uno)
-    orderlist = tradehistory(uno, skey) #거래 일자만 검색
-    trdate = []
-    for order in orderlist:
-        trdate.append(order["created_at"][0:10])
-    trdate = set(trdate)
-    trdate = list(trdate)
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
     mysetrate = getsetup(uno)[4]
     setcoin = getsetup(uno)[0]
-    mytrdates = getmytrlog(uno)
     try:
-        orderlist2 = gettradelog(setcoin, sdate, uno)
-        if orderlist2 is None:
-            orderlist2 = []
+        incomes = getmyincomes(uno)
+        print(incomes)
     except Exception as e:
-        orderlist2 = []
-    trdate = sorted(trdate, reverse=True)
-    return render_template('./trade/mytradeearning.html', orderlist=trdate, myset = mysetrate, coinlist =coinlist, setcoin0 = setcoin, sdate = sdate, reqitems = orderlist2, trcoinlist = trcoinlist, mytrdates = mytrdates)
+        incomes = []
+    return render_template('./trade/mytradeearning.html', myset = mysetrate, setcoin0 = setcoin, sdate = sdate, incomes = incomes)
 
 
 @app.route('/coindetails', methods=['GET', 'POST'])
