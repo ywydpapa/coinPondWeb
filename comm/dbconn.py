@@ -869,7 +869,7 @@ def getmyincomes(uno):
     db44 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur44 = db44.cursor()
     try:
-        sql = "select userNo,tradeDate,count(Settle) as count,sum(Settle) as incomes from trendIncomes where userNo = %s group by userNo, tradeDate "
+        sql = "select userNo,tradeDate,count(Settle) as count,sum(Settle) as incomes from trendIncomes where userNo = %s group by userNo, tradeDate order by tradeDate desc"
         cur44.execute(sql, (uno))
         rows = cur44.fetchall()
     except Exception as e:

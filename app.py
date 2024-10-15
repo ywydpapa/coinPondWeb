@@ -153,7 +153,6 @@ def traderesult():
     setcoin = getsetup(uno)[0]
     try:
         incomes = getmyincomes(uno)
-        print(incomes)
     except Exception as e:
         incomes = []
     return render_template('./trade/mytradeearning.html', myset = mysetrate, setcoin0 = setcoin, sdate = sdate, incomes = incomes)

@@ -83,7 +83,8 @@
 <script>
 
     $(document).ready(function () {
-       $('#reqdataTable').DataTable();
+        currency();
+        $('#dataTable').DataTable();
     });
 
     function numberWithCommas(x) {
@@ -92,6 +93,14 @@
     function numberNoneCommas(x) {
 		return x.toString().replace(/,/g, "");
 	}
+
+    function currency(){
+        var $Aarr = $(".asksum");
+        for (var i = 0; i < $Aarr.length; i++) {
+            var curamt = Math.round($Aarr[i].innerText);
+            $Aarr[i].innerText = numberWithCommas(curamt);
+        }
+    }
 
 
 </script>
