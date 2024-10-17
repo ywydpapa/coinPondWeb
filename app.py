@@ -132,7 +132,7 @@ def coindetail():
     trdate = set(trdate)
     trdate = list(trdate)
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
-    mysetrate = getsetup(uno)[4]
+    mysetrate = getsetup(uno)
     setcoin = getsetup(uno)[0]
     try:
         orderlist2 = gettradelog(setcoin, sdate, uno)
@@ -149,7 +149,7 @@ def coindetail():
 def traderesult():
     uno = request.args.get('uno')
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
-    mysetrate = getsetup(uno)[4]
+    mysetrate = getsetup(uno)
     setcoin = getsetup(uno)[0]
     try:
         incomes = getmyincomes(uno)

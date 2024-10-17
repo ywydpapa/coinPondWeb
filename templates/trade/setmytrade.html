@@ -48,11 +48,17 @@
                                              <td style="text-align: center"> <h5>시작 금액 (1차 매수)</h5></td>
                                              <td colspan="2">
                                                  <input id="initprice" name="initprice" class="form-control" type="text" value="10000" placeholder="10,000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />                                                 </td>
-                                             <td><input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
+                                             <td style="text-align: center"><input type="text" name="skey" value="{{ session["setkey"] }}" style="display: none">
                                                  <input type="text" name="userno" value="{{ session["userNo"] }}" style="display: none">
-                                                 <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none"></td>
+                                                 <input type="text" name="svrno" value="{{ session["serverNo"] }}" style="display: none">
+                                                 <div class="row" style="display: inline-block">
+                                                 <div style="display: inline-block">
+                                                 <button type="button" class="form-control btn btn-primary" onclick="setbid()">소요금액확인</button>
+                                                 </div>
+                                                 </div>
+                                             </td>
                                          </tr>
-                                         <tr>
+                                         <tr style="display: none">
                                              <td style="text-align: center"> <h5>구간 설정</h5></td>
                                              <td colspan="2"><select id="bidsteps" name="bidsteps" class="form-control" style="text-align: right">
                                                                  <option value="3">04</option>
@@ -63,11 +69,7 @@
                                                                  <option value="8">09</option>
                                                                  <option value="9" selected >10</option></select></td>
                                              <td style="text-align: center">
-                                                 <div class="row" style="display: inline-block">
-                                                 <div style="display: inline-block">
-                                                 <button type="button" class="form-control btn btn-primary" onclick="setbid()">소요금액확인</button>
-                                                 </div>
-                                                 </div>
+
                                              </td>
                                          </tr>
                                          </thead>
@@ -75,7 +77,7 @@
                                              <td style="text-align: center"> <h5>투자 성향 </h5></td>
                                              <td colspan="2"><select id="tradeset" name="tradeset" class="form-control" style="text-align: right">
                                                              {% for set in setlist %}
-                                                                 <option value="{{ set[0] }},{{ set[24] }}">{{ set[1] }} Delay - {{ set[24] }} 단계</option>
+                                                                 <option value="{{ set[0] }},{{ set[24] }},{{ set[2] }}">{{ set[1] }} Delay - {{ set[24] }} 단계</option>
                                                              {% endfor %}</select>
                                              </td>
                                              <td style="text-align: center"><input type="checkbox" id="doublechk" name="doublechk"><label for="doublechk">자금투입(더블)</label> </td>
@@ -202,7 +204,10 @@
 
     $('#tradeset').change(function(){
         var trholdno = $('#tradeset').val();
-       $('#holdno').val(trholdno);
+        var trintv = trholdno.split(',');
+        var intv = trintv[2];
+       $('#bidsteps').val(intv);
+
     });
 
     $('#profitrate').change(function(){

@@ -234,7 +234,7 @@
             sett = Math.round(sett);
             $Carr[i].innerText = numberWithCommas(sett);
         }
-        var apprate = {{ myset }}/100;
+        var apprate = {{ myset[4] }}/100;
         var profit = asksum* apprate;
         var askorig = asksum* (1-apprate);
         $("#askcnt").html(numberWithCommas(Math.round(askcnt)));
@@ -242,7 +242,7 @@
         $("#askprofit").html(numberWithCommas(Math.round(profit)));
         $("#askorig").html(numberWithCommas(Math.round(askorig)));
         $("#profdate").html(caldate);
-        $("#appliedrate").html({{ myset }});
+        $("#appliedrate").html({{ myset[4] }});
     }
 
     $("#tradedate").change(function (){

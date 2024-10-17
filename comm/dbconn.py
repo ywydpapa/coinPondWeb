@@ -791,7 +791,6 @@ def gettradelog(coinn, sdate, uno):
     finally:
         cur39.close()
         db39.close()
-        print(rows)
         return rows
 
 
