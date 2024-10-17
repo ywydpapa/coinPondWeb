@@ -23,15 +23,15 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                            <h6 class="m-0 font-weight-bold text-primary">일자별 수익금액 집계(1개월내 거래가 있는 날짜의 수익 내역을 조회합니다.)</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">일자별 수익금액 집계(1개월내 거래가 있는 날짜의 수익 내역을 조회합니다. 시작금액과 총투입금액은 일자별 마지막 설정치 입니다.)</h6>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                        <tr style="text-align: center">
                                            <th>일자</th>
                                            <th>매도횟수</th>
                                            <th>매도금액합계</th>
-                                           <th>시작금액(일자별 마지막설정금액)</th>
-                                           <th>투자금액(일자별 마지막설정금액)</th>
+                                           <th>시작금액</th>
+                                           <th>총투입금액</th>
                                            <th style="display: none"></th>
                                            <th style="display: none"></th>
                                            <th>일일수익율(%)</th>
@@ -137,6 +137,7 @@
             }
             var incomes = parseFloat($Garr[i].innerText);
             var rates = incomes/sumval*100;
+            rates = rates.toFixed(5);
             $Farr[i].innerText = (numberWithCommas(sumval));
             $Earr[i].innerText = (rates);
         }
