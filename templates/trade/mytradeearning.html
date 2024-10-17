@@ -30,20 +30,26 @@
                                            <th>일자</th>
                                            <th>매도횟수</th>
                                            <th>매도금액합계</th>
-                                           <th>설정수익율(%)</th>
-                                           <th>매도원가</th>
+                                           <th>시작금액(일자별 마지막설정금액)</th>
+                                           <th>투자금액(일자별 마지막설정금액)</th>
+                                           <th style="display: none"></th>
+                                           <th style="display: none"></th>
+                                           <th>일일수익율(%)</th>
                                            <th>수익금액</th>
                                        </tr>
                                     </thead>
                                     <tbody>
                                     {% for income in incomes %}
                                        <tr>
-                                           <td id = "profdate" style="text-align: center">{{ income[1] }}</td>
-                                           <td id = "askcnt" style="text-align: right">{{ income[2] }}</td>
-                                           <td id = "asksum" style="text-align: right">{{ income[3] }}</td>
-                                           <td id = "appliedrate" style="text-align: right">{{ myset[4] }}</td>
-                                           <td id = "askorig" style="text-align: right"></td>
-                                           <td id = "askprofit" style="text-align: right"></td>
+                                           <td class = "trdate" style="text-align: center">{{ income[3] }}</td>
+                                           <td class = "trcnt" style="text-align: right">{{ income[1] }}</td>
+                                           <td class = "trsum" style="text-align: right">{{ income[2] }}</td>
+                                           <td class = "trinit" style="text-align: right">{{ income[5]}}</td>
+                                           <td class = "trasset" style="text-align: right"></td>
+                                           <td class = "trintv" style="display: none">{{ income[6] }}</td>
+                                           <td class = "trdbl"  style="display: none">{{ income[7] }}</td>
+                                           <td class = "trrate" style="text-align: right"></td>
+                                           <td class = "reinc" style="text-align: right">{{ income[2]*0.005 }}</td>
                                        </tr>
                                     {% endfor %}
                                     </tbody>
@@ -83,8 +89,9 @@
 <script>
 
     $(document).ready(function () {
-        currency();
+        calneed();
         $('#dataTable').DataTable();
+        currency();
     });
 
     function numberWithCommas(x) {
@@ -95,12 +102,45 @@
 	}
 
     function currency(){
-        var $Aarr = $(".asksum");
+        var $Aarr = $(".trsum");
+        var $Barr = $(".trinit");
+        var $Carr = $(".reinc");
         for (var i = 0; i < $Aarr.length; i++) {
             var curamt = Math.round($Aarr[i].innerText);
+            var intvalue = Math.round($Barr[i].innerText);
+            var incoms =  Math.round($Carr[i].innerText);
             $Aarr[i].innerText = numberWithCommas(curamt);
+            $Barr[i].innerText = numberWithCommas(intvalue);
+            $Carr[i].innerText = numberWithCommas(incoms);
         }
     }
+
+    function calneed(){
+        $Aarr = $(".trsum"); //거래금액
+        $Barr = $(".trinit"); //시작금액
+        $Carr = $(".trintv"); //거래 횟수
+        $Darr = $(".trdbl"); //배수적용
+        $Earr = $(".trrate"); //일일수익비율
+        $Farr = $(".trasset");
+        $Garr = $(".reinc");
+        for (var i = 0; i < $Aarr.length; i++) {
+            var sumval = 0;
+            var setval = parseInt($Barr[i].innerText);
+            var times = parseInt($Carr[i].innerText);
+            for (var k = 0; k < times; k++){
+                if ($Darr[i] === 'Y'){
+                    setval = sumval *2 ;
+                } else {
+                    setval = setval *2 ;
+                }
+                sumval = parseInt(sumval) + parseInt(setval);
+            }
+            var incomes = parseFloat($Garr[i].innerText);
+            var rates = incomes/sumval*100;
+            $Farr[i].innerText = (numberWithCommas(sumval));
+            $Earr[i].innerText = (rates);
+        }
+     }
 
 
 </script>

@@ -868,7 +868,7 @@ def getmyincomes(uno):
     db44 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur44 = db44.cursor()
     try:
-        sql = "select userNo,tradeDate,count(Settle) as count,sum(Settle) as incomes from trendIncomes where userNo = %s group by userNo, tradeDate order by tradeDate desc"
+        sql = "select * from incomeResult where userNo = %s order by tradeDate desc"
         cur44.execute(sql, (uno))
         rows = cur44.fetchall()
     except Exception as e:
@@ -878,3 +878,18 @@ def getmyincomes(uno):
         db44.close()
         return rows
 
+
+def mysettinglist(uno):
+    global rows
+    db45 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur45 = db45.cursor()
+    try:
+        sql = "select initAsset, bidInterval, doubleYN, left(max(regDate),10) as date from tradingSetup ts where userNo = %s and left(regDate ,10) >= DATE_ADD(now(), INTERVAL -2 month) group by left(regDate, 10)"
+        cur45.execute(sql, (uno))
+        rows = cur45.fetchall()
+    except Exception as e:
+        print("설정 조회 에러", e)
+    finally:
+        cur45.close()
+        db45.close()
+        return rows
