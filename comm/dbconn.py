@@ -308,6 +308,22 @@ def getsetup(uno):
         db.close()
 
 
+def getsetupmax(uno,sdate):
+    global cur12, db
+    try:
+        db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+        cur12 = db.cursor()
+        sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey, holdYN, holdNo, doubleYN  from tradingSetup where userNo=%s and regDate <= %s order by regDate desc"
+        cur12.execute(sql, (uno, sdate))
+        data = list(cur12.fetchone())
+        return data
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur12.close()
+        db.close()
+
+
 def getsetups(uno):
     try:
         db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
