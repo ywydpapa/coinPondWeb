@@ -85,8 +85,8 @@
                                            <th>일자</th>
                                            <th>매도횟수</th>
                                            <th>매도금액합계</th>
+                                           <th>투입설정금액</th>
                                            <th>수익율(%)</th>
-                                           <th>매도원가</th>
                                            <th>수익금액</th>
                                        </tr>
                                     </thead>
@@ -95,8 +95,8 @@
                                            <td id = "profdate" style="text-align: center"></td>
                                            <td id = "askcnt" style="text-align: right"></td>
                                            <td id = "asksum" style="text-align: right"></td>
+                                           <td id = "askasset" style="text-align: right"></td>
                                            <td id = "appliedrate" style="text-align: right"></td>
-                                           <td id = "askorig" style="text-align: right"></td>
                                            <td id = "askprofit" style="text-align: right"></td>
                                        </tr>
                                     </tbody>
@@ -194,6 +194,20 @@
 		return x.toString().replace(/,/g, "");
 	}
 
+    function calaskasset(iniv, iniitv, dbl){
+        var setval = parseInt(iniv);
+        var sumval = 0;
+        for (var k = 0; k < iniitv; k++){
+                if (dbl === 'Y'){
+                    setval = sumval *2 ;
+                } else {
+                    setval = setval *2 ;
+                }
+                sumval = parseInt(sumval) + parseInt(setval);
+            }
+        return sumval;
+    }
+
     function calprofit(){
         var $Aarr = $(".mprice");
         var $Barr = $(".exevol");
@@ -236,13 +250,15 @@
         }
         var apprate = {{ myset[4] }}/100;
         var profit = asksum* apprate;
-        var askorig = asksum* (1-apprate);
+        var askasset = calaskasset({{ myset[1] }},{{ myset[2] }},"{{ myset[9] }}");
+        var earnrate = profit / askasset * 100;
+        earnrate = earnrate.toFixed(5);
         $("#askcnt").html(numberWithCommas(Math.round(askcnt)));
         $("#asksum").html(numberWithCommas(Math.round(asksum)));
         $("#askprofit").html(numberWithCommas(Math.round(profit)));
-        $("#askorig").html(numberWithCommas(Math.round(askorig)));
         $("#profdate").html(caldate);
-        $("#appliedrate").html({{ myset[4] }});
+        $("#appliedrate").html(earnrate);
+        $("#askasset").html(numberWithCommas(askasset));
     }
 
     $("#tradedate").change(function (){

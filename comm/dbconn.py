@@ -869,7 +869,7 @@ def getmyincomes(uno):
     cur44 = db44.cursor()
     try:
         sql = "select * from incomeResult where userNo = %s order by tradeDate desc"
-        cur44.execute(sql, (uno))
+        cur44.execute(sql, uno)
         rows = cur44.fetchall()
     except Exception as e:
         print("수익 조회 에러",e)

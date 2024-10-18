@@ -133,6 +133,7 @@ def coindetail():
     trdate = list(trdate)
     sdate = datetime.strftime(datetime.today(), '%Y-%m-%d')
     mysetrate = getsetup(uno)
+    print(mysetrate)
     setcoin = getsetup(uno)[0]
     try:
         orderlist2 = gettradelog(setcoin, sdate, uno)
