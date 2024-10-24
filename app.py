@@ -8,7 +8,8 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
-                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes, mysettinglist, getsetupmax)
+                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -45,33 +46,64 @@ def dashboard():
 
 @app.route('/trade', methods=['GET', 'POST'])
 def trade():
-    global avprice
+    global avprice,avprice2,avprice3
     uno = request.args.get('uno')
     setkey = request.args.get('skey')
-    data = getsetup(uno)
+    setups = getsetups(uno)
     wallet = checkwalletwon(uno, setkey)
     orderlist = getorderlist(uno)
-    setno = data[6]
-    trset = setdetail(setno)
-    print(data)
-    coinn = data[0]
-    crprice = pyupbit.get_current_price(coinn)
+    setno1 = setups[0][8]
+    setno2 = setups[1][8]
+    setno3 = setups[2][8]
+    trset1 = setdetail(setno1)
+    trset2 = setdetail(setno2)
+    trset3 = setdetail(setno3)
+    coinn1 = setups[0][6]
+    coinn2 = setups[1][6]
+    coinn3 = setups[2][6]
+    crprice1 = pyupbit.get_current_price(coinn1)
+    crprice2 = pyupbit.get_current_price(coinn2)
+    crprice3 = pyupbit.get_current_price(coinn3)
     wallets = checkwallet(uno, setkey)
-    avprice = 0
+    avprice1 = 0
+    avprice2 = 0
+    avprice3 = 0
+    srate1 = 0
+    srate2 = 0
+    srate3 = 0
     for wallett in wallets:
-        if "KRW-"+wallett["currency"] == coinn:
-            avprice = wallett["avg_buy_price"]
-            if float(avprice) <= 0:
-                avprice = 0
-    if float(avprice) > 0:
-        srate = round(float(crprice)/float(avprice)*100,4)
-    else:
-        srate = 0
-    coincand = [dashcandle160(coinn)]
-    listcoino = coincand[0]['open'].tolist()
-    listcoinc = coincand[0]['close'].tolist()
-    print(orderlist)
-    return render_template('./trade/mytrademain.html', result=data, wallet=wallet, list=orderlist, trset=trset, coinopen = listcoino, coinclose = listcoinc, cprice = crprice, bsrate = srate, avprice = avprice)
+        if "KRW-"+wallett["currency"] == coinn1:
+            avprice1 = wallett["avg_buy_price"]
+            if float(avprice1) <= 0:
+                avprice1 = 0
+        elif "KRW-"+wallett["currency"] == coinn2:
+            avprice2 = wallett["avg_buy_price"]
+            if float(avprice2) <= 0:
+                avprice2 = 0
+        elif "KRW-"+wallett["currency"] == coinn3:
+            avprice3 = wallett["avg_buy_price"]
+            if float(avprice3) <= 0:
+                avprice3 = 0
+    if float(avprice1) > 0:
+        srate1 = round(float(crprice1)/float(avprice1)*100,4)
+    if float(avprice2) > 0:
+        srate2 = round(float(crprice2)/float(avprice2)*100,4)
+    if float(avprice3) > 0:
+        srate3 = round(float(crprice3)/float(avprice3)*100,4)
+    coincand1 = [dashcandle160(coinn1)]
+    listcoino1 = coincand1[0]['open'].tolist()
+    listcoinc1 = coincand1[0]['close'].tolist()
+    coincand2 = [dashcandle160(coinn2)]
+    listcoino2 = coincand2[0]['open'].tolist()
+    listcoinc2 = coincand2[0]['close'].tolist()
+    coincand3 = [dashcandle160(coinn3)]
+    listcoino3 = coincand3[0]['open'].tolist()
+    listcoinc3 = coincand3[0]['close'].tolist()
+    return render_template('./trade/mytrademain.html', wallet=wallet, list=orderlist, trset1=trset1,trset2=trset2,trset3=trset3,
+                           coinopen1 = listcoino1, coinclose1 = listcoinc1, cprice1 = crprice1, bsrate1 = srate1,
+                           coinopen2 = listcoino2, coinclose2 = listcoinc2, cprice2 = crprice2, bsrate2 = srate2,
+                           coinopen3 = listcoino3, coinclose3 = listcoinc3, cprice3 = crprice3, bsrate3 = srate3,
+                           avprice1 = avprice1,avprice2 = avprice2,avprice3 = avprice3, setups = setups)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
@@ -268,7 +300,9 @@ def setupmybid():
         askrate = 0.5
         tradeset = request.form.get('tradeset')
         tradeset = tradeset.split(',')[0]
-        coinn = request.form.get('coinn')
+        coinn1 = request.form.get('coinn1')
+        coinn2 = request.form.get('coinn2')
+        coinn3 = request.form.get('coinn3')
         skey = request.form.get('skey')
         svrno = request.form.get('svrno')
         hno = request.form.get('tradeset').split(',')[1]
@@ -277,7 +311,13 @@ def setupmybid():
             dyn = 'Y'
         else:
             dyn = 'N'
-        setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset, hno, dyn)
+        erasebid(uno,skey)
+        if coinn1 is not None:
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn1, svrno, tradeset, hno, dyn)
+        if coinn2 is not None:
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn)
+        if coinn3 is not None:
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn)
     return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 
@@ -370,6 +410,15 @@ def setyn():
     uno = pla[0]
     yesno = pla[1]
     setonoff(uno, yesno)
+    return "YES"
+
+
+@app.route('/setyns', methods=['POST'])
+def setyns():
+    pla = request.get_data().decode('utf-8').split(',')
+    setno = pla[0]
+    yesno = pla[1]
+    setonoffs(setno, yesno)
     return "YES"
 
 

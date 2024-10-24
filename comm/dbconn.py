@@ -253,7 +253,6 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
     nowt = datetime.now()+ timedelta(minutes=15)
     if chkkey == True:
         try:
-            erasebid(uno, setkey)
             db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
             cur0 = db.cursor()
             sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
@@ -330,7 +329,7 @@ def getsetups(uno):
         cur13 = db.cursor()
         sql = "select * from tradingSetup where userNo=%s and attrib not like %s"
         cur13.execute(sql, (uno, '%XXXUP'))
-        data = list(cur13.fetchone())
+        data = list(cur13.fetchall())
         return data
     except Exception as e:
         print('접속오류', e)
@@ -345,6 +344,20 @@ def setonoff(uno,yesno):
     try:
         sql = "UPDATE tradingSetup SET activeYN = %s where userNo=%s AND attrib not like %s"
         cur14.execute(sql, (yesno, uno,'%XXXUP'))
+        db.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur14.close()
+        db.close()
+
+
+def setonoffs(setno,yesno):
+    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur14 = db.cursor()
+    try:
+        sql = "UPDATE tradingSetup SET activeYN = %s where setupNo=%s AND attrib not like %s"
+        cur14.execute(sql, (yesno, setno,'%XXXUP'))
         db.commit()
     except Exception as e:
         print('접속오류', e)

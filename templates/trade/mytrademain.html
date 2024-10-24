@@ -15,10 +15,10 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="card ">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">설정내용</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 1</h6>
                                 </div>
                                 <div class="card-body">
                                   <div class="table-responsive">
@@ -26,7 +26,7 @@
                                     <tbody>
                                     <tr>
                                         <td style="text-align: center">설정 코인</td>
-                                        <td style="text-align: center"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ result[0] }}">{{ result[0] }}</a></td>
+                                        <td style="text-align: center"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ setups[0][6] }}">{{ setups[0][6] }}</a></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center">시작금액</td>
@@ -34,21 +34,21 @@
                                     </tr>
                                     <tr style="display: none">
                                         <td style="text-align: center">추가매수설정</td>
-                                        <td style="text-align: right">{{ result[2] }}</td>
+                                        <td style="text-align: right">{{ setups[0][12] }}</td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center">거래설정</td>
-                                        <td style="text-align: right">{{ trset[1] }}</td>
+                                        <td style="text-align: right">{{ trset1[1] }}</td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center">동작상태</td>
                                         <td style="text-align:center">
                                             <div class="custom-control custom-switch">
-                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk1" name="chk1" {% if result[5]=='Y' %}checked{% endif %} />
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk1" name="chk1" {% if setups[0][7]=='Y' %}checked{% endif %} />
                                                        <label class="custom-control-label" for="chk1">on/off</label></h4>
                                             </div>
                                             <div class="custom-control custom-switch" style="display: none">
-                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk2" name="chk2" {% if result[7]=='Y' %}checked{% endif %}{% if result[5]=='N' %} disabled{% endif %} />
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk2" name="chk2" {% if setups[0][10]=='Y' %}checked{% endif %}{% if setups[0][10]=='N' %} disabled{% endif %} />
                                                    <label class="custom-control-label" for="chk2">hold</label></h4>
                                             </div>
                                         </td>
@@ -59,7 +59,95 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
+                            <div class="card ">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 2</h6>
+                                </div>
+                                <div class="card-body">
+                                  <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                                    <tbody>
+                                    <tr>
+                                        <td style="text-align: center">설정 코인</td>
+                                        <td style="text-align: center"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ setups[1][6] }}">{{ setups[1][6] }}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center">시작금액</td>
+                                        <td id = "initamount2" style="text-align: right"></td>
+                                    </tr>
+                                    <tr style="display: none">
+                                        <td style="text-align: center">추가매수설정</td>
+                                        <td style="text-align: right">{{ setups[1][12] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center">거래설정</td>
+                                        <td style="text-align: right">{{ trset2[1] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center">동작상태</td>
+                                        <td style="text-align:center">
+                                            <div class="custom-control custom-switch">
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk3" name="chk3" {% if setups[1][7]=='Y' %}checked{% endif %} />
+                                                       <label class="custom-control-label" for="chk3">on/off</label></h4>
+                                            </div>
+                                            <div class="custom-control custom-switch" style="display: none">
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk4" name="chk4" {% if setups[1][10]=='Y' %}checked{% endif %}{% if setups[1][10]=='N' %} disabled{% endif %} />
+                                                   <label class="custom-control-label" for="chk4">hold</label></h4>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-3">
+                            <div class="card ">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 3</h6>
+                                </div>
+                                <div class="card-body">
+                                  <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                                    <tbody>
+                                    <tr>
+                                        <td style="text-align: center">설정 코인</td>
+                                        <td style="text-align: center"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ setups[2][6] }}">{{ setups[2][6] }}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center">시작금액</td>
+                                        <td id = "initamount3" style="text-align: right"></td>
+                                    </tr>
+                                    <tr style="display: none">
+                                        <td style="text-align: center">추가매수설정</td>
+                                        <td style="text-align: right">{{ setups[2][12] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center">거래설정</td>
+                                        <td style="text-align: right">{{ trset3[1] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center">동작상태</td>
+                                        <td style="text-align:center">
+                                            <div class="custom-control custom-switch">
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk5" name="chk5" {% if setups[2][7]=='Y' %}checked{% endif %} />
+                                                       <label class="custom-control-label" for="chk5">on/off</label></h4>
+                                            </div>
+                                            <div class="custom-control custom-switch" style="display: none">
+                                                   <h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" id="chk6" name="chk6" {% if setups[2][10]=='Y' %}checked{% endif %}{% if setups[2][10]=='N' %} disabled{% endif %} />
+                                                   <label class="custom-control-label" for="chk6">hold</label></h4>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">자금현황</h6>
@@ -79,19 +167,13 @@
                                     <tr>
                                          <td style="text-align: center">Delay 설정 매수 단계</td>
                                         <td style="text-align: center" id = "holdon">
-                                            {{ result[8] }}
+                                            {{ setups[0][11] }}
                                         </td>
                                     </tr>
                                     <tr>
                                          <td style="text-align: center">더블 투입 여부</td>
                                         <td style="text-align: center" id = "holdon">
-                                            <input type="checkbox" id="doublechk" name="doublechk" {% if result[9] == 'Y' %}checked{% endif %} disabled>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                         <td style="text-align: center">현재가/구매평균가 비율</td>
-                                        <td style="text-align: center" >
-                                            {{ bsrate }} %
+                                            <input type="checkbox" id="doublechk" name="doublechk" {% if setups[0][12] == 'Y' %}checked{% endif %} disabled>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -108,12 +190,49 @@
                                 <div class="card-body">
                                     <div class="card-body">
                             <div class="chart-area">
-                                <canvas id="myChart" width="100%"></canvas>
+                                <canvas id="myChart1" width="100%"></canvas>
                             </div>
                         </div>
                                 </div>
                                 <div class="card-footer">
-                                    현재 가격 {{ cprice }}
+                                    현재 가격 {{ cprice1 }}
+                                    구매가 대비 비율 {{ bsrate1 }}%
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">코인트렌드</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-body">
+                            <div class="chart-area">
+                                <canvas id="myChart2" width="100%"></canvas>
+                            </div>
+                        </div>
+                                </div>
+                                <div class="card-footer">
+                                    현재 가격 {{ cprice2 }}
+                                    구매가 대비 비율 {{ bsrate2 }}%
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">코인트렌드</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-body">
+                            <div class="chart-area">
+                                <canvas id="myChart3" width="100%"></canvas>
+                            </div>
+                        </div>
+                                </div>
+                                <div class="card-footer">
+                                    현재 가격 {{ cprice3 }}
+                                    구매가 대비 비율 {{ bsrate3 }}%
                                 </div>
                             </div>
                         </div>
@@ -195,12 +314,29 @@
     });
 
     $("#chk1").change(function(){
-    var uno = {{ session["userNo"] }}
+    var setno = {{ setups[0][0] }}
     if($('input[name="chk1"]').is(":checked") === true){
-        setyn(uno,"Y");
+        setyn(setno,"Y");
     } else {
-    setyn(uno,"N");
-    sethr(uno,"N")
+    setyn(setno,"N");
+    }
+    });
+
+    $("#chk3").change(function(){
+    var setno = {{ setups[1][0] }}
+    if($('input[name="chk3"]').is(":checked") === true){
+        setyn(setno,"Y");
+    } else {
+    setyn(setno,"N");
+    }
+    });
+
+    $("#chk5").change(function(){
+    var setno = {{ setups[2][0] }}
+    if($('input[name="chk5"]').is(":checked") === true){
+        setyn(setno,"Y");
+    } else {
+    setyn(setno,"N");
     }
     });
 
@@ -214,8 +350,8 @@
     });
 
     function calneed(){
-        var stm = {{ result[1] }};
-        var times = {{ result[2] }};
+        var stm = {{ setups[0][2] }};
+        var times = {{ setups[0][3] }};
         var setval = stm;
         var sumval = stm;
         for (var i = 0; i < times; i++) {
@@ -229,6 +365,8 @@
         $('#needmon').html(numberWithCommas(sumval));
         $('#mywon').html(numberWithCommas( {{wallet}} ) );
         $('#initamount').html(numberWithCommas(stm));
+        $('#initamount2').html(numberWithCommas(stm));
+        $('#initamount3').html(numberWithCommas(stm));
     }
 
     function calorder(){
@@ -243,11 +381,11 @@
         }
     }
 
-    function setyn(uno,yn){
-        data = [uno,yn]
+    function setyn(setno,yn){
+        data = [setno,yn]
         $.ajax({
             type: "POST",
-            url: '/setyn',
+            url: '/setyns',
             data: data,
             processData: false,
             contentType: false,
@@ -304,16 +442,32 @@
 </script>
 <script>
     let indexArr = [0,'','','','',5,'','','','',10,'','','','',5,'','','','',20,'','','','',5,'','','','',30,'','','','',5,'','','','',40,'','','','',5,'','','','',50,'','','','',5,'','','','',60];
-    dataArr1 = {{ coinopen }};
-    dataArr2 = {{ coinclose }};
+    dataArr1 = {{ coinopen1 }};
+    dataArr2 = {{ coinclose1 }};
     dataArr3 = [];
     dataArr4 = [];
     for (let i = 0; i<60; i++){
-        dataArr3.push({{ cprice }});
-        dataArr4.push({{ avprice }});
+        dataArr3.push({{ cprice1 }});
+        dataArr4.push({{ avprice1 }});
+    }
+    dataArr5 = {{ coinopen2 }};
+    dataArr6 = {{ coinclose2 }};
+    dataArr7 = [];
+    dataArr8 = [];
+    for (let i = 0; i<60; i++){
+        dataArr7.push({{ cprice2 }});
+        dataArr8.push({{ avprice2 }});
+    }
+    dataArr9 = {{ coinopen3 }};
+    dataArr10 = {{ coinclose3 }};
+    dataArr11 = [];
+    dataArr12 = [];
+    for (let i = 0; i<60; i++){
+        dataArr11.push({{ cprice3 }});
+        dataArr12.push({{ avprice3 }});
     }
     indexArr.reverse();
-    new Chart(document.getElementById("myChart"), {
+    new Chart(document.getElementById("myChart1"), {
     type: 'line',
     data: {
         labels: indexArr ,
@@ -347,7 +501,132 @@
         responsive: true,
         title: {
             display: true,
-            text: "{{ result[0] }}"
+            text: "{{ setups[0][6] }}"
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                },
+                scaleLabel: {
+                    display: true,
+                }
+            }]
+        }
+    }
+});
+    new Chart(document.getElementById("myChart2"), {
+    type: 'line',
+    data: {
+        labels: indexArr ,
+        datasets: [{
+            label: 'open',
+            data: dataArr5,
+            borderColor: "rgb(247,85,16)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: 'close',
+            data: dataArr6,
+            borderColor: "rgb(16,247,58)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: '현재가',
+            data: dataArr7,
+            borderColor: "rgb(0,73,253)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: '매수평균가',
+            data: dataArr8,
+            borderColor: "rgb(0,253,240)",
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: "{{ setups[1][6] }}"
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                },
+                scaleLabel: {
+                    display: true,
+                }
+            }]
+        }
+    }
+});
+
+    new Chart(document.getElementById("myChart3"), {
+    type: 'line',
+    data: {
+        labels: indexArr ,
+        datasets: [{
+            label: 'open',
+            data: dataArr9,
+            borderColor: "rgb(247,85,16)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: 'close',
+            data: dataArr10,
+            borderColor: "rgb(16,247,58)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: '현재가',
+            data: dataArr11,
+            borderColor: "rgb(0,73,253)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: '매수평균가',
+            data: dataArr12,
+            borderColor: "rgb(0,253,240)",
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: "{{ setups[2][6] }}"
         },
         tooltips: {
             mode: 'index',
@@ -377,3 +656,4 @@
 });
 </script>
 </html>
+

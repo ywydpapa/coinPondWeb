@@ -23,7 +23,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <form action="/setupbid" method="post" onsubmit="return confirm('설정내용을 저장하시겠습니까?');">
+                                <form action="/setupbid" method="post" onsubmit="return confirm('설정내용을 저장하시겠습니까? 설정하지 않은 코인은 무작위로 설정됩니다.');">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                          <colgroup>
                                              <col width="20%" />
@@ -33,15 +33,35 @@
                                          </colgroup>
                                          <thead>
                                          <tr>
-                                             <td style="text-align: center"><h5>선택 코인</h5></td>
-                                             <td colspan="2"><select id="coinn" name="coinn" class="form-control selectpicker" data-live-search="true">
+                                             <td style="text-align: center"><h5>선택 코인1</h5></td>
+                                             <td colspan="2"><select id="coinn1" name="coinn1" class="form-control selectpicker" data-live-search="true">
                                                  {% for coin in coinlist %}
                                                      <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
                                                  {% endfor %}</select></td>
                                              <td style="text-align: center">
                                                  <div style="display: inline-block">
-                                                 <button type="submit" value="submit" class="form-control btn btn-google">매매 설정 저장</button>
+                                                 <button type="submit" value="submit" id = "savebtn" class="form-control btn btn-google" disabled>매매 설정 저장</button>
                                                  </div>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"><h5>선택 코인2</h5></td>
+                                             <td colspan="2"><select id="coinn2" name="coinn2" class="form-control selectpicker" data-live-search="true">
+                                             <option value="" >코인을 선택하세요</option>
+                                                 {% for coin in coinlist %}
+                                                     <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
+                                                 {% endfor %}</select></td>
+                                             <td style="text-align: center">
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td style="text-align: center"><h5>선택 코인3</h5></td>
+                                             <td colspan="2"><select id="coinn3" name="coinn3" class="form-control selectpicker" data-live-search="true">
+                                                 <option value="" >코인을 선택하세요</option>
+                                                 {% for coin in coinlist %}
+                                                     <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
+                                                 {% endfor %}</select></td>
+                                             <td style="text-align: center">
                                              </td>
                                          </tr>
                                          <tr>
@@ -200,6 +220,58 @@
 
     $('#steprate').change(function(){
         var grate = $('#steprate').val();
+    });
+
+    $('#coinn1').change(function(){
+        var coinv1 = $('#coinn1').val();
+        var coinv2 = $('#coinn2').val();
+        var coinv3 = $('#coinn3').val();
+        if (coinv1 == coinv2 || coinv1 == coinv3){
+            alert("중복되는 코인을 선택할 수 없습니다. 다른 코인을 선택해주세요!");
+            $('#coinn1').val("");
+            $('#coinn1').selectpicker('refresh');
+            $('#savebtn').prop('disabled', true);
+        }
+        if (coinv1 != "" && coinv2 != "" && coinv3 != ""){
+            $('#savebtn').prop('disabled', false);
+        }
+        if (coinv1 == ""){
+            $('#savebtn').prop('disabled', true);
+        }
+    });
+    $('#coinn2').change(function(){
+        var coinv1 = $('#coinn1').val();
+        var coinv2 = $('#coinn2').val();
+        var coinv3 = $('#coinn3').val();
+        if (coinv2 == coinv1 || coinv2 == coinv3){
+            alert("중복되는 코인을 선택할 수 없습니다. 다른 코인을 선택해주세요!");
+            $('#coinn2').val("");
+            $('#coinn2').selectpicker('refresh');
+            $('#savebtn').prop('disabled', true);
+        }
+        if (coinv1 != "" && coinv2 != "" && coinv3 != ""){
+            $('#savebtn').prop('disabled', false);
+        }
+        if (coinv2 == ""){
+            $('#savebtn').prop('disabled', true);
+        }
+    });
+    $('#coinn3').change(function(){
+        var coinv1 = $('#coinn1').val();
+        var coinv2 = $('#coinn2').val();
+        var coinv3 = $('#coinn3').val();
+        if (coinv3 == coinv1 || coinv3 == coinv2){
+            alert("중복되는 코인을 선택할 수 없습니다. 다른 코인을 선택해주세요!");
+            $('#coinn3').val("");
+            $('#coinn3').selectpicker('refresh');
+            $('#savebtn').prop('disabled', true);
+        }
+        if (coinv1 != "" && coinv2 != "" && coinv3 != ""){
+            $('#savebtn').prop('disabled', false);
+        }
+        if (coinv3 == ""){
+            $('#savebtn').prop('disabled', true);
+        }
     });
 
     $('#tradeset').change(function(){
