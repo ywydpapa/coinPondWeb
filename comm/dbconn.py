@@ -439,10 +439,13 @@ def clearcache():
 
 def getorderlist(uno):
     keys = getupbitkey(uno)
-    setups = getsetup(uno)
-    coinn = setups[0]
-    upbit = pyupbit.Upbit(keys[0],keys[1])
-    orders = upbit.get_order(coinn)
+    upbit = pyupbit.Upbit(keys[0], keys[1])
+    setups = getsetups(uno)
+    orders = []
+    for setup in setups:
+        coinn = setup[6]
+        order = upbit.get_order(coinn)
+        orders.extend(order)
     return orders
 
 
