@@ -39,7 +39,7 @@
                                     </thead>
                                     <tbody>
                                         {% for item in witems %}
-                                            {% if (item["currency"] == "KRW") or (item["currency"] == mysetcoin[4:] ) %}
+                                            {% if (item["currency"] == "KRW") or (item["currency"] == mysetcoin[0][4:])or (item["currency"] == mysetcoin[1][4:])or (item["currency"] == mysetcoin[2][4:]) %}
                                          <tr style="text-align: right">
                                          <td class = "coins" style="text-align: center" >{{ item["currency"] }}</td>
                                          <td class="vola">{{ item["balance"] }}</td>
