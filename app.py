@@ -9,7 +9,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs)
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -114,6 +114,16 @@ def tradeSet():
     print(setlist)
     return render_template('./trade/setmytrade.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
 
+
+@app.route('/editSetup', methods=['GET', 'POST'])
+def editSetup():
+    coinlist = pyupbit.get_tickers(fiat="KRW")
+    setno = request.args.get('setno')
+    coinA = request.args.get('coinA')
+    coinB = request.args.get('coinB')
+    setlist = selectsetlist(9)
+    print(setlist)
+    return render_template('./trade/editmytrade.html', coinlist=coinlist, setno=setno, coinA=coinA, coinB= coinB, setlist=setlist)
 
 @app.route('/multisetup', methods=['GET', 'POST'])
 def multisetup():
@@ -318,6 +328,34 @@ def setupmybid():
             setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn)
         if coinn3 is not None:
             setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn)
+    return redirect('/trade?uno=' + uno + '&skey=' + skey)
+
+
+@app.route('/setupbid2', methods=['GET', 'POST'])
+def editmybid2():
+    if request.method == 'GET':
+        pass
+    else:
+        setno = request.form.get('sno')
+        uno = request.form.get('userno')
+        bidsetps = request.form.get('bidsteps')
+        initprice = request.form.get('initprice')
+        bidrate = 1.00
+        initprice = initprice.replace(',', '')
+        askrate = 0.5
+        tradeset = request.form.get('tradeset')
+        tradeset = tradeset.split(',')[0]
+        coinn = request.form.get('coinn')
+        skey = request.form.get('skey')
+        svrno = request.form.get('svrno')
+        hno = request.form.get('tradeset').split(',')[1]
+        dyn = request.form.get('doublechk')
+        if dyn == 'on':
+            dyn = 'Y'
+        else:
+            dyn = 'N'
+        if coinn is not None:
+            editbidsetup(setno, uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset, hno, dyn)
     return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 

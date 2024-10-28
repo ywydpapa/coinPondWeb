@@ -270,6 +270,32 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         return False
 
 
+def editbidsetup(sno, uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
+    global cur0, db
+    chkkey = checkkey(uno, setkey)
+    nowt = datetime.now()+ timedelta(minutes=15)
+    if chkkey == True:
+        try:
+            db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+            cur0 = db.cursor()
+            sqlp = "update tradingSetup set attrib=%s where setupNo=%s"
+            cur0.execute(sqlp,("XXXUPXXXUPXXXUP", sno))
+            db.commit()
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN))
+            db.commit()
+        except Exception as e:
+            print('접속오류', e)
+        finally:
+            cur0.close()
+            db.close()
+            tradelog(uno,'HOLD',coinn,nowt)
+            tradelog(uno, 'BID', coinn, nowt)
+            return True
+    else:
+        return True
+
+
 def setupbidadmin(uno, setkey, settitle, bidstep, stp0, stp1, stp2, stp3, stp4, stp5, stp6, stp7, stp8, stp9, int0, int1, int2, int3, int4, int5, int6, int7, int8, int9, hno, dyn):
     global cur11, db
     chkkey = checkkey(uno, setkey)

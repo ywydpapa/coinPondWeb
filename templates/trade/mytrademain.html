@@ -18,7 +18,7 @@
                         <div class="col-lg-3">
                             <div class="card ">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 1</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 1  <a href="/editSetup?setno={{ setups[0][0] }}&coinA={{ setups[1][6] }}&coinB={{ setups[2][6] }}"> [편집] </a></h6>
                                 </div>
                                 <div class="card-body">
                                   <div class="table-responsive">
@@ -62,7 +62,7 @@
                         <div class="col-lg-3">
                             <div class="card ">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 2</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 2  <a href="/editSetup?setno={{ setups[1][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[2][6] }}"> [편집] </a></h6>
                                 </div>
                                 <div class="card-body">
                                   <div class="table-responsive">
@@ -106,7 +106,7 @@
                     <div class="col-lg-3">
                             <div class="card ">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 3</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 3  <a href="/editSetup?setno={{ setups[2][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[1][6] }}"> [편집] </a></h6>
                                 </div>
                                 <div class="card-body">
                                   <div class="table-responsive">
@@ -170,7 +170,7 @@
                                             {{ setups[0][11] }}
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="display: none">
                                          <td style="text-align: center">더블 투입 여부</td>
                                         <td style="text-align: center" id = "holdon">
                                             <input type="checkbox" id="doublechk" name="doublechk" {% if setups[0][12] == 'Y' %}checked{% endif %} disabled>
@@ -350,10 +350,12 @@
     });
 
     function calneed(){
-        var stm = {{ setups[0][2] }};
+        var stm1 = {{ setups[0][2] }};
+        var stm2 = {{ setups[1][2] }};
+        var stm3 = {{ setups[2][2] }};
         var times = {{ setups[0][3] }};
-        var setval = stm;
-        var sumval = stm;
+        var setval = stm1;
+        var sumval = stm1;
         for (var i = 0; i < times; i++) {
         if ($('#doublechk').is(":checked") === true) {
                     setval = sumval *2 ;
@@ -364,9 +366,9 @@
         }
         $('#needmon').html(numberWithCommas(sumval));
         $('#mywon').html(numberWithCommas( {{wallet}} ) );
-        $('#initamount').html(numberWithCommas(stm));
-        $('#initamount2').html(numberWithCommas(stm));
-        $('#initamount3').html(numberWithCommas(stm));
+        $('#initamount').html(numberWithCommas(stm1));
+        $('#initamount2').html(numberWithCommas(stm2));
+        $('#initamount3').html(numberWithCommas(stm3));
     }
 
     function calorder(){
