@@ -320,17 +320,18 @@ def setupmybid():
         svrno = request.form.get('svrno')
         hno = request.form.get('tradeset').split(',')[1]
         dyn = request.form.get('doublechk')
+        lmtamt = request.form.get('limitamt')
         if dyn == 'on':
             dyn = 'Y'
         else:
             dyn = 'N'
         erasebid(uno,skey)
         if coinn1 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn1, svrno, tradeset, hno, dyn)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn1, svrno, tradeset, hno, dyn, lmtamt)
         if coinn2 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn, lmtamt)
         if coinn3 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn, lmtamt)
     return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 
@@ -353,12 +354,14 @@ def editmybid2():
         svrno = request.form.get('svrno')
         hno = request.form.get('tradeset').split(',')[1]
         dyn = request.form.get('doublechk')
+        limityn = request.form.get('limityn')
+        limitamt = request.form.get('limitamt')
         if dyn == 'on':
             dyn = 'Y'
         else:
             dyn = 'N'
         if coinn is not None:
-            editbidsetup(setno, uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset, hno, dyn)
+            editbidsetup(setno, uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset, hno, dyn, limityn, limitamt)
     return redirect('/trade?uno=' + uno + '&skey=' + skey)
 
 

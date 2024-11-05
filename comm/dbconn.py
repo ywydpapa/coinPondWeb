@@ -247,7 +247,7 @@ def erasebid(uno, setkey):
 
 
 
-def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
+def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitamt):
     global cur0, db
     chkkey = checkkey(uno, setkey)
     nowt = datetime.now()+ timedelta(minutes=15)
@@ -255,8 +255,8 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         try:
             db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
             cur0 = db.cursor()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
-            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitAmt, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitamt))
             db.commit()
         except Exception as e:
             print('접속오류', e)
@@ -270,7 +270,7 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         return False
 
 
-def editbidsetup(sno, uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN):
+def editbidsetup(sno, uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitYN, limitAmt):
     global cur0, db
     chkkey = checkkey(uno, setkey)
     nowt = datetime.now()+ timedelta(minutes=15)
@@ -281,8 +281,8 @@ def editbidsetup(sno, uno, setkey, initbid, bidstep, bidrate, askrate, coinn, sv
             sqlp = "update tradingSetup set attrib=%s where setupNo=%s"
             cur0.execute(sqlp,("XXXUPXXXUPXXXUP", sno))
             db.commit()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
-            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitYN, limitAmt, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitYN, limitAmt))
             db.commit()
         except Exception as e:
             print('접속오류', e)

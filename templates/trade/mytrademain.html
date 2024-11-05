@@ -32,6 +32,10 @@
                                         <td style="text-align: center">시작금액</td>
                                         <td id = "initamount" style="text-align: right"></td>
                                     </tr>
+                                    <tr>
+                                        <td style="text-align: center">최대금액</td>
+                                        <td id = "limitamt1" style="text-align: right"></td>
+                                    </tr>
                                     <tr style="display: none">
                                         <td style="text-align: center">추가매수설정</td>
                                         <td style="text-align: right">{{ setups[0][12] }}</td>
@@ -76,6 +80,10 @@
                                         <td style="text-align: center">시작금액</td>
                                         <td id = "initamount2" style="text-align: right"></td>
                                     </tr>
+                                    <tr>
+                                        <td style="text-align: center">최대금액</td>
+                                        <td id = "limitamt2" style="text-align: right"></td>
+                                    </tr>
                                     <tr style="display: none">
                                         <td style="text-align: center">추가매수설정</td>
                                         <td style="text-align: right">{{ setups[1][12] }}</td>
@@ -119,6 +127,10 @@
                                     <tr>
                                         <td style="text-align: center">시작금액</td>
                                         <td id = "initamount3" style="text-align: right"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center">최대금액</td>
+                                        <td id = "limitamt3" style="text-align: right"></td>
                                     </tr>
                                     <tr style="display: none">
                                         <td style="text-align: center">추가매수설정</td>
@@ -353,6 +365,9 @@
         var stm1 = {{ setups[0][2] }};
         var stm2 = {{ setups[1][2] }};
         var stm3 = {{ setups[2][2] }};
+        var lmtamt1 = {{ setups[0][14] }};
+        var lmtamt2 = {{ setups[1][14] }};
+        var lmtamt3 = {{ setups[2][14] }};
         var times = {{ setups[0][3] }};
         var setval = stm1;
         var sumval = stm1;
@@ -369,6 +384,9 @@
         $('#initamount').html(numberWithCommas(stm1));
         $('#initamount2').html(numberWithCommas(stm2));
         $('#initamount3').html(numberWithCommas(stm3));
+        $('#limitamt1').html(numberWithCommas(lmtamt1));
+        $('#limitamt2').html(numberWithCommas(lmtamt2));
+        $('#limitamt3').html(numberWithCommas(lmtamt3));
     }
 
     function calorder(){

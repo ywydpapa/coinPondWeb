@@ -83,6 +83,15 @@
                                              <td style="text-align: center"></td>
                                          </tr>
                                          <tr style="text-align: center">
+                                             <td>투자한계금액</td>
+                                             <td><select id="limityn" name="limityn">
+                                                 <option value="N" selected>OFF</option>
+                                                 <option value="Y">ON</option>
+                                             </select></td>
+                                             <td><input id="limitamt" name="limitamt" class="form-control" type="text" value="5000000" placeholder="5,000,000" max="10000000" min="100000" step="50000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" /></td>
+                                             <td></td>
+                                         </tr>
+                                         <tr style="text-align: center">
                                              <td></td>
                                              <td>매수금액</td>
                                              <td>필요금액</td>
@@ -196,7 +205,15 @@
         document.getElementById('trvalst').innerText = "-";
         document.getElementById('trsumst').innerText = "-";
     });
-
+    $('#limitamt').change(function(){
+        var valu = $('#limitamt').val();
+        if (valu < 100000){
+            valu = 100000
+        }else{
+            valu > 10000000 ? valu = 10000000 : valu;
+        }
+        $('#limitamt').val(numberWithCommas(valu));
+    });
     $('#steprate').change(function(){
         var grate = $('#steprate').val();
     });
