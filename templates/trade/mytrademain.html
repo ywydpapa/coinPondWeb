@@ -15,7 +15,7 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="card ">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">설정내용 1  <a href="/editSetup?setno={{ setups[0][0] }}&coinA={{ setups[1][6] }}&coinB={{ setups[2][6] }}"> [편집] </a></h6>
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="card ">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">설정내용 2  <a href="/editSetup?setno={{ setups[1][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[2][6] }}"> [편집] </a></h6>
@@ -111,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                             <div class="card ">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">설정내용 3  <a href="/editSetup?setno={{ setups[2][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[1][6] }}"> [편집] </a></h6>
@@ -159,41 +159,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">자금현황</h6>
-                                </div>
-                                <div class="card-body">
-                                  <div class="table-responsive">
-                                      <table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
-                                    <tbody>
-                                    <tr>
-                                        <td style="text-align: center">현재 원화 잔고</td>
-                                        <td id="mywon" style="text-align: right"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">필요금액</td>
-                                        <td id = "needmon" style="text-align: right"> </td>
-                                    </tr>
-                                    <tr>
-                                         <td style="text-align: center">Delay 설정 매수 단계</td>
-                                        <td style="text-align: center" id = "holdon">
-                                            {{ setups[0][11] }}
-                                        </td>
-                                    </tr>
-                                    <tr style="display: none">
-                                         <td style="text-align: center">더블 투입 여부</td>
-                                        <td style="text-align: center" id = "holdon">
-                                            <input type="checkbox" id="doublechk" name="doublechk" {% if setups[0][12] == 'Y' %}checked{% endif %} disabled>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                     </table>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
+                    <br>
                         <div class="col-lg-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
