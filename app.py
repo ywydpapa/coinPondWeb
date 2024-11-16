@@ -9,7 +9,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup)
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -49,9 +49,11 @@ def trade():
     global avprice,avprice2,avprice3
     uno = request.args.get('uno')
     setkey = request.args.get('skey')
-    setups = getsetups(uno)
+    tabindex = request.args.get('tabindex')
+    license = getlicence(uno)[0]
+    setups = getsetups(uno,tabindex)
     wallet = checkwalletwon(uno, setkey)
-    orderlist = getorderlist(uno)
+    orderlist = getorderlist(uno, tabindex)
     setno1 = setups[0][8]
     setno2 = setups[1][8]
     setno3 = setups[2][8]
@@ -103,7 +105,7 @@ def trade():
                            coinopen1 = listcoino1, coinclose1 = listcoinc1, cprice1 = crprice1, bsrate1 = srate1,
                            coinopen2 = listcoino2, coinclose2 = listcoinc2, cprice2 = crprice2, bsrate2 = srate2,
                            coinopen3 = listcoino3, coinclose3 = listcoinc3, cprice3 = crprice3, bsrate3 = srate3,
-                           avprice1 = avprice1,avprice2 = avprice2,avprice3 = avprice3, setups = setups)
+                           avprice1 = avprice1,avprice2 = avprice2,avprice3 = avprice3, setups = setups, tabindex = tabindex, license = license)
 
 
 @app.route('/tradeSet', methods=['GET', 'POST'])
@@ -121,9 +123,10 @@ def editSetup():
     setno = request.args.get('setno')
     coinA = request.args.get('coinA')
     coinB = request.args.get('coinB')
+    tabindex = request.args.get('tabindex')
     setlist = selectsetlist(9)
     print(setlist)
-    return render_template('./trade/editmytrade.html', coinlist=coinlist, setno=setno, coinA=coinA, coinB= coinB, setlist=setlist)
+    return render_template('./trade/editmytrade.html', coinlist=coinlist, setno=setno, coinA=coinA, coinB= coinB, setlist=setlist, tabindex=tabindex)
 
 @app.route('/multisetup', methods=['GET', 'POST'])
 def multisetup():
@@ -241,7 +244,7 @@ def tradestat():
         uno = request.args.get('uno')
         skey = request.args.get('skey')
         walletitems = checkwallet(uno, skey)
-        mysetcoins = getsetups(uno)
+        mysetcoins = getsetups(uno,0)
         myset = []
         for mysetcoin in mysetcoins:
             myset.append(mysetcoin[6])
@@ -342,6 +345,7 @@ def editmybid2():
     else:
         setno = request.form.get('sno')
         uno = request.form.get('userno')
+        slot = request.form.get('tabindex')
         bidsetps = request.form.get('bidsteps')
         initprice = request.form.get('initprice')
         bidrate = 1.00
@@ -361,8 +365,8 @@ def editmybid2():
         else:
             dyn = 'N'
         if coinn is not None:
-            editbidsetup(setno, uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset, hno, dyn, limityn, limitamt)
-    return redirect('/trade?uno=' + uno + '&skey=' + skey)
+            editbidsetup(setno, uno, skey, initprice, bidsetps, bidrate, askrate, coinn, svrno, tradeset, hno, dyn, limityn, limitamt, slot)
+    return redirect('/trade?uno=' + uno + '&skey=' + skey + '&tabindex=' + slot)
 
 
 @app.route('/setupbidadmin', methods=['GET', 'POST'])

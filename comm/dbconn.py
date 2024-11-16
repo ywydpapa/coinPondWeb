@@ -270,7 +270,7 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         return False
 
 
-def editbidsetup(sno, uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitYN, limitAmt):
+def editbidsetup(sno, uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitYN, limitAmt, tabindex):
     global cur0, db
     chkkey = checkkey(uno, setkey)
     nowt = datetime.now()+ timedelta(minutes=15)
@@ -281,8 +281,8 @@ def editbidsetup(sno, uno, setkey, initbid, bidstep, bidrate, askrate, coinn, sv
             sqlp = "update tradingSetup set attrib=%s where setupNo=%s"
             cur0.execute(sqlp,("XXXUPXXXUPXXXUP", sno))
             db.commit()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitYN, limitAmt, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
-            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitYN, limitAmt))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitYN, limitAmt, slot ,regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ,now())"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitYN, limitAmt, tabindex))
             db.commit()
         except Exception as e:
             print('접속오류', e)
@@ -349,13 +349,32 @@ def getsetupmax(uno,sdate):
         db.close()
 
 
-def getsetups(uno):
+def getsetups(uno,slotno):
     try:
         db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
         cur13 = db.cursor()
-        sql = "select * from tradingSetup where userNo=%s and attrib not like %s"
-        cur13.execute(sql, (uno, '%XXXUP'))
+        if slotno == 0:
+            sql = "select * from tradingSetup where userNo=%s and attrib not like %s"
+            cur13.execute(sql, (uno, '%XXXUP'))
+        else:
+            sql = "select * from tradingSetup where userNo=%s and slot = %s and attrib not like %s"
+            cur13.execute(sql, (uno, slotno, '%XXXUP'))
         data = list(cur13.fetchall())
+        return data
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur13.close()
+        db.close()
+
+
+def getlicence(uno):
+    try:
+        db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+        cur13 = db.cursor()
+        sql = "select tradeCnt from pondUser where userNo=%s and attrib not like %s"
+        cur13.execute(sql, (uno,'%XXXUP'))
+        data = cur13.fetchone()
         return data
     except Exception as e:
         print('접속오류', e)
@@ -463,10 +482,10 @@ def clearcache():
     db.close()
 
 
-def getorderlist(uno):
+def getorderlist(uno, slotno):
     keys = getupbitkey(uno)
     upbit = pyupbit.Upbit(keys[0], keys[1])
-    setups = getsetups(uno)
+    setups = getsetups(uno, slotno)
     orders = []
     for setup in setups:
         coinn = setup[6]

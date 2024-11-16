@@ -14,11 +14,38 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
+                    <ul class="nav  nav-pills">
+                        {% if license >= 3 %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if tabindex == "1" %}active{% endif %}" href="/trade?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&tabindex=1">SLOT 01</a>
+                        </li>
+                        {% endif %}
+                        {% if license >= 6 %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if tabindex == "2" %}active{% endif %}" href="/trade?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&tabindex=2">SLOT 02</a>
+                        </li>
+                    {% endif %}
+                    {% if license >= 9 %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if tabindex == "3" %}active{% endif %}" href="/trade?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&tabindex=3">SLOT 03</a>
+                        </li>
+                    {% endif %}
+                    {% if license >= 12 %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if tabindex == "4" %}active{% endif %}" href="/trade?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&tabindex=4">SLOT 04</a>
+                        </li>
+                    {% endif %}
+                    {% if license >= 15 %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if tabindex == "5" %}active{% endif %}" href="/trade?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&tabindex=5">SLOT 05</a>
+                        </li>
+                    {% endif %}
+                    </ul>
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="card ">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 1  <a href="/editSetup?setno={{ setups[0][0] }}&coinA={{ setups[1][6] }}&coinB={{ setups[2][6] }}"> [편집] </a></h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 1  <a href="/editSetup?setno={{ setups[0][0] }}&coinA={{ setups[1][6] }}&coinB={{ setups[2][6] }}&tabindex={{ tabindex }}"> [편집] </a></h6>
                                 </div>
                                 <div class="card-body">
                                   <div class="table-responsive">
@@ -66,7 +93,7 @@
                         <div class="col-lg-4">
                             <div class="card ">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 2  <a href="/editSetup?setno={{ setups[1][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[2][6] }}"> [편집] </a></h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 2  <a href="/editSetup?setno={{ setups[1][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[2][6] }}&tabindex={{ tabindex }}"> [편집] </a></h6>
                                 </div>
                                 <div class="card-body">
                                   <div class="table-responsive">
@@ -114,7 +141,7 @@
                     <div class="col-lg-4">
                             <div class="card ">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 3  <a href="/editSetup?setno={{ setups[2][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[1][6] }}"> [편집] </a></h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">설정내용 3  <a href="/editSetup?setno={{ setups[2][0] }}&coinA={{ setups[0][6] }}&coinB={{ setups[1][6] }}&tabindex={{ tabindex }}"> [편집] </a></h6>
                                 </div>
                                 <div class="card-body">
                                   <div class="table-responsive">
