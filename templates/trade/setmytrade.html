@@ -24,6 +24,25 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <form action="/setupbid" method="post" onsubmit="return confirm('설정내용을 저장하시겠습니까? 설정하지 않은 코인은 무작위로 설정됩니다.');">
+                                    <label for="tabindex">슬롯 설정 (설정하고자 하는 슬롯을 선택해 주십시오!!)</label>
+                                    <select class="form-control" name="tabindex" id="tabindex">
+                                        {% if trcnt >= 3 %}
+                                        <option value="1">Slot 1</option>
+                                        {% endif %}
+                                        {% if trcnt >= 6 %}
+                                        <option value="2">Slot 2</option>
+                                        {% endif %}
+                                        {% if trcnt >= 9 %}
+                                        <option value="3">Slot 3</option>
+                                        {% endif %}
+                                        {% if trcnt >= 12 %}
+                                        <option value="4">Slot 4</option>
+                                        {% endif %}
+                                        {% if trcnt >= 15 %}
+                                        <option value="5">Slot 5</option>
+                                        {% endif %}
+                                    </select>
+                                <br>
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                          <colgroup>
                                              <col width="20%" />

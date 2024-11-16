@@ -112,9 +112,11 @@ def trade():
 def tradeSet():
     coinlist = pyupbit.get_tickers(fiat="KRW")
     coinn = request.args.get('coinn')
+    uno = request.args.get('uno')
+    trcnt = getlicence(uno)[0]
     setlist = selectsetlist(9)
     print(setlist)
-    return render_template('./trade/setmytrade.html', coinlist=coinlist, coinn=coinn, setlist=setlist)
+    return render_template('./trade/setmytrade.html', coinlist=coinlist, coinn=coinn, setlist=setlist, trcnt=trcnt)
 
 
 @app.route('/editSetup', methods=['GET', 'POST'])
@@ -304,11 +306,12 @@ def login():
 
 @app.route('/setupbid', methods=['GET', 'POST'])
 def setupmybid():
-    global skey, uno
+    global skey, uno, slot
     if request.method == 'GET':
         pass
     else:
         uno = request.form.get('userno')
+        slot = request.form.get('tabindex')
         bidsetps = request.form.get('bidsteps')
         initprice = request.form.get('initprice')
         bidrate = 1.00
@@ -328,14 +331,14 @@ def setupmybid():
             dyn = 'Y'
         else:
             dyn = 'N'
-        erasebid(uno,skey)
+        erasebid(uno,skey, slot)
         if coinn1 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn1, svrno, tradeset, hno, dyn, lmtamt)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn1, svrno, tradeset, hno, dyn, lmtamt, slot)
         if coinn2 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn, lmtamt)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn, lmtamt, slot)
         if coinn3 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn, lmtamt)
-    return redirect('/trade?uno=' + uno + '&skey=' + skey)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn, lmtamt, slot)
+    return redirect('/trade?uno=' + uno + '&skey=' + skey + '&tabindex=' + slot )
 
 
 @app.route('/setupbid2', methods=['GET', 'POST'])

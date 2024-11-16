@@ -226,7 +226,7 @@ def checkkey(uno, setkey):
         return True
 
 
-def erasebid(uno, setkey):
+def erasebid(uno, setkey, tabindex):
     db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur9 = db.cursor()
     sql = "SELECT * from pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
@@ -238,8 +238,8 @@ def erasebid(uno, setkey):
         db.close()
         return False
     else:
-        sql2 = "update tradingSetup set attrib=%s where userNo=%s"
-        cur9.execute(sql2,("XXXUPXXXUPXXXUP", uno))
+        sql2 = "update tradingSetup set attrib=%s where userNo=%s and slot = %s"
+        cur9.execute(sql2,("XXXUPXXXUPXXXUP", uno, tabindex))
         db.commit()
         cur9.close()
         db.close()
@@ -247,7 +247,7 @@ def erasebid(uno, setkey):
 
 
 
-def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitamt):
+def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitamt, slot):
     global cur0, db
     chkkey = checkkey(uno, setkey)
     nowt = datetime.now()+ timedelta(minutes=15)
@@ -255,8 +255,8 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         try:
             db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
             cur0 = db.cursor()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitAmt, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
-            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitamt))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitAmt, slot, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitamt, slot))
             db.commit()
         except Exception as e:
             print('접속오류', e)
