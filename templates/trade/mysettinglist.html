@@ -36,7 +36,8 @@
                                         <tr>
                                             <td style="text-align: center" class="coinn"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ row[6]}}">{{ row[6] }}</a></td>
                                             <td style="text-align: right" class="setnumb">{{ row[2] }}</td>
-                                            <td style="text-align: center" >{{ row[7] }}</td>
+                                            <td style="text-align: center" ><h4><input style="zoom: 150%" type="checkbox" class="custom-control-input" name="chkonoff" {% if row[7]=='Y' %}checked{% endif %} />
+                                                       <label class="custom-control-label" for="chkonoff">{% if row[7]=='Y' %}on{% endif %}{% if row[7]!='Y' %}off{% endif %}</label></h4></td>
                                             <td style="text-align: center" >{{ row[15] }}</td>
                                             <td style="text-align: center"><button class="btn-primary" onclick="location.href='/editSetup?setno={{ row[0] }}&coinA=&coinB=&tabindex={{ row[15] }}'">투자 설정 변경</button></td>
                                         </tr>
