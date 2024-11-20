@@ -970,3 +970,19 @@ def mysettinglist(uno):
         cur45.close()
         db45.close()
         return rows
+
+
+def mytradesetlist(uno):
+    global rows
+    db46 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur46 = db46.cursor()
+    try:
+        sql = "select * from tradingSetup where userNo = %s and attrib not like %s order by slot"
+        cur46.execute(sql, (uno, "XXXUP%"))
+        rows = cur46.fetchall()
+    except Exception as e:
+        print("나의 설정 리스트 조회 에러", e)
+    finally:
+        cur46.close()
+        db46.close()
+        return rows

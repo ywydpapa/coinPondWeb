@@ -57,6 +57,7 @@
                         <a class="collapse-item" href="/peakcoin">추천코인목록</a>
                         <a class="collapse-item" href="/volumetop20">거래량 TOP 20</a>
                         <a class="collapse-item" href="/tradeSet?uno={{ session["userNo"] }}">트레이딩설정</a>
+                        <a class="collapse-item" href="/tradesetlist?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}">트레이딩 설정 리스트</a>
                     </div>
                 </div>
             </li>
@@ -80,7 +81,7 @@
                 </div>
             </li>
             {% endif %}
-        {% if session["userName"] == '김동진' %}
+        {% if session["userNo"] == 1 %}
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDjkim"

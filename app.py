@@ -9,7 +9,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence)
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -419,6 +419,12 @@ def setlist():
     rows = selectsets()
     return render_template('./admin/setlistn.html', rows = rows)
 
+@app.route('/tradesetlist', methods=['GET', 'POST'])
+def tradesetlist():
+    global rows
+    uno = request.args.get('uno')
+    rows = mytradesetlist(uno)
+    return render_template('./trade/mysettinglist.html', rows = rows)
 
 @app.route('/setDetail', methods=['GET', 'POST'])
 def detailset():

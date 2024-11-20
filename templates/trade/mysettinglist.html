@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include '/comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include '/comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include '/comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- Page Heading -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">트레이딩 설정 목록</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead style="text-align: center">
+                                    <th>코인명</th>
+                                    <th>시작금액</th>
+                                    <th>가동여부</th>
+                                    <th>할당슬롯</th>
+                                    <th>설정</th>
+                                </thead>
+                                    <tbody>
+                                    {% for row in rows %}
+                                        <tr>
+                                            <td style="text-align: center" class="coinn"><a href="https://upbit.com/exchange?code=CRIX.UPBIT.{{ row[6]}}">{{ row[6] }}</a></td>
+                                            <td style="text-align: right" class="setnumb">{{ row[2] }}</td>
+                                            <td style="text-align: center" >{{ row[7] }}</td>
+                                            <td style="text-align: center" >{{ row[15] }}</td>
+                                            <td style="text-align: center"><button class="btn-primary" onclick="location.href='/editSetup?setno={{ row[0] }}&coinA=&coinB=&tabindex={{ row[15] }}'">투자 설정 변경</button></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+
+{% include '/comm/adscript.html' %}
+    <script>
+    $(document).ready(function () {
+        calcvalue();
+        setdatetimerow();
+        $('#dataTable').dataTable({
+            "pageLength": 25,
+            order : [[ 3, "asc" ]]
+        });
+    });
+
+
+    function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+    function numberNoneCommas(x) {
+		return x.toString().replace(/[\D\s\._\-]+/g, "");
+	}
+
+    function calcvalue(){
+        $Aarr = $(".setnumb");
+        for (var i = 0; i < $Aarr.length; i++) {
+            var aval = parseFloat($Aarr[i].innerText);
+            $Aarr[i].innerText = numberWithCommas(aval);
+        }
+    }
+    function setdatetimerow(){
+        $Barr = $(".setdatetime");
+        for (var i = 0; i < $Barr.length; i++){
+            var inntxt = $Barr[i].innerText;
+            var year = inntxt.substr(0,4);
+            var mon = inntxt.substr(4,2);
+            var day = inntxt.substr(6,2);
+            var hour = inntxt.substr(8,2);
+            var minute = inntxt.substr(10,2);
+            var second = inntxt.substr(12,2);
+            var setdate = year + '/' + mon + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+            $Barr[i].innerText = setdate;
+            setdate = "";
+        }
+    }
+</script>
+    {% include '/comm/adscripttable.html' %}
+</body>
+</html>
