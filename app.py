@@ -9,7 +9,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist)
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -467,6 +467,15 @@ def setyn():
     uno = pla[0]
     yesno = pla[1]
     setonoff(uno, yesno)
+    return "YES"
+
+
+@app.route('/setallyn', methods=['POST'])
+def setallyn():
+    pla = request.get_data().decode('utf-8').split(',')
+    uno = pla[0]
+    yesno = pla[1]
+    setallonoff(uno, yesno)
     return "YES"
 
 

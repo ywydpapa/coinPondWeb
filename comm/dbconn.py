@@ -397,6 +397,20 @@ def setonoff(uno,yesno):
         db.close()
 
 
+def setallonoff(uno,yesno):
+    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur14 = db.cursor()
+    try:
+        sql = "UPDATE tradingSetup SET activeYN = %s where userNo=%s AND attrib not like %s"
+        cur14.execute(sql, (yesno, uno,'%XXXUP'))
+        db.commit()
+    except Exception as e:
+        print('접속오류', e)
+    finally:
+        cur14.close()
+        db.close()
+
+
 def setonoffs(setno,yesno):
     db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur14 = db.cursor()

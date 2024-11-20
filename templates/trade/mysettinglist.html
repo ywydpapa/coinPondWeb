@@ -27,7 +27,7 @@
                                 <thead style="text-align: center">
                                     <th>코인명</th>
                                     <th>시작금액</th>
-                                    <th>가동여부</th>
+                                    <th>가동여부    <button class="btn btn-outline-primary btn-sm" onclick="setallyn({{ session["userNo"] }},'Y')">ALL ON</button><button class="btn btn-outline-danger btn-sm" onclick="setallyn({{ session["userNo"] }},'N')">ALL OFF</button></th>
                                     <th>할당슬롯</th>
                                     <th>설정</th>
                                 </thead>
@@ -111,6 +111,19 @@
             $Barr[i].innerText = setdate;
             setdate = "";
         }
+    }
+        function setallyn(uno,yn){
+        data = [uno,yn]
+        $.ajax({
+            type: "POST",
+            url: '/setallyn',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: (res) => {
+                location.reload();
+                }
+        });
     }
 </script>
     {% include '/comm/adscripttable.html' %}
