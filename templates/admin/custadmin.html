@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% include '/comm/adheader.html' %}
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        {% include '/comm/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                {% include '/comm/adtopbar.html' %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">고객 관리</h1>
+                    <div class="container">
+                        <div>
+                         <table class="table">
+                         <thead style="text-align: center">
+                         <th>고객명</th>
+                         <th>고객아이디</th>
+                         <th>계약상품</th>
+                         <th>계약금액</th>
+                         <th>누적금액</th>
+                         <th>결제일</th>
+                         <th>계약시작일</th>
+                         <th>계약종료일</th>
+                         <th>서버번호</th>
+                         <th>전화번호</th>
+                         <th>메일주소</th>
+                         <th>sns주소</th>
+                         <th>추천인</th>
+                         </thead>
+                         {% for cust in custs %}
+                             <tr>
+                                 <td><a href="./custDetail?custno={{ cust[0] }}">{{ cust[1] }}</a></td>
+                                 <td>{{ cust[2] }}</td>
+                                 <td>{{ cust[3] }}</td>
+                                 <td>{{ cust[4] }}</td>
+                                 <td>{{ cust[5] }}</td>
+                                 <td>{{ cust[6] }}</td>
+                                 <td>{{ cust[7] }}</td>
+                                 <td>{{ cust[8] }}</td>
+                                 <td>{{ cust[9] }}</td>
+                                 <td>{{ cust[10] }}</td>
+                                 <td>{{ cust[11] }}</td>
+                                 <td>{{ cust[12] }}</td>
+                                 <td>{{ cust[13] }}</td>
+                             </tr>
+                         {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+             <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; K3 Labs 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+     <!-- Bootstrap core JavaScript-->
+{% include '/comm/adscript.html' %}
+</body>
+</html>

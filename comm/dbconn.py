@@ -1025,7 +1025,7 @@ def custdetail(cno):
     try:
         sql = "select * from customerList where custNo = %s and attrib not like %s"
         cur48.execute(sql, (cno,"XXXUP%"))
-        rows = cur48.fetchall()
+        rows = cur48.fetchone()
     except Exception as e:
         print("고객 상세 조회 에러", e)
     finally:

@@ -30,66 +30,26 @@
             <div class="container">
             <hr>
              <div>
-                 <form action="/updateuser" method="post" onsubmit="return confirm('사용자의 정보를 저장하시겠습니까?');">
+                 <form action="/updatecust" method="post" onsubmit="return confirm('고객의 정보를 저장하시겠습니까?');">
                  <table class="table">
                      <tr style="display: none">
                          <td>
-                         userNo
+                         고객명
                          </td>
                          <td>
-                             <label for="uno"></label><input type="number" id="uno" name="uno" value="{{ user[0] }}">
+                             <label for="custno"></label><input type="text" id="custno" name="custno" value="{{ cust[1] }}">
                          </td>
                          <td></td>
                      </tr>
-                     <tr>
+                     <tr style="display: none">
                          <td>
-                         userId
+                         고객명
                          </td>
                          <td>
-                         {{ user[1] }}
-                         </td>
-                         <td>
-                             <button class="btn btn-primary"> 개인정보 수정 </button>
-                         </td>
-                     </tr>
-                     <tr>
-                         <td>
-                         userName
-                         </td>
-                         <td>
-                         {{ user[2] }}
+                             <label for="custid"></label><input type="text" id="custid" name="custid" value="{{ cust[2] }}">
                          </td>
                          <td></td>
                      </tr>
-                     <tr>
-                         <td>
-                         AccessKey
-                         </td>
-                         <td>
-                             <label for="apikey1"></label><input type="text" id="apikey1" name="apikey1" value="{{ user[4] }}" class="form-control">
-                         </td>
-                         <td></td>
-                     </tr>
-                     <tr>
-                         <td>
-                         SecureKey
-                         </td>
-                         <td>
-                             <label for="apikey2"></label><input type="text" id="apikey2" name="apikey2" value="{{ user[5] }}" class="form-control">
-                         </td>
-                         <td></td>
-                     </tr>
-                     <tr>
-                         <td>Daemon server No</td>
-                         <td><input type="number" id="svrno" name="svrno" min="1" max="100000" value="{{ user[8] }}"> </td>
-                         <td></td>
-                     </tr>
-                     <tr>
-                         <td>password</td>
-                         <td><input id = "mypasswd" name = "mypasswd" type="password" class="form-control"> </td>
-                         <td><button class="btn btn-danger" onclick="setmypass({{ user[0] }})">암호변경</button></td>
-                     </tr>
-
                  </table>
                  </form>
              </div>

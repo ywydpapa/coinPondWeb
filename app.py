@@ -9,7 +9,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff)
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -456,6 +456,19 @@ def userdetail():
     userno = request.args.get('uno')
     user = detailuser(userno)
     return render_template('./admin/userDetailn.html', user=user)
+
+
+@app.route('/custAdmin')
+def custadmin():
+    custs = custlist()
+    return render_template('./admin/custadmin.html', custs=custs)
+
+
+@app.route('/custDetail')
+def cstdetail():
+    custno = request.args.get('custno')
+    cust = custdetail(custno)
+    return render_template('./admin/custDetail.html', cust=cust)
 
 
 @app.route('/changemySet')
