@@ -314,7 +314,7 @@ def setupmybid():
         slot = request.form.get('tabindex')
         bidsetps = request.form.get('bidsteps')
         initprice = request.form.get('initprice')
-        initprice = float(initprice.replace(',', ''))
+        initprice = initprice.replace(',', '')
         bidrate = 1.00
         initprice = initprice.replace(',', '')
         askrate = 0.5
@@ -328,7 +328,7 @@ def setupmybid():
         hno = request.form.get('tradeset').split(',')[1]
         dyn = request.form.get('doublechk')
         lmtamt = request.form.get('limitamt')
-        lmtamt = float(lmtamt.replace(',', ''))
+        lmtamt = lmtamt.replace(',', '')
         if dyn == 'ON':
             dyn = 'Y'
         else:
@@ -353,7 +353,7 @@ def editmybid2():
         slot = request.form.get('tabindex')
         bidsetps = request.form.get('bidsteps')
         initprice = request.form.get('initprice')
-        initprice = float(initprice.replace(',', ''))
+        initprice = initprice.replace(',', '')
         bidrate = 1.00
         initprice = initprice.replace(',', '')
         askrate = 0.5
@@ -366,7 +366,7 @@ def editmybid2():
         dyn = request.form.get('doublechk')
         limityn = request.form.get('limityn')
         limitamt = request.form.get('limitamt')
-        limitamt = float(limitamt.replace(',', ''))
+        limitamt = limitamt.replace(',', '')
         if dyn == 'ON':
             dyn = 'Y'
         else:
