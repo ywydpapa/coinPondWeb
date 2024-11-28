@@ -1000,3 +1000,51 @@ def mytradesetlist(uno):
         cur46.close()
         db46.close()
         return rows
+
+
+def custlist():
+    global rows
+    db47 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur47 = db47.cursor()
+    try:
+        sql = "select * from customerList where attrib not like %s"
+        cur47.execute(sql, "XXXUP%")
+        rows = cur47.fetchall()
+    except Exception as e:
+        print("고객 리스트 조회 에러", e)
+    finally:
+        cur47.close()
+        db47.close()
+        return rows
+
+
+def custdetail(cno):
+    global rows
+    db48 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur48 = db48.cursor()
+    try:
+        sql = "select * from customerList where custNo = %s and attrib not like %s"
+        cur48.execute(sql, (cno,"XXXUP%"))
+        rows = cur48.fetchall()
+    except Exception as e:
+        print("고객 상세 조회 에러", e)
+    finally:
+        cur48.close()
+        db48.close()
+        return rows
+
+
+def insertcust(cname,cid,contype,conamt,balamt,setdate,confr, conto, svrno,phno, mailaddr, snsid, parentid):
+    global rows
+    db48 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur48 = db48.cursor()
+    try:
+        sql = ("insert into customerList (custName,custId,contType,contAmt,balanceAmt,settDate,contFrom,contTo,serverNo,phoneNo,mailAddress,snsId,parentId) "
+               "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+        cur48.execute(sql, (cname,cid,contype,conamt,balamt,setdate,confr, conto, svrno,phno, mailaddr, snsid, parentid))
+        db48.commit()
+    except Exception as e:
+        print("고객 추가 에러", e)
+    finally:
+        cur48.close()
+        db48.close()
