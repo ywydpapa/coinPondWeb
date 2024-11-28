@@ -363,7 +363,8 @@ def editmybid2():
         dyn = request.form.get('doublechk')
         limityn = request.form.get('limityn')
         limitamt = request.form.get('limitamt')
-        if dyn == 'on':
+        limitamt = float(limitamt.replace(',', ''))
+        if dyn == 'ON':
             dyn = 'Y'
         else:
             dyn = 'N'
