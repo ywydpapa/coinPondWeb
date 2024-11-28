@@ -351,6 +351,7 @@ def editmybid2():
         slot = request.form.get('tabindex')
         bidsetps = request.form.get('bidsteps')
         initprice = request.form.get('initprice')
+        initprice = initprice.replace(',', '')
         bidrate = 1.00
         initprice = initprice.replace(',', '')
         askrate = 0.5
