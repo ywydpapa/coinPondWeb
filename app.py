@@ -471,6 +471,15 @@ def cstdetail():
     return render_template('./admin/custDetail.html', cust=cust)
 
 
+@app.route('/updatecust', methods=['GET', 'POST'])
+def updatecust():
+    if request.method == 'GET':
+        pass
+    else:
+        custno = request.args.get('custno')
+    return redirect("./custAdmin")
+
+
 @app.route('/changemySet')
 def mydetail():
     userno = request.args.get('uno')

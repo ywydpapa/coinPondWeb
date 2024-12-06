@@ -15,32 +15,124 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">고객 정보 관리{{ cust }}</h1>
+                    <h1 class="h3 mb-4 text-gray-800">고객 정보 관리</h1>
                     <hr>
-                    <div>
                  <form action="/updatecust" method="post" onsubmit="return confirm('고객의 정보를 저장하시겠습니까?');">
-                 <table class="table">
-                     <tr style="display: none">
+                 <table class="form-control table table-bordered">
+                     <tbody>
+                     <tr>
                          <td>
                          고객명
                          </td>
                          <td>
                              <label for="custname"></label><input type="text" id="custname" name="custname" value="{{ cust[1] }}">
                          </td>
-                         <td></td>
-                     </tr>
-                     <tr style="display: none">
+                         </tr>
+                         <tr>
                          <td>
                          고객아이디
                          </td>
                          <td>
                              <label for="custid"></label><input type="text" id="custid" name="custid" value="{{ cust[2] }}">
                          </td>
-                         <td></td>
+                         </tr>
+                         <tr>
+                         <td>
+                         계약 종류
+                         </td>
+                         <td>
+                             <label for="custtype"></label><input type="text" id="custtype" name="custtype" value="{{ cust[3] }}">
+                         </td>
+                         </tr>
+                         <tr>
+                         <td>
+                         계약금
+                         </td>
+                         <td>
+                             <label for="contamt"></label><input type="text" id="contamt" name="contamt" value="{{ cust[4] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                         누적금액
+                         </td>
+                         <td>
+                             <label for="balamt"></label><input type="text" id="balamt" name="balamt" value="{{ cust[5] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                         청구일
+                         </td>
+                         <td>
+                             <label for="settdate"></label><input type="text" id="settdate" name="settdate" value="{{ cust[6] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                         계약시작일
+                         </td>
+                         <td>
+                             <label for="contfr"></label><input type="text" id="contfr" name="contfr" value="{{ cust[7] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                         계약종료일
+                         </td>
+                         <td>
+                             <label for="contto"></label><input type="text" id="contto" name="contto" value="{{ cust[8] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                         서버번호
+                         </td>
+                         <td>
+                             <label for="svrno"></label><input type="text" id="svrno" name="svrno" value="{{ cust[9] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                         전화번호
+                         </td>
+                         <td>
+                             <label for="telno"></label><input type="text" id="telno" name="telno" value="{{ cust[10] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                             메일주소
+                         </td>
+                         <td>
+                             <label for="mailaddr"></label><input type="text" id="mailaddr" name="mailaddr" value="{{ cust[11] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                             SNS
+                         </td>
+                         <td>
+                             <label for="snsid"></label><input type="text" id="snsid" name="snsid" value="{{ cust[12] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td>
+                             추천인
+                         </td>
+                         <td>
+                             <label for="parentid"></label><input type="text" id="parentid" name="parentid" value="{{ cust[13] }}">
+                         </td>
+                         </tr>
+                     <tr>
+                         <td colspan="2">
+                             <button class="form-control btn-danger" type="submit">고객정보 수정</button>
+                         </td>
                      </tr>
+                     </tbody>
                  </table>
                  </form>
-             </div>
+
                 </div>
                 <!-- /.container-fluid -->
             </div>
