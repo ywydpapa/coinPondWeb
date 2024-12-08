@@ -1048,3 +1048,18 @@ def insertcust(cname,cid,contype,conamt,balamt,setdate,confr, conto, svrno,phno,
     finally:
         cur48.close()
         db48.close()
+
+
+def changesvr(uno,svrno):
+    global rows
+    db49 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur49 = db49.cursor()
+    try:
+        sql = "UPDATE tradingSetup set serverNo = %s where userNo = %s and attrib not like %s"
+        cur49.execute(sql, (svrno, uno, "XXXUP%"))
+        db49.commit()
+    except Exception as e:
+        print('서버 주소 변경 에러', e)
+    finally:
+        cur49.close()
+        db49.close()
