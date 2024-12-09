@@ -104,9 +104,9 @@
                                                                  <option value="4">05</option>
                                                                  <option value="5">06</option>
                                                                  <option value="6">07</option>
-                                                                 <option value="7">08</option>
+                                                                 <option value="7" selected>08</option>
                                                                  <option value="8">09</option>
-                                                                 <option value="9" selected >10</option></select></td>
+                                                                 <option value="9">10</option></select></td>
                                              <td style="text-align: center">
 
                                              </td>
@@ -126,9 +126,9 @@
                                              <td colspan="2"><select id="limitamt" name="limitamt" class="form-control" style="text-align: right">
                                              <option value="1000000">1,000,000</option>
                                                  <option value="2000000">2,000,000</option>
-                                                 <option value="3000000">3,000,000</option>
+                                                 <option value="3000000" selected>3,000,000</option>
                                                  <option value="4000000">4,000,000</option>
-                                                 <option value="5000000" selected>5,000,000</option>
+                                                 <option value="5000000">5,000,000</option>
                                                  <option value="6000000">6,000,000</option>
                                                  <option value="7000000">7,000,000</option>
                                                  <option value="8000000">8,000,000</option>
@@ -242,6 +242,7 @@
       size: 40
      });
     $(document).ready(function () {
+        setinit();
     });
 
     $('#initprice').change(function(){
@@ -315,7 +316,6 @@
         var trintv = trholdno.split(',');
         var intv = trintv[2];
        $('#bidsteps').val(intv);
-
     });
 
     $('#profitrate').change(function(){
@@ -326,9 +326,15 @@
                 $Iarr[k].value = irate;
             }
         } else {
-
         }
     });
+
+    function setinit(){
+        var trholdno = $('#tradeset').val();
+        var trintv = trholdno.split(',');
+        var intv = trintv[2];
+       $('#bidsteps').val(intv);
+    }
 
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

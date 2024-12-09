@@ -89,7 +89,7 @@
                                                  <option value="N" selected>OFF</option>
                                                  <option value="Y">ON</option>
                                              </select></td>
-                                             <td><input id="limitamt" name="limitamt" class="form-control" type="text" value="5000000" placeholder="5,000,000" max="10000000" min="100000" step="50000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" /></td>
+                                             <td><input id="limitamt" name="limitamt" class="form-control" type="text" value="3000000" placeholder="3,000,000" max="10000000" min="100000" step="50000" style = "text-align: right" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" /></td>
                                              <td></td>
                                          </tr>
                                          <tr style="text-align: center">
@@ -196,6 +196,7 @@
       size: 40
      });
     $(document).ready(function () {
+        setinit();
     });
     $('#initprice').change(function(){
         var valu = $('#initprice').val();
@@ -234,6 +235,7 @@
         var intv = trintv[2];
        $('#bidsteps').val(intv);
     });
+
     $('#profitrate').change(function(){
         var irate  = $('#profitrate').val();
         var $Iarr = $(".intinput");
@@ -244,6 +246,13 @@
         } else {
         }
     });
+
+    function setinit(){
+        var trholdno = $('#tradeset').val();
+        var trintv = trholdno.split(',');
+        var intv = trintv[2];
+       $('#bidsteps').val(intv);
+    }
 
     function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

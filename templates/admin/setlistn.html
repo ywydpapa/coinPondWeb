@@ -30,15 +30,13 @@
                              <th>6구간 간격</th>
                              <th>7구간 간격</th>
                              <th>8구간 간격</th>
-                             <th>9구간 간격</th>
                              <th>이율</th>
                              <th>사용여부</th>
                              </thead>
                                 {% for row in rows %}
                                     <tr style="text-align: center">
                                     <td><a href="/setDetail?setno={{ row[0] }}">{{ row[1] }}</a></td>
-                                    <td>{{ row[2] }}</td>
-                                    <td>{{ row[3] }}</td>
+                                    <td>{{ row[2] + 1 }}</td>
                                     <td>{{ row[4] }}</td>
                                     <td>{{ row[5] }}</td>
                                     <td>{{ row[6] }}</td>

@@ -9,7 +9,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust)
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -471,6 +471,15 @@ def cstdetail():
     return render_template('./admin/custDetail.html', cust=cust)
 
 
+@app.route('/updatecust', methods=['GET', 'POST'])
+def updatecust():
+    if request.method == 'GET':
+        pass
+    else:
+        custno = request.args.get('custno')
+    return redirect("./custAdmin")
+
+
 @app.route('/changemySet')
 def mydetail():
     userno = request.args.get('uno')
@@ -569,6 +578,7 @@ def updatemyuser():
     key2 = request.form.get('apikey2')
     svrno = request.form.get('svrno')
     updateuserdetail(uno, key1, key2, svrno)
+    changesvr(uno, svrno)
     users = listUsers()
     return render_template('./trade/dashboard.html', users=users)
 
