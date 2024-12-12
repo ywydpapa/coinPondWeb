@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 
 from flask import Flask, render_template, request, redirect, session
@@ -255,6 +256,7 @@ def tradestat():
                 ccoin = "KRW-" + wallet['currency']
                 try:
                     cpr = pyupbit.get_current_price(ccoin)
+                    time.sleep(0.2)
                 except Exception as e:
                     cpr = 1
                 curr = [wallet['currency'], cpr]
