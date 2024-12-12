@@ -401,9 +401,13 @@
             type: "POST",
             url: '/setyns',
             data: data,
+            async:false,
             processData: false,
             contentType: false,
             success: (res) => {
+                if (res == "OVER"){
+                    alert("10만원 이상의 자산이 지갑에 있습니다. \n 지갑 내 기존 코인 정리 후 트레이딩이 가능합니다.");
+                }
                 location.reload();
                 }
         });

@@ -1063,3 +1063,40 @@ def changesvr(uno,svrno):
     finally:
         cur49.close()
         db49.close()
+
+
+def getsetupitem(setupno):
+    global rows
+    db50 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur50 = db50.cursor()
+    try:
+        sql = "select userNo, bidCoin from tradingSetup where setupNo = %s "
+        cur50.execute(sql, setupno)
+        rows = cur50.fetchone()
+    except Exception as e:
+        print("구매설정 조회 에러",e)
+    finally:
+        cur50.close()
+        db50.close()
+        return rows
+
+
+def checkwalletremains(uno, coinn):
+    global rows, mybalance
+    db51 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur51 = db51.cursor()
+    try:
+        sql = "select apiKey1, apiKey2 from pondUser where userNo = %s and attrib not like %s"
+        cur51.execute(sql, (uno, "XXXUP%"))
+        keys = cur51.fetchone()
+        upbit = pyupbit.Upbit(keys[0], keys[1])
+        mybalance = upbit.get_balance(coinn)
+        rows = pyupbit.get_current_price(coinn)
+    except Exception as e:
+        print("지갑 내부 조회 에러 :", e)
+    finally:
+        cur51.close()
+        db51.close()
+        return mybalance, rows
+
+

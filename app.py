@@ -9,8 +9,8 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
                          selectboardlist, boarddetail, resethotcoins, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
-                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr)
+                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,checkwalletremains,
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr, getsetupitem)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -512,8 +512,15 @@ def setyns():
     pla = request.get_data().decode('utf-8').split(',')
     setno = pla[0]
     yesno = pla[1]
-    setonoffs(setno, yesno)
-    return "YES"
+    item = getsetupitem(setno)
+    # 지갑 조회 후 설정 리턴
+    mybal = checkwalletremains(item[0], item[1])
+    wallvalue = float(mybal[0])*float(mybal[1])
+    if wallvalue > 100000:
+        return "OVER"
+    else:
+        setonoffs(setno, yesno)
+        return "YES"
 
 
 @app.route('/sethr', methods=['POST'])
