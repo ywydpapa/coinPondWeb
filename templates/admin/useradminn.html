@@ -22,12 +22,14 @@
                          <thead style="text-align: center">
                          <th>아이디</th>
                          <th>이름</th>
-                         <th>접속시간</th>
+                         <th>접속서버</th>
+                         <th>최종접속시간</th>
                          </thead>
                          {% for user in users %}
-                             <tr>
+                             <tr style="text-align: center">
                                  <td><a href="/userDetail?uno={{ user[0] }}">{{ user[1] }}</a></td>
                                  <td>{{ user[2] }}</td>
+                                 <td>{{ user[8] }}</td>
                                  <td>{{ user[7] }}</td>
                              </tr>
                          {% endfor %}
