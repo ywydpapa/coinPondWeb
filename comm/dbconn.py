@@ -1099,4 +1099,20 @@ def checkwalletremains(uno, coinn):
         db51.close()
         return mybalance, rows
 
+def servicestatus():
+        global rows
+        db52 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+        cur52 = db52.cursor()
+        try:
+            sql = "select serverNo , serviceIp , serviceVer , max(regDate) as regDate from service_Stat group by serverNo"
+            cur52.execute(sql)
+            rows = cur52.fetchall()
+        except Exception as e:
+            print("서비스 상태 조회 에러", e)
+        finally:
+            cur52.close()
+            db52.close()
+            return rows
+
+
 

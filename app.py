@@ -8,7 +8,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          setdetail, selectsetlist, \
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
                          selectboardlist, boarddetail, resethotcoins, \
-                         boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
+                         boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,servicestatus,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,checkwalletremains,
                          mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr, getsetupitem)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
@@ -742,6 +742,12 @@ def msgread():
     msgno = pla[0]
     readmsg(msgno)
     return "CHECK"
+
+
+@app.route('/serverStatus')
+def serverStatus():
+    items = servicestatus()
+    return render_template('./admin/serverlist.html', items = items)
 
 
 @app.errorhandler(404)
