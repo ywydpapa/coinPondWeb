@@ -1104,7 +1104,7 @@ def servicestatus():
         db52 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
         cur52 = db52.cursor()
         try:
-            sql = "select serverNo , serviceIp , max(serviceVer) , max(regDate) from service_Stat group by serverNo"
+            sql = "select serverNo, serviceIp, serviceVer, regDate from service_Stat where (serverNo, regDate) in (select serverNo, max(regDate) as regDate from service_Stat group by serverNo) order by serverNo"
             cur52.execute(sql)
             rows = cur52.fetchall()
         except Exception as e:
