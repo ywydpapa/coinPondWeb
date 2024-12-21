@@ -396,9 +396,18 @@ def setupmybidadmin():
         g4 = request.form.get('gap04')
         g5 = request.form.get('gap05')
         g6 = request.form.get('gap06')
-        g7 = request.form.get('gap07')
-        g8 = request.form.get('gap08')
-        g9 = request.form.get('gap09')
+        if int(bidsteps) >= 7:
+            g7 = request.form.get('gap07')
+        else:
+            g7 = g6
+        if int(bidsteps) >= 8:
+            g8 = request.form.get('gap08')
+        else:
+            g8 = g7
+        if int(bidsteps) >= 9:
+            g9 = request.form.get('gap09')
+        else:
+            g9 = g8
         r0 = request.form.get('profitrate')
         r1 = request.form.get('int01')
         r2 = request.form.get('int02')
