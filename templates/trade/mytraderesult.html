@@ -74,7 +74,7 @@
                                             </select>
                                         </td>
                                         <td style="text-align: center">
-                                            <button class="btn btn-facebook" onclick="gethistory();">조회시작</button>
+                                            <button class="btn btn-primary" onclick="gethistory();">조회시작</button><button class="btn btn-dark" onclick="getmine();">재집계(시간걸림)</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -283,6 +283,13 @@
         var selcoin = $("#coinselector").val();
         var adddate = "&sdate=" + $("#searchdateto").val();
         target = target+selcoin+adddate;
+        location.href = target;
+    }
+
+    function getmine(){
+        var target = "/coincollect?uno={{ session["userNo"] }}&skey={{ session["setkey"] }}&coinn=";
+        var selcoin = $("#coinselector").val();
+        target = target+selcoin;
         location.href = target;
     }
 

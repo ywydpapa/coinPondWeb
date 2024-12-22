@@ -167,6 +167,15 @@ def volumetop20():
     return render_template('./trade/top20.html', trendcoins=trendcoins)
 
 
+@app.route('/coincollect', methods=['GET', 'POST'])
+def coincollect():
+    uno = request.args.get('uno')
+    skey = request.args.get('skey')
+    coinn = request.args.get('coinn')
+    trlog = tradehistorys(uno, skey, coinn)
+    return render_template('./trade/getmine.html', trlogs = trlog)
+
+
 @app.route('/coindetail', methods=['GET', 'POST'])
 def coindetail():
     uno = request.args.get('uno')
