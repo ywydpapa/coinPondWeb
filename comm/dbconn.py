@@ -192,25 +192,6 @@ def tradehistory(uno, setkey):
     return tradelist
 
 
-def tradehistorys(uno, setkey, coinn):
-    tradelist2 = []
-    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
-    cur7 = db.cursor()
-    sql2 = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
-    cur7.execute(sql2,(setkey, uno, '%XXX'))
-    keys = cur7.fetchone()
-    if len(keys) == 0:
-        print("No available Keys !!")
-    else:
-        key1 = keys[0]
-        key2 = keys[1]
-        upbit = pyupbit.Upbit(key1,key2)
-        tradelist2 = upbit.get_order(coinn,state='done')
-    cur7.close()
-    db.close()
-    return tradelist2
-
-
 def checkkey(uno, setkey):
     db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur8 = db.cursor()
@@ -1115,4 +1096,90 @@ def servicestatus():
             return rows
 
 
+def checkuuid(uuid):
+    global rows, result
+    db53 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur53 = db53.cursor()
+    try:
+        sql = "select count(*) from tradeLogDone where uuid=%s"
+        cur53.execute(sql,uuid)
+        result = cur53.fetchone()
+    except Exception as e:
+        print("uuid 조회 에러",e)
+    finally:
+        cur53.close()
+        db53.close()
+        rows = result[0]
+        return rows
 
+
+def tradehistorys(uno, setkey, coinn):
+    tradelist2 = []
+    db54 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur54 = db54.cursor()
+    sql2 = "SELECT apiKey1, apiKey2 FROM pondUser WHERE setupKey=%s AND userNo=%s and attrib not like %s"
+    cur54.execute(sql2,(setkey, uno, '%XXX'))
+    keys = cur54.fetchone()
+    if len(keys) == 0:
+        print("No available Keys !!")
+    else:
+        key1 = keys[0]
+        key2 = keys[1]
+        upbit = pyupbit.Upbit(key1,key2)
+        tradelist2 = upbit.get_order(coinn,state='done')
+    cur54.close()
+    db54.close()
+    return tradelist2
+
+
+def setLog(uno, setkey, coinn):
+    global rows
+    db55 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur55 = db55.cursor()
+    try:
+        trade = tradehistorys(uno, setkey, coinn)
+        for item in trade:
+            print(item)
+            uuidchk = item["uuid"]
+            if checkuuid(uuidchk) != 0:
+                print("이미 존재하는 거래")
+            else:
+                if item["side"] == "ask":
+                    if item.get("price") is not None:
+                        ldata01 = item["uuid"]
+                        ldata02 = item["side"]
+                        ldata03 = item["ord_type"]
+                        ldata04 = item["price"]
+                        ldata05 = item["market"]
+                        ldata06 = item["created_at"]
+                        ldata07 = item["volume"]
+                        ldata08 = item["remaining_volume"]
+                        ldata09 = item["reserved_fee"]
+                        ldata10 = item["paid_fee"]
+                        ldata11 = item["locked"]
+                        ldata12 = item["executed_volume"]
+                        ldata13 = item["trades_count"]
+                        inserttrLog(uno, ldata01, ldata02, ldata03, ldata04, ldata05, ldata06, ldata07, ldata08, ldata09, ldata10, ldata11,ldata12, ldata13)
+                else:
+                    print("매수거래 패스")
+    except Exception as e:
+        print("거래 기록 에러 ",e, "사용자 :", uno)
+    finally:
+        cur55.close()
+        db55.close()
+
+
+def inserttrLog(uno,ldata01,ldata02,ldata03,ldata04,ldata05,ldata06,ldata07,ldata08,ldata09,ldata10,ldata11,ldata12,ldata13):
+    global rows
+    db56 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur56 = db56.cursor()
+    try:
+        sql = ("insert into tradeLogDone (userNo,uuid,side,ord_type,price,market,created_at,volume,remaining_volume,reserved_fee,paid_fee,locked,executed_volume,trades_count)"
+               " values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+        cur56.execute(sql,(uno,ldata01,ldata02,ldata03,ldata04,ldata05,ldata06,ldata07,ldata08,ldata09,ldata10,ldata11,ldata12,ldata13))
+        db56.commit()
+    except Exception as e:
+        print("거래완료 기록 인서트 에러", e)
+    finally:
+        cur56.close()
+        db56.close()

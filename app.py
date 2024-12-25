@@ -7,7 +7,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets,
                          setdetail, selectsetlist, \
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
-                         selectboardlist, boarddetail, resethotcoins, \
+                         selectboardlist, boarddetail, resethotcoins,setLog, \
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,servicestatus,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,checkwalletremains,
                          mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr, getsetupitem)
@@ -172,8 +172,9 @@ def coincollect():
     uno = request.args.get('uno')
     skey = request.args.get('skey')
     coinn = request.args.get('coinn')
-    trlog = tradehistorys(uno, skey, coinn)
-    return render_template('./trade/getmine.html', trlogs = trlog)
+    setLog(uno, skey, coinn)
+    path="/coindetails?uno="+uno+"&skey="+skey+"&coinn="+coinn;
+    return redirect(path)
 
 
 @app.route('/coindetail', methods=['GET', 'POST'])
