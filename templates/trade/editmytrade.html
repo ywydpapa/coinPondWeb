@@ -37,8 +37,10 @@
                                              <td colspan="2"><select id="coinn" name="coinn" class="form-control selectpicker" data-live-search="true">
                                                      <option value="" >코인을 선택하세요</option>
                                                  {% for coin in coinlist %}
+                                                     {% if (coin != "KRW-SHIB") and (coin != "KRW-PEPE") %}
                                                      {% if (coin != coinA) and (coin != coinB) %}
                                                      <option value="{{ coin }}">{{ coin }}</option>
+                                                     {% endif %}
                                                      {% endif %}
                                                  {% endfor %}</select></td>
                                              <td style="text-align: center">
