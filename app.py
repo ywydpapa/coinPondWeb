@@ -536,7 +536,11 @@ def setyns():
     mybal = checkwalletremains(item[0], item[1])
     wallvalue = float(mybal[0])*float(mybal[1])
     if wallvalue > 100000:
-        return "OVER"
+        if yesno == 'Y':
+            return "OVER"
+        else:
+            setonoffs(setno, yesno)
+            return "YES"
     else:
         setonoffs(setno, yesno)
         return "YES"
