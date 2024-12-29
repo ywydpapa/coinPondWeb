@@ -55,7 +55,7 @@
                                              <td style="text-align: center"><h5>선택 코인1</h5></td>
                                              <td colspan="2"><select id="coinn1" name="coinn1" class="form-control selectpicker" data-live-search="true">
                                                  {% for coin in coinlist %}
-                                                     {% if (coin != "KRW-SHIB") and (coin != "KRW-PEPE") %}
+                                                     {% if (coin != "KRW-SHIB") and (coin != "KRW-PEPE") and (coin != "KRW-BTT") and (coin != "KRW-BONK") and (coin != "KRW-XEC")%}
                                                      <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
                                                      {%  endif %}
                                                  {% endfor %}</select></td>
@@ -70,7 +70,7 @@
                                              <td colspan="2"><select id="coinn2" name="coinn2" class="form-control selectpicker" data-live-search="true">
                                              <option value="" >코인을 선택하세요</option>
                                                  {% for coin in coinlist %}
-                                                     {% if (coin != "KRW-SHIB") and (coin != "KRW-PEPE") %}
+                                                     {% if (coin != "KRW-SHIB") and (coin != "KRW-PEPE") and (coin != "KRW-BTT") and (coin != "KRW-BONK") and (coin != "KRW-XEC") %}
                                                      <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
                                                      {% endif %}
                                                  {% endfor %}</select></td>
@@ -82,7 +82,7 @@
                                              <td colspan="2"><select id="coinn3" name="coinn3" class="form-control selectpicker" data-live-search="true">
                                                  <option value="" >코인을 선택하세요</option>
                                                  {% for coin in coinlist %}
-                                                     {% if (coin != "KRW-SHIB") and (coin != "KRW-PEPE") %}
+                                                     {% if (coin != "KRW-SHIB") and (coin != "KRW-PEPE") and (coin != "KRW-BTT") and (coin != "KRW-BONK") and (coin != "KRW-XEC") %}
                                                      <option value="{{ coin }}" {% if coin==coinn %}selected{% endif %}>{{ coin }}</option>
                                                      {%  endif %}
                                                  {% endfor %}</select></td>
