@@ -7,10 +7,14 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets,
                          setdetail, selectsetlist, \
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
-                         selectboardlist, boarddetail, resethotcoins,setLog, \
-                         boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,servicestatus,
-                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,checkwalletremains,
-                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence, mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr, getsetupitem)
+                         selectboardlist, boarddetail, resethotcoins, setLog, \
+                         boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
+                         servicestatus,
+                         tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
+                         checkwalletremains,
+                         mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence,
+                         mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr, getsetupitem,
+                         sellmycoinpercent)
 from comm.upbitdata import dashcandle548, get_ticker_tradevalue, dashcandle160
 import pyupbit
 import os
@@ -620,7 +624,8 @@ def sellcoin():
     pla = request.get_data().decode('utf-8').split(',')
     uno = pla[0]
     coinn = pla[1]
-    sellmycoin(uno, coinn)
+    rate = pla[2]
+    sellmycoinpercent(uno, coinn, rate)
     return "YES"
 
 

@@ -509,6 +509,27 @@ def sellmycoin(uno,coinn):
             pass
 
 
+def sellmycoinpercent(uno,coinn, rate):
+    keys = getupbitkey(uno)
+    upbit = pyupbit.Upbit(keys[0],keys[1])
+    walt = upbit.get_balances()
+    print(coinn)
+    for coin in walt:
+        if coin['currency'] == coinn:
+            balance = float(coin['balance'])/int(rate)
+            coinn = "KRW-"+ coinn
+            result = upbit.sell_market_order(coinn,balance)
+            try:
+                if result["error"]["name"] == 'under_min_total_market_ask':
+                    buy5000 = upbit.buy_market_order(coinn, 5000)
+                    print(buy5000)
+            except Exception as e:
+                pass
+        else:
+            pass
+
+
+
 def selectsets():
     global rows
     db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
