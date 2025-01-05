@@ -56,11 +56,13 @@
                                          <td class = "balancerate"></td>
                                          <td style="text-align: center">
                                         {% if item["currency"]!="KRW" %}
-                                            <div class="row"> <div class="d-inline-block"> <select class="form-control" name="sellrate" id="sellrate">
+                                            <div class="row" style="justify-content: space-evenly; margin-left: -.75rem; margin-right:-.75rem"> <div class="d-inline-block"> <select class="form-control" name="sellrate" id="sellrate">
                                             <option value=1 selected>100%</option>
                                             <option value=2>50%</option>
                                             <option value=4>25%</option>
                                             <option value=10>10%</option>
+                                                <option value=20>5%</option>
+                                                <option value=100>1%</option>
                                             </select></div><div class="d-inline-block">
                                          <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">매도</button></div></div>
                                         {% endif %}
