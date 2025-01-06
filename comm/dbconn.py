@@ -1,19 +1,10 @@
 import os
 import random
 from datetime import datetime, timedelta
-from typing import List, Any
-
 import dotenv
 import pymysql
 import pyupbit
-import jwt
-import hashlib
-import requests
-import uuid
-from urllib.parse import urlencode, unquote
-import json
 
-from dotenv import get_key
 
 dotenv.load_dotenv()
 hostenv = os.getenv("host")
@@ -316,9 +307,9 @@ def getsetup(uno):
 
 def getsetupmax(uno,sdate):
     global cur12, db
+    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur12 = db.cursor()
     try:
-        db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
-        cur12 = db.cursor()
         sql = "SELECT bidCoin, initAsset, bidInterval, bidRate, askRate, activeYN, custKey, holdYN, holdNo, doubleYN  from tradingSetup where userNo=%s and regDate <= %s order by regDate desc"
         cur12.execute(sql, (uno, sdate))
         data = list(cur12.fetchone())
@@ -331,9 +322,9 @@ def getsetupmax(uno,sdate):
 
 
 def getsetups(uno,slotno):
+    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur13 = db.cursor()
     try:
-        db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
-        cur13 = db.cursor()
         if slotno == 0:
             sql = "select * from tradingSetup where userNo=%s and attrib not like %s"
             cur13.execute(sql, (uno, '%XXXUP'))
@@ -350,9 +341,9 @@ def getsetups(uno,slotno):
 
 
 def getlicence(uno):
+    db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur13 = db.cursor()
     try:
-        db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
-        cur13 = db.cursor()
         sql = "select tradeCnt from pondUser where userNo=%s and attrib not like %s"
         cur13.execute(sql, (uno,'%XXXUP'))
         data = cur13.fetchone()
@@ -513,10 +504,13 @@ def sellmycoinpercent(uno,coinn, rate):
     keys = getupbitkey(uno)
     upbit = pyupbit.Upbit(keys[0],keys[1])
     walt = upbit.get_balances()
-    print(coinn)
+    crp = pyupbit.get_current_price(coinn)
     for coin in walt:
         if coin['currency'] == coinn:
-            balance = float(coin['balance'])/int(rate)
+            if int(rate) == 0:
+                balance = 10000 / float(crp)
+            else:
+                balance = float(coin['balance'])/int(rate)
             coinn = "KRW-"+ coinn
             result = upbit.sell_market_order(coinn,balance)
             try:
@@ -573,6 +567,8 @@ def selectsetlist(sint):
         sql = "SELECT * FROM tradingSets WHERE useYN = %s and attrib NOT LIKE %s"
         if sint > 0:
             useyn = 'Y'
+        else:
+            useyn = 'N'
         cur21.execute(sql, (useyn, "XXX%"))
         rows = cur21.fetchall()
     except Exception as e:
@@ -580,7 +576,7 @@ def selectsetlist(sint):
     finally:
         cur21.close()
         db.close()
-    return rows
+        return rows
 
 
 def setmypasswd(uno, passwd):
