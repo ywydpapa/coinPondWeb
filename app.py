@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, session
 from flask_bootstrap import Bootstrap
 from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoinlist, setupbid, getsetup, setonoff, \
-                         checkwalletwon, getorderlist, sellmycoin, listUsers, detailuser, setupbidadmin, selectsets,
+                         checkwalletwon, getorderlist, listUsers, detailuser, setupbidadmin, selectsets,
                          setdetail, selectsetlist, \
                          setmypasswd, updateuserdetail, updatebidadmin, settingonoff, hotcoinlist, sethotcoin,
                          selectboardlist, boarddetail, resethotcoins, setLog, \
