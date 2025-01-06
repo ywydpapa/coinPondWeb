@@ -109,10 +109,12 @@
         calcvalue();
     });
 
+    $("#sellrate").onchange
+
 
     function sellcoin(uno,coinn){
         if (confirm("본 코인을 시장가로 매도하시겠습니까? 자산이 5,000원 미만인 경우 5,000원을 추가로 매입하여 일괄 매도합니다.")){
-            rate = $("#sellrate").val();
+            rate = $("select [name=sellrate] option:selected").val();
         data = [uno,coinn,rate]
         console.log(data);
         $.ajax({
