@@ -508,7 +508,7 @@ def sellmycoinpercent(uno,coinn, rate):
     for coin in walt:
         if coin['currency'] == coinn:
             if int(rate) == 0:
-                balance = 10000 / float(crp)
+                balance = round(10000 / float(crp), 8)
             else:
                 balance = float(coin['balance'])/int(rate)
             coinn = "KRW-"+ coinn
