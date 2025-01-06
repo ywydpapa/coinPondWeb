@@ -56,8 +56,12 @@
                                          <td class = "balancerate"></td>
                                          <td style="text-align: center">
                                         {% if item["currency"]!="KRW" %}
-                                            <div class="row" style="justify-content: space-evenly; margin-left: -.75rem; margin-right:-.75rem"> <div class="d-inline-block">
-                                                <select class="form-control" name="sellrate" id="sellrate">
+
+                                         <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">매도</button>
+                                            {% elif item["currency"] == "KRW" %}
+                                            <div class="row" style="justify-content: space-evenly; margin-left: -.75rem; margin-right:-.75rem"> <div class="d-inline-block">매도 금액 비율
+                                                </div><div class="d-inline-block">
+                                            <select class="form-control" name="sellrate" id="sellrate">
                                                     <option value=1>100%</option>
                                                     <option value=2>50%</option>
                                                     <option value=4>25%</option>
@@ -65,9 +69,9 @@
                                                     <option value=20>5%</option>
                                                     <option value=100>1%</option>
                                                     <option value=0>10,000원</option>
-                                                </select></div><div class="d-inline-block">
-                                         <button class = "btn form-control btn-primary" onclick="sellcoin({{ session["userNo"] }},'{{ item["currency"] }}')">매도</button></div></div>
+                                                </select></div></div>
                                         {% endif %}
+
                                          </td>
                                          </tr>
                                         {% endfor %}
@@ -110,9 +114,6 @@
         calcvalue();
     });
 
-    $("#sellrate").change(function(){
-        $("sellrate").val($(this).val());
-    });
 
     function sellcoin(uno,coinn){
         if (confirm("본 코인을 시장가로 매도하시겠습니까? 자산이 5,000원 미만인 경우 5,000원을 추가로 매입하여 일괄 매도합니다.")){
