@@ -492,7 +492,7 @@ def sellmycoinpercent(uno,coinn, rate):
                 balance = round(10000 / float(crp), 8)
             else:
                 balance = float(coin['balance'])/int(rate)
-            result = upbit.sell_market_order(coinn,balance)
+            result = upbit.sell_market_order(coink,balance)
             try:
                 if result["error"]["name"] == 'under_min_total_market_ask':
                     buy5000 = upbit.buy_market_order(coinn, 5000)
