@@ -482,9 +482,10 @@ def getorderlist(uno, slotno):
 
 def sellmycoinpercent(uno,coinn, rate):
     keys = getupbitkey(uno)
+    coink = "KRW-"+ coinn
     upbit = pyupbit.Upbit(keys[0],keys[1])
     walt = upbit.get_balances()
-    crp = pyupbit.get_current_price(coinn)
+    crp = pyupbit.get_current_price(coink)
     for coin in walt:
         if coin['currency'] == coinn:
             if int(rate) == 0:
