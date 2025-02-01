@@ -1180,3 +1180,19 @@ def inserttrLog(uno,ldata01,ldata02,ldata03,ldata04,ldata05,ldata06,ldata07,ldat
     finally:
         cur56.close()
         db56.close()
+
+
+def incomesum(uno):
+    global item
+    db57 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
+    cur57 = db57.cursor()
+    try:
+        sql = "select * from incomeHistory where userNo = %s limit 30"
+        cur57.execute(sql,uno)
+        item = cur57.fetchall()
+        return item
+    except Exception as e:
+        print("이익현황 조회 에러", e)
+    finally:
+        cur57.close()
+        db57.close()

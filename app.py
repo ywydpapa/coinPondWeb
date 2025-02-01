@@ -11,7 +11,7 @@ from comm.dbconn import (selectUsers, setKeys, checkwallet, tradehistory, hotcoi
                          boardupdate, boardnewwrite, setholdreset, getmessage, cancelorder, gettop20, tradehistorys,
                          servicestatus,
                          tradelist, readmsg, gettradelog, tradedcoins, modifyLog, insertLog, getmytrlog, getmyincomes,
-                         checkwalletremains,
+                         checkwalletremains,incomesum,
                          mysettinglist, getsetupmax, erasebid, getsetups, setonoffs, editbidsetup, getlicence,
                          mytradesetlist, setallonoff, custlist, custdetail, insertcust, changesvr, getsetupitem,
                          sellmycoinpercent)
@@ -772,6 +772,11 @@ def msgread():
     readmsg(msgno)
     return "CHECK"
 
+@app.route('/incomesummary', methods=['POST','GET'])
+def incomesummary():
+    uno = request.args.get('uno')
+    item = incomesum(uno)
+    return render_template('./trade/incsum.html', items = item)
 
 @app.route('/serverStatus')
 def serverStatus():
