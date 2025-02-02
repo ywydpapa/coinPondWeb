@@ -776,7 +776,13 @@ def msgread():
 def incomesummary():
     uno = request.args.get('uno')
     item = incomesum(uno)
-    return render_template('./trade/incsum.html', items = item)
+    tval = [];
+    ival = [];
+    for data in item:
+        tval.append(str(data[1]))
+        ival.append(str(data[2]))
+    print(tval)
+    return render_template('./trade/incsum.html', items = item, tval = tval, ival = ival)
 
 @app.route('/serverStatus')
 def serverStatus():

@@ -17,6 +17,8 @@
                     <!-- Page Heading -->
                     <!-- Page Heading -->
                     <!-- DataTales Example -->
+                <div class = "row">
+                <div class="col-lg-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">나의 수익 현황</h6>
@@ -49,6 +51,24 @@
                         </div>
                     </div>
                 </div>
+                    <div class="col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">수익현황</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-body">
+                            <div class="chart-area">
+                                <canvas id="myChart1" width="100%"></canvas>
+                            </div>
+                        </div>
+                                </div>
+                                <div class="card-footer">
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
@@ -71,7 +91,8 @@
     </a>
      <!-- Bootstrap core JavaScript-->
 
-{% include '/comm/adscript.html' %}
+    {% include '/comm/adscript.html' %}
+    {% include '/comm/adscriptchart.html' %}
 <script>
     $(document).ready(function () {
         calbenifit();
@@ -109,11 +130,58 @@
             aval = bur - cur ;
             suminc = suminc + aval; ;
             $Barr[i].innerText = numberWithCommas(aval);
+            dataArr2.push(aval);
         }
         $("#suminc").html(numberWithCommas(suminc));
+
     }
 
-
+    dataArr1 = {{ tval | safe }};
+    dataArr2 = {{ ival | safe }};
+    new Chart(document.getElementById("myChart1"), {
+    type: 'line',
+    data: {
+        labels: dataArr1,
+        datasets: [{
+            label: '잔고',
+            data: dataArr2,
+            borderColor: "rgb(247,85,16)",
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: "수익"
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                },
+                scaleLabel: {
+                    display: true,
+                }
+            }]
+        }
+    }
+});
 </script>
 </body>
 </html>
