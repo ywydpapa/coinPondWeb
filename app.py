@@ -776,8 +776,8 @@ def msgread():
 def incomesummary():
     uno = request.args.get('uno')
     item = incomesum(uno)
-    tval = [];
-    ival = [];
+    tval = []
+    ival = []
     for data in item:
         tval.append(str(data[1]))
         ival.append(str(data[2]))
