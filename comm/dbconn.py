@@ -1187,7 +1187,7 @@ def incomesum(uno):
     db57 = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
     cur57 = db57.cursor()
     try:
-        sql = "select * from incomeHistory where userNo = %s limit 30"
+        sql = "select * from (select * from incomeHistory where userNo = %s limit 30) as sub order by gettime ASC"
         cur57.execute(sql,uno)
         item = cur57.fetchall()
         return item
