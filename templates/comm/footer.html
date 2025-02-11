@@ -1,3 +1,10 @@
+<script>
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Backspace') {
+           event.preventDefault(); // 기본 백스페이스 동작을 막음
+       }
+});
+</script>
     <script src="{{ url_for('static', filename = 'vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename = 'vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
