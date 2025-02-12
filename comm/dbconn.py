@@ -219,7 +219,7 @@ def erasebid(uno, setkey, tabindex):
 
 
 
-def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitamt, slot):
+def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, tradeset, holdNo, doubleYN, limitamt, limityn, slot):
     global cur0, db
     chkkey = checkkey(uno, setkey)
     nowt = datetime.now()+ timedelta(minutes=15)
@@ -227,8 +227,8 @@ def setupbid(uno, setkey, initbid, bidstep, bidrate, askrate, coinn, svrno, trad
         try:
             db = pymysql.connect(host=hostenv, user=userenv, password=passwordenv, db=dbenv, charset=charsetenv)
             cur0 = db.cursor()
-            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitAmt, slot, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now())"
-            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitamt, slot))
+            sql = "insert into tradingSetup (userNo, initAsset, bidInterval, bidRate, askrate, bidCoin, custKey ,serverNo, holdNo, doubleYN, limitAmt, limitYN, slot, regDate) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, now())"
+            cur0.execute(sql, (uno, initbid, bidstep, bidrate, askrate, coinn, tradeset, svrno, holdNo, doubleYN, limitamt, limityn,slot))
             db.commit()
         except Exception as e:
             print('접속오류', e)

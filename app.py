@@ -344,18 +344,23 @@ def setupmybid():
         hno = request.form.get('tradeset').split(',')[1]
         dyn = request.form.get('doublechk')
         lmtamt = request.form.get('limitamt')
+        lmtyn = request.form.get('limityn')
         lmtamt = lmtamt.replace(',', '')
-        if dyn == 'ON':
+        if dyn == 'on':
             dyn = 'Y'
         else:
             dyn = 'N'
+        if lmtyn == 'on':
+            lmtyn = 'Y'
+        else:
+            lmtyn = 'N'
         erasebid(uno,skey, slot)
         if coinn1 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn1, svrno, tradeset, hno, dyn, lmtamt, slot)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn1, svrno, tradeset, hno, dyn, lmtamt, lmtyn, slot)
         if coinn2 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn, lmtamt, slot)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn2, svrno, tradeset, hno, dyn, lmtamt, lmtyn, slot)
         if coinn3 is not None:
-            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn, lmtamt, slot)
+            setupbid(uno, skey, initprice, bidsetps, bidrate, askrate, coinn3, svrno, tradeset, hno, dyn, lmtamt, lmtyn,slot)
     return redirect('/trade?uno=' + uno + '&skey=' + skey + '&tabindex=' + slot )
 
 
