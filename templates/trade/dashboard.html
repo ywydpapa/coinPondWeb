@@ -23,7 +23,7 @@
 
                     <!-- Page Heading -->
                     <div class="row">
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-6 col-lg-6 mb-4">
                             <!-- Area Chart -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-6 col-lg-6 mb-4">
                             <!-- Bar Chart -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -57,7 +57,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-5">
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 mb-4">
                             <!-- Bar Chart -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -71,6 +73,23 @@
                                     <br>
                                     <br>
                                     5분 간격 4시간 리플 트렌트
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 mb-4">
+                            <!-- Bar Chart -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">DOGE Trend</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <canvas id="myChart4" width="100%"></canvas>
+                                    </div>
+                                    <hr>
+                                    <br>
+                                    <br>
+                                    5분 간격 4시간 도지코인 트렌트
                                 </div>
                             </div>
                         </div>
@@ -172,6 +191,8 @@
     let dataArr4 = [];
     let dataArr5 = [];
     let dataArr6 = [];
+    let dataArr7 = [];
+    let dataArr8 = [];
     let indexArr = [0,'','','','','',30,'','','','','',60,'','','','','',30,'','','','','',60,'','','','','',30,'','','','','',60,'','','','','',30,'','','','','',55];
     dataArr1 = {{ btccands }};
     dataArr2 = {{ ethcands }};
@@ -179,6 +200,8 @@
     dataArr4 = {{ btccandsc }};
     dataArr5 = {{ ethcandsc }};
     dataArr6 = {{ xrpcandsc }};
+    dataArr7 = {{ dogecand }};
+    dataArr8 = {{ dogecandc }};
     indexArr.reverse();
 
     new Chart(document.getElementById("myChart1"), {
@@ -305,6 +328,57 @@
         title: {
             display: true,
             text: 'xrp'
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                },
+                scaleLabel: {
+                    display: true,
+                }
+            }]
+        }
+    }
+});
+
+         new Chart(document.getElementById("myChart4"), {
+    type: 'line',
+    data: {
+        labels: indexArr ,
+        datasets: [{
+            label: 'open',
+            data: dataArr7,
+            borderColor: "rgb(247,158,16)",
+            fill: false,
+            lineTension: 0
+        },{
+            label: 'close',
+            data: dataArr8,
+            borderColor: "rgb(16,247,58)",
+            fill: false,
+            lineTension: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: 'doge'
         },
         tooltips: {
             mode: 'index',

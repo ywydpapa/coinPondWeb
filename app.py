@@ -39,14 +39,17 @@ def dashboard():
     btccand = [dashcandle548("KRW-BTC")]
     ethcand = [dashcandle548("KRW-ETH")]
     xrpcand = [dashcandle548("KRW-XRP")]
+    dogecand = [dashcandle548("KRW-DOGE")]
     indexv = btccand[0].index.tolist()
     listbtc = btccand[0]['open'].tolist()
     listeth = ethcand[0]['open'].tolist()
     listxrp = xrpcand[0]['open'].tolist()
+    listdoge = dogecand[0]['open'].tolist()
     listbtcc = btccand[0]['close'].tolist()
     listethc = ethcand[0]['close'].tolist()
     listxrpc = xrpcand[0]['close'].tolist()
-    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth,xrpcands=listxrp, btccandsc=listbtcc, ethcandsc=listethc,xrpcandsc=listxrpc, indexv=indexv, noticelist=noticelist, boarditem=boarditems)
+    listdogec = dogecand[0]['close'].tolist()
+    return render_template('./trade/dashboard.html', btccands=listbtc, ethcands=listeth,xrpcands=listxrp, dogecand=listdoge, btccandsc=listbtcc, ethcandsc=listethc,xrpcandsc=listxrpc,dogecandc = listdogec,indexv=indexv, noticelist=noticelist, boarditem=boarditems)
 
 
 @app.route('/trade', methods=['GET', 'POST'])
